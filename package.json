@@ -1,0 +1,19 @@
+{
+  "name": "capstoneproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Capstone-A/teama.git"
+  },
+  "author": "deanna dunne, natalie ng, euny jeon, kristine lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Capstone-A/teama/issues"
+  },
+  "homepage": "https://github.com/Capstone-A/teama#readme"
+}
