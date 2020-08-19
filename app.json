@@ -2,6 +2,8 @@
   "name": "heroku-cra-node",
   "description": "web app made of create-react-app UI + Node API",
   "scripts": {
+    "start": "node server",
+    "build": "cd react-ui/ && npm install && npm run build"
   },
   "env": {
   },
