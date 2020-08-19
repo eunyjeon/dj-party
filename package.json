@@ -1,19 +1,31 @@
 {
-  "name": "capstoneproject",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "heroku-cra-node",
+  "version": "3.0.0",
+  "description": "How to use create-react-app with a custom Node API on Heroku",
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "build": "cd react-ui/ && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "react-ui/node_modules"
+  ],
+  "dependencies": {
+    "express": "^4.16.4"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Capstone-A/teama.git"
+    "url": "https://github.com/mars/heroku-cra-node.git"
   },
-  "author": "deanna dunne, natalie ng, euny jeon, kristine lee",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Capstone-A/teama/issues"
-  },
-  "homepage": "https://github.com/Capstone-A/teama#readme"
+  "keywords": [
+    "node",
+    "heroku",
+    "create-react-app",
+    "react"
+  ],
+  "license": "MIT",
+  "devDependencies": {}
 }
