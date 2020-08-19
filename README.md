@@ -60,7 +60,11 @@ This deployment will automatically:
 If an app was previously deployed with [create-react-app-buildpack](https://github.com/mars/create-react-app-buildpack), then a few steps are required to migrate the app to this architecture:
 
 1. Remove **create-react-app-buildpack** from the app; [heroku/nodejs buildpack](https://devcenter.heroku.com/articles/nodejs-support#activation) will be automatically activated
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 2ab916e47e63170ea373f44ee25732ac1e61df75
     ```bash
     heroku buildpacks:clear
     ```
@@ -70,14 +74,12 @@ If an app was previously deployed with [create-react-app-buildpack](https://gith
     mkdir react-ui
     git mv -k [!react-ui]* react-ui/
     mv node_modules react-ui/
-
     # If you see "fatal: Not a git repository", then fix that error
     mv react-ui/.git ./
     ```
     ⚠️ *Some folks have reported problems with these commands. Using the `bash` shell will probably allow them to work. Sorry if they do not work for you, know that the point is to move **everything** in the repo into the `react-ui/` subdirectory. Except for `.git/` which should remain at the root level.* 
 1. Create a root [`package.json`](package.json), [`server/`](server/), & [`.gitignore`](.gitignore) modeled after the code in this repo
 1. Commit and deploy ♻️
-
     ```bash
     git add -A
     git commit -m 'Migrate from create-react-app-buildpack to Node server'
@@ -95,7 +97,6 @@ create-react-app itself supports [configuration with environment variables](http
 
    ```bash
    heroku buildpacks:add -i 1 https://github.com/mars/create-react-app-inner-buildpack
-
    # Verify that create-react-app-inner-buildpack comes before nodejs
    heroku buildpacks
    ```
