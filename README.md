@@ -60,11 +60,6 @@ This deployment will automatically:
 If an app was previously deployed with [create-react-app-buildpack](https://github.com/mars/create-react-app-buildpack), then a few steps are required to migrate the app to this architecture:
 
 1. Remove **create-react-app-buildpack** from the app; [heroku/nodejs buildpack](https://devcenter.heroku.com/articles/nodejs-support#activation) will be automatically activated
-<<<<<<< HEAD
-
-=======
-
->>>>>>> 2ab916e47e63170ea373f44ee25732ac1e61df75
     ```bash
     heroku buildpacks:clear
     ```
