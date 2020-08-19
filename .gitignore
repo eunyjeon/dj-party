@@ -1,11 +1,12 @@
+# Node build artifacts
 node_modules
-public/bundle.js
-public/bundle.js.map
-secrets.js
-.DS_Store
 npm-debug.log
-yarn-error.log
-**.mp3
-**.m4a
-**.mp4
-**/.vscode/
+
+# Local development
+*.env
+*.dev
+.DS_Store
+
+# Docker
+Dockerfile
+docker-compose.yml
