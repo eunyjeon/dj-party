@@ -40,3 +40,6 @@ if (!isDev && cluster.isMaster) {
     console.error(`Node ${isDev ? 'dev server' : 'cluster worker '+process.pid}: listening on port ${PORT}`);
   });
 }
+
+/*    "start": "node server.js",
+    "build": "cd react-ui/ && npm install && npm run build"*/
