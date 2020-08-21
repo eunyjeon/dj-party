@@ -14,7 +14,11 @@
     "react-ui/node_modules"
   ],
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.17.1",
+    "passport": "^0.4.1",
+    "passport-spotify": "^1.1.0",
+    "pg": "^8.3.2",
+    "sequelize": "^6.3.4"
   },
   "repository": {
     "type": "git",

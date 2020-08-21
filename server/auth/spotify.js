@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require("../db/models/user");
+const passport = require('passport')
 const SpotifyStrategy = require('passport-spotify').Strategy;
 module.exports = router
 
