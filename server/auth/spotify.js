@@ -9,7 +9,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "localhost:5000/callback"
+      callbackURL: "www.google.com" //no idea if this works lol
     },
     function(accessToken, refreshToken, expires_in, profile, done) {
       User.findOrCreate({ spotifyId: profile.id }, function(err, user) {
