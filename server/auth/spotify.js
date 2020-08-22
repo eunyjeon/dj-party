@@ -4,6 +4,15 @@ const passport = require('passport')
 const SpotifyStrategy = require('passport-spotify').Strategy;
 module.exports = router
 
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
 passport.use(
   new SpotifyStrategy(
     {
@@ -18,6 +27,8 @@ passport.use(
     }
   )
 );
+
+router.use(passport.initialize());
 
 router.get(
   '/',
@@ -48,3 +59,6 @@ router.get(
     res.redirect('/');
   }
 );
+
+
+
