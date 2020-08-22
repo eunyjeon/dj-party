@@ -50,7 +50,7 @@ function App() {
           className="App-link"
           href="https://github.com/mars/heroku-cra-node"
         >
-       🌺 
+       🌺
         </a></p>
         <p><a
           className="App-link"

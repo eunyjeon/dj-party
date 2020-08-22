@@ -4,21 +4,12 @@ const passport = require('passport')
 const SpotifyStrategy = require('passport-spotify').Strategy;
 module.exports = router
 
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
-
 passport.use(
   new SpotifyStrategy(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "localhost:5000"
+      callbackURL: "localhost:5000/callback"
     },
     function(accessToken, refreshToken, expires_in, profile, done) {
       User.findOrCreate({ spotifyId: profile.id }, function(err, user) {
@@ -28,7 +19,7 @@ passport.use(
   )
 );
 
-router.use(passport.initialize());
+//router.use(passport.initialize());
 
 router.get(
   '/',
