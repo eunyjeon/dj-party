@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const morgan = require('morgan')
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 const db = require("./db");
@@ -27,6 +28,7 @@ if (!isDev && cluster.isMaster) {
 
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
+  app.use(morgan)
 
   // Anser Oauth requests
   app.use("./auth", require("./auth"))
