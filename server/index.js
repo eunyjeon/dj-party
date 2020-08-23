@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const morgan = require('morgan')
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 const db = require("./db");
@@ -39,7 +40,7 @@ if (!isDev && cluster.isMaster) {
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
-  
+
   passport.deserializeUser(function(obj, done) {
     done(null, obj);
   });
@@ -51,7 +52,7 @@ if (!isDev && cluster.isMaster) {
   passport.use(new SpotifyStrategy({
     clientID: appKey,
     clientSecret: appSecret,
-    callbackURL: 'http://google.com/'
+    callbackURL: 'https://www.google.com/'
     },
     function(accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
@@ -79,7 +80,7 @@ if (!isDev && cluster.isMaster) {
         // return done(null, profile);
       });
     }));
-  
+
     // logging middleware
     app.use(morgan('dev'))
 
@@ -92,7 +93,7 @@ if (!isDev && cluster.isMaster) {
         saveUninitialized: false
       })
     )
-    
+
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -130,14 +131,15 @@ if (!isDev && cluster.isMaster) {
     app.use(express.json())
     app.use(express.urlencoded({extended: true}))
     app.use(bodyParser.json())
-  
+
     // compression middleware
     app.use(compression())
-  
+
 
 
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
+  app.use(morgan)
 
   // Answer API requests.
   app.get('/api', function (req, res) {
