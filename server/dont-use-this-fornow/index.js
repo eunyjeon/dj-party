@@ -1,12 +1,14 @@
-const router = require("express").Router();
-const spotifyRouter = require('./spotify');
 
-//and this is where we organize all the routes
+// const router = require("express").Router();
+// const spotifyRouter = require('./spotify');
 
-router.use('/spotify', spotifyRouter)
+// //and this is where we organize all the routes
+
+// router.use('/spotify', spotifyRouter)
 
 
-module.exports = router;
+// module.exports = router;
+
 
 
 

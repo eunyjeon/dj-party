@@ -1,13 +1,9 @@
 const express = require('express');
-const session = require('express-session');
-const passport = require('passport');
 const path = require('path');
 const morgan = require('morgan')
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
-const app = express();
-
-const db = require('./db');
+const db = require("./db");
 
 //natalie add-ons
 const User = require('./db/models')
@@ -37,9 +33,6 @@ if (!isDev && cluster.isMaster) {
   });
 
 } else {
-  // passport.serializeUser(function(user, done) {
-  //   done(null, user);
-  // });
   const app = express();
 
   // body parsing middleware
@@ -69,12 +62,13 @@ if (!isDev && cluster.isMaster) {
   passport.use(new SpotifyStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: 'http://localhost:5000/callback'
+    callbackURL: 'http://localhost:5000/callback',
+    // passReqToCallback: true
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         console.log('hi!')
-        const [user] = await db.models.user.findOrCreate({
+        const createUser = await User.findOrCreate({
           where: {
             spotifyId: profile.id
           },
@@ -85,7 +79,8 @@ if (!isDev && cluster.isMaster) {
             refreshToken: refreshToken
           }
         })
-        done(null, user);
+        await console.log(createUser)
+        done(null, createUser);
       } catch(err) { done(err) }
       }))
 
@@ -135,51 +130,16 @@ if (!isDev && cluster.isMaster) {
       })
     )
 
-  // passport.deserializeUser(function(obj, done) {
-  //   done(null, obj);
-  // });
-
-// logging middleware
-  app.use(morgan('dev'))
-
-// body parsing middleware
-  app.use(express.json())
-  app.use(express.urlencoded({extended: true}))
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || 'my best friend is Cody',
-      store: sessionStore,
-      resave: false,
-      saveUninitialized: false
-    })
-  )
-
- app.use(require('./auth/passport'))
-
-  // Answer OAuth requests
-  app.use("./auth", require('./auth'));
   // Answer API requests.
   app.get('/api', function (req, res) {
-   res.set('Content-Type', 'application/json');
-   res.send('{"message":"Hello from the custom server!"}');
- });
-
-  // Priority serve any static files.
-  app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
-
+    res.set('Content-Type', 'application/json');
+    res.send('{"message":"Hello from the custom server!"}');
+  });
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
   });
-
-  // error handling endware
-  app.use((err, req, res, next) => {
-   console.error(err)
-   console.error(err.stack)
-   res.status(err.status || 500).send(err.message || 'Internal server error.')
-  })
-
 
   const syncDb = () => db.sync({ force: true });
 

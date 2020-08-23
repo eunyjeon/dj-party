@@ -1,3 +1,5 @@
+/*
+
 const router = require('express').Router()
 const User = require("../db/models/user");
 const passport = require('passport')
@@ -74,7 +76,7 @@ passport.use(
 //user's info should now be in sessions/database
 
 
-
+*/
 
 
 

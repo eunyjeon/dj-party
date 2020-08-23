@@ -1,3 +1,5 @@
+/*
+
 //put all the spotify stuff here
 const router = require("express").Router();
 const passport = require('passport');
@@ -8,7 +10,8 @@ const User = require("../db/models/user");
 
 //and this is where we set up the auth routes
 
-module.exports = router; //maybe i need to organize this better
+//module.exports = router; //maybe i need to organize this better
+*/
 
  /**
  *
@@ -42,7 +45,7 @@ res.redirect('https://accounts.spotify.com/authorize' +
   '&redirect_uri=' + encodeURIComponent(redirect_uri));
 });*/
 
- //user login page aka GET /auth/spotify 
+ //user login page aka GET /auth/spotify
 router.get(
   '/spotify',
   passport.authenticate('spotify', {
@@ -76,12 +79,14 @@ router.get("/spotify/callback", (req, res) => {
   }
 });
 
-//when the user logs out, destroy the session and redirect to homepage
-router.get("/logout", (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.redirect("/");
-});
+// //when the user logs out, destroy the session and redirect to homepage
+// router.get("/logout", (req, res) => {
+//   req.logout();
+//   req.session.destroy();
+//   res.redirect("/");
+// });
+
+
 
 
 
