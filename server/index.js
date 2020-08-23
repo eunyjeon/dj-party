@@ -4,12 +4,12 @@ const passport = require('passport');
 const path = require('path');
 const morgan = require('morgan');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const db = require('./db');
 const sessionStore = new SequelizeStore({db});
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
-const db = require("./db");
 const app = express();
+
+const db = require('./db');
 
 
 const isDev = process.env.NODE_ENV !== 'production';
@@ -30,13 +30,13 @@ if (!isDev && cluster.isMaster) {
   });
 
 } else {
-  passport.serializeUser(function(user, done) {
-    done(null, user);
-  });
+  // passport.serializeUser(function(user, done) {
+  //   done(null, user);
+  // });
 
-  passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-  });
+  // passport.deserializeUser(function(obj, done) {
+  //   done(null, obj);
+  // });
 
 // logging middleware
   app.use(morgan('dev'))
@@ -53,11 +53,10 @@ if (!isDev && cluster.isMaster) {
     })
   )
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+ app.use(require('./auth/passport'))
 
-  // Answer Oauth requests
-  app.use("./auth", require("./auth"));
+  // Answer OAuth requests
+  app.use("./auth", require('./auth'));
   // Answer API requests.
   app.get('/api', function (req, res) {
    res.set('Content-Type', 'application/json');
@@ -88,6 +87,3 @@ if (!isDev && cluster.isMaster) {
     console.error(`Node ${isDev ? 'dev server' : 'cluster worker '+process.pid}: listening on port ${PORT}`);
   });
 }
-
-/*    "start": "node server.js",
-    "build": "cd react-ui/ && npm install && npm run build"*/
