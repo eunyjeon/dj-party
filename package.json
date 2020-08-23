@@ -1,5 +1,5 @@
 {
-  "name": "heroku-cra-node",
+  "name": "capstonegoats",
   "version": "3.0.0",
   "description": "How to use create-react-app with a custom Node API on Heroku",
   "engines": {
@@ -15,7 +15,22 @@
     "react-ui/node_modules"
   ],
   "dependencies": {
+<<<<<<< HEAD
     "express": "^4.17.1"
+=======
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "connect-session-sequelize": "^7.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1",
+    "passport-spotify": "^1.1.0",
+    "pg": "^8.3.2",
+    "pkginfo": "^0.4.1",
+    "sequelize": "^6.3.4"
+>>>>>>> main
   },
   "repository": {
     "type": "git",
