@@ -15,9 +15,6 @@
     "react-ui/node_modules"
   ],
   "dependencies": {
-<<<<<<< HEAD
-    "express": "^4.17.1"
-=======
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-session-sequelize": "^7.0.1",
@@ -30,7 +27,6 @@
     "pg": "^8.3.2",
     "pkginfo": "^0.4.1",
     "sequelize": "^6.3.4"
->>>>>>> main
   },
   "repository": {
     "type": "git",
