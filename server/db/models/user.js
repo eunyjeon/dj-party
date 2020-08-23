@@ -42,9 +42,6 @@ const User = db.define("user", {
   lastName: {
     type: Sequelize.STRING
   },
-  fullName: {
-    type: Sequelize.STRING
-  },
   //maybe need this
   accessToken: Sequelize.STRING,
   proPic: Sequelize.STRING,

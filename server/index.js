@@ -72,7 +72,6 @@ if (!isDev && cluster.isMaster) {
             spotifyId: profile.id
           },
           defaults: {
-            name: profile.displayName,
             spotifyId: profile.id,
             accessToken: accessToken,
             proPic: profile.photos[0],
