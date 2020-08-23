@@ -45,9 +45,15 @@ if (!isDev && cluster.isMaster) {
 
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
-  // app.use(morgan)
-  // logging middleware
   app.use(morgan('dev'))
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || 'my best friend is Cody',
+      store: sessionStore,
+      resave: false,
+      saveUninitialized: false
+    })
+  )
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -62,7 +68,7 @@ if (!isDev && cluster.isMaster) {
   passport.use(new SpotifyStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: 'http://localhost:5000/callback'
+    callbackURL: 'http://localhost:5000/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -90,15 +96,15 @@ if (!isDev && cluster.isMaster) {
     //   back to this application at /auth/spotify/callback
 
       app.get('/auth/spotify',
-      passport.authenticate('spotify', {scope: [ 'user-read-email','playlist-modify-private', 'playlist-modify-public'], showDialog: true}),
-      function(req, res){
-      // The request will be redirected to spotify for authentication, so this
-      // function will not be called.
-      });
+      passport.authenticate('spotify', {scope: [ 'user-read-email','playlist-modify-private', 'playlist-modify-public'], showDialog: true}))
 
       app.get('/auth/me', (req, res) => {
-        console.log('CURRENT SESSION: ', req.session)
-        res.send(req.session)
+        try {
+          console.log('CURRENT SESSION: is', req.user)
+          res.json(req.user)
+        } catch (error) {
+          console.log(error)
+        }
       })
 
     // GET /auth/spotify/callback
@@ -118,21 +124,7 @@ if (!isDev && cluster.isMaster) {
       res.redirect('/');
       });
 
-    // session middleware with passport
-    app.use(
-      session({
-        secret: process.env.SESSION_SECRET || 'my best friend is Cody',
-        store: sessionStore,
-        resave: false,
-        saveUninitialized: false
-      })
-    )
 
-  // Answer API requests.
-  app.get('/api', function (req, res) {
-    res.set('Content-Type', 'application/json');
-    res.send('{"message":"Hello from the custom server!"}');
-  });
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function(request, response) {
