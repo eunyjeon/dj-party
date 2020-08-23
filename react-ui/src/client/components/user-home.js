@@ -6,11 +6,10 @@ import {connect} from 'react-redux'
  * COMPONENT
  */
 export const UserHome = props => {
-  const {spotifyId} = props
 
   return (
     <div>
-      <h3>Welcome, {spotifyId}</h3>
+      <h3>Welcome!</h3>
     </div>
   )
 }
@@ -18,17 +17,17 @@ export const UserHome = props => {
 /**
  * CONTAINER
  */
-const mapState = state => {
-  return {
-    spotifyId: state.user.spotifyId
-  }
-}
+// const mapState = state => {
+//   return {
+//     spotifyId: state.user.spotifyId
+//   }
+// }
 
-export default connect(mapState)(UserHome)
+export default UserHome
 
-/**
- * PROP TYPES
- */
-UserHome.propTypes = {
-  spotifyId: PropTypes.string
-}
+// /**
+//  * PROP TYPES
+//  */
+// UserHome.propTypes = {
+//   spotifyId: PropTypes.string
+// }
