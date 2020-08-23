@@ -47,7 +47,6 @@ var util = require('util'),
  */
  function Strategy(options, verify) {
   options = options || {};
-  //client_id not working??? authorizationURL should be 'https://accounts.spotify.com/authorize'
   options.authorizationURL = options.authorizationURL || 'https://accounts.spotify.com/authorize';
   options.tokenURL = options.tokenURL || 'https://accounts.spotify.com/api/token';
   options.scopeSeparator = options.scopeSeparator || ' ';

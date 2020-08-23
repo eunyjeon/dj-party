@@ -18,13 +18,9 @@
     "compression": "^1.7.4",
     "connect-session-sequelize": "^7.0.1",
     "express": "^4.17.1",
-<<<<<<< HEAD
-    "morgan": "^1.10.0",
-=======
     "express-session": "^1.17.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
->>>>>>> main
     "passport": "^0.4.1",
     "passport-spotify": "^1.1.0",
     "pg": "^8.3.2",
