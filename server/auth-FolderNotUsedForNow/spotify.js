@@ -3,7 +3,20 @@ const User = require("../db/models/user");
 const passport = require('passport')
 const SpotifyStrategy = require('passport-spotify').Strategy;
 module.exports = router
+<<<<<<< HEAD:server/auth/spotify.js
 console.log("hello")
+=======
+
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+>>>>>>> main:server/auth-FolderNotUsedForNow/spotify.js
 passport.use(
   new SpotifyStrategy(
     {
@@ -18,6 +31,8 @@ passport.use(
     }
   )
 );
+
+router.use(passport.initialize());
 
 router.get(
   '/',
@@ -49,3 +64,6 @@ router.get(
     res.redirect('/');
   }
 );
+
+
+
