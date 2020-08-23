@@ -39,7 +39,7 @@ if (!isDev && cluster.isMaster) {
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
-  
+
   passport.deserializeUser(function(obj, done) {
     done(null, obj);
   });
@@ -51,7 +51,7 @@ if (!isDev && cluster.isMaster) {
   passport.use(new SpotifyStrategy({
     clientID: appKey,
     clientSecret: appSecret,
-    callbackURL: 'http://google.com/'
+    callbackURL: 'https://www.google.com/'
     },
     function(accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
@@ -79,7 +79,7 @@ if (!isDev && cluster.isMaster) {
         // return done(null, profile);
       });
     }));
-  
+
     // logging middleware
     app.use(morgan('dev'))
 
@@ -92,7 +92,7 @@ if (!isDev && cluster.isMaster) {
         saveUninitialized: false
       })
     )
-    
+
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -130,10 +130,10 @@ if (!isDev && cluster.isMaster) {
     app.use(express.json())
     app.use(express.urlencoded({extended: true}))
     app.use(bodyParser.json())
-  
+
     // compression middleware
     app.use(compression())
-  
+
 
 
   // Priority serve any static files.
