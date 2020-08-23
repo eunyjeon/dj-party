@@ -12,7 +12,7 @@ const AuthForm = props => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
+      {/* <form onSubmit={handleSubmit} name={name}>
         <div>
           <label htmlFor="email">
             <small>Email</small>
@@ -29,7 +29,7 @@ const AuthForm = props => {
           <button type="submit">{displayName}</button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
-      </form>
+      </form> */}
       <a href="/auth/spotify">{displayName} with Spotify!</a>
     </div>
   )
@@ -65,6 +65,7 @@ const mapDispatch = dispatch => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
+      //this needs to be changed!
       dispatch(auth(email, password, formName))
     }
   }
