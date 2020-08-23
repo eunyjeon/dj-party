@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "apollo": "^2.30.2",
+    "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
     "crypto": "^1.0.1",
     "history": "^5.0.0",
@@ -15,6 +16,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^2.1.8",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.1.1",

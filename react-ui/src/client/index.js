@@ -9,13 +9,12 @@ import App from './app'
 
 // establishes socket connection
 
-const renderApp = ReactDOM.render(
-  <Provider store={store}>
+const renderApp = () => (
+    <Provider store={store}>
     <Router history={history}>
       <App />
     </Router>
-  </Provider>,
-  document.getElementById('app')
+  </Provider>
 )
 
 export default renderApp
