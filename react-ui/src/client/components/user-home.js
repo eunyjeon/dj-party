@@ -2,15 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
+//Right now, redux is not set up to check if a user is logged in.  This because we are going to use Apollo to query for user information.  As of now, once you log into Spotify, you'll be redirected to this page.
+
 /**
  * COMPONENT
  */
 export const UserHome = props => {
-  const {spotifyId} = props
 
   return (
     <div>
-      <h3>Welcome, {spotifyId}</h3>
+      <h3>Welcome!</h3>
     </div>
   )
 }
@@ -18,17 +19,17 @@ export const UserHome = props => {
 /**
  * CONTAINER
  */
-const mapState = state => {
-  return {
-    spotifyId: state.user.spotifyId
-  }
-}
+// const mapState = state => {
+//   return {
+//     spotifyId: state.user.spotifyId
+//   }
+// }
 
-export default connect(mapState)(UserHome)
+export default UserHome
 
-/**
- * PROP TYPES
- */
-UserHome.propTypes = {
-  spotifyId: PropTypes.string
-}
+// /**
+//  * PROP TYPES
+//  */
+// UserHome.propTypes = {
+//   spotifyId: PropTypes.string
+// }
