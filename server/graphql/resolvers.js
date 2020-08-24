@@ -10,9 +10,10 @@ const User = db.models.user
 
 module.exports = {
   Query: {
-    userPlaylist: (_, argument, { dataSources }) =>
-    dataSources.playlistAPI.getUsersPlaylist(argument.id),
-    allUsers: () => User.findAll(),
+    // userPlaylist: (_, argument, { dataSources }) =>
+    // dataSources.playlistAPI.getUsersPlaylist(argument.id),
+    // allUsers: () => User.findAll(),
+    // baby needs to be added to schema
     user: ({id}) => User.findOne({where: id})
   },
   // Mutation: {

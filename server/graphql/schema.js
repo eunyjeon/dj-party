@@ -6,9 +6,11 @@ const typeDefs = gql`
 ## user schema ##
 type Query {
   user(id: ID!): User,
+  # userPlaylist(user: User): UserPlaylist
+  #need to get the playlist by the user
 },
 type Mutation {
-  createPlaylist(name: String!, public: Boolean, collaborative: Boolean): Playlist
+  createPlaylist(name: String!, public: Boolean, collaborative: Boolean): UserPlaylist
 },
 type User {
   id: ID!,
@@ -16,7 +18,7 @@ type User {
   name: String,
   accessToken: String,
   refreshToken: String,
-  playlist: Playlist
+  playlist: UserPlaylist
 },
 type UserPlaylist {
   id: ID!,
