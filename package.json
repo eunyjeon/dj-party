@@ -3,11 +3,11 @@
   "version": "3.0.0",
   "description": "How to use create-react-app with a custom Node API on Heroku",
   "engines": {
-    "node": "10.x",
-    "npm": "6.x"
+    "node": "12.16.3",
+    "npm": "6.14.8"
   },
   "scripts": {
-    "start": "node server",
+    "start": "node server/index.js",
     "build": "cd react-ui/ && npm install && npm run build"
   },
   "cacheDirectories": [
@@ -15,11 +15,15 @@
     "react-ui/node_modules"
   ],
   "dependencies": {
+    "apollo-datasource-rest": "^0.9.3",
+    "apollo-server": "^2.16.1",
+    "apollo-server-express": "^2.16.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-session-sequelize": "^7.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "graphql": "^15.3.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
@@ -39,5 +43,7 @@
     "react"
   ],
   "license": "MIT",
-  "devDependencies": {}
+  "devDependencies": {
+    "fsevents": "^2.1.3"
+  }
 }

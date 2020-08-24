@@ -15,6 +15,12 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy;
 const sessionStore = new SequelizeStore({db})
 
+//kristine add-ons
+const { ApolloServer } = require('apollo-server-express');
+const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
+const typeDefs = require('./graphql/schema')
+const resolvers = require('./graphql/resolvers')
+
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) require("../secrets")
 const PORT = process.env.PORT || 5000;
@@ -113,18 +119,34 @@ if (!isDev && cluster.isMaster) {
     //   login page. Otherwise, the primary route function function will be called,
     //   which, in this example, will redirect the user to the home page.
     app.get(
-      '/callback', 
+      '/callback',
       passport.authenticate('spotify', {
         successRedirect: '/home',
         failureRedirect: '/login'
       }))
-    
+
     app.get('/logout', function(req, res){
       req.logout();
       res.redirect('/');
       });
 
-
+  //apollo server setup
+    const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    dataSources: () => ({
+      playlistAPI: new PlaylistAPI()
+    }),
+    context: ({req, res}) => {
+      return {
+        session: req.session
+      }
+      //return req, res
+      // const apolloContext = await buildExecutionContext({req, res, User})
+      // return apolloContext
+    },
+    playground: true
+  })
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function(request, response) {
@@ -132,6 +154,8 @@ if (!isDev && cluster.isMaster) {
   });
 
   const syncDb = () => db.sync({ force: true });
+
+  server.applyMiddleware({app, path: '/graphql'})
 
   app.listen(PORT, function () {
     syncDb()
