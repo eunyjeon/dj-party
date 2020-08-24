@@ -5,7 +5,7 @@ import { auth } from "../store";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const SpotifyButton = styled(Link)`
+const SpotifyButton = styled.a`
   padding: 10px 30px 10px 30px;
   margin-top: 500px;
   background-color: rgb(36, 212, 78);
@@ -19,9 +19,10 @@ const LoginPage = styled.div`
     linear-gradient(black, ${({ theme }) => theme.primary});
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
   font-family: "Montserrat", sans-serif;
-  padding: 20%;
-  height: 100vh;
+  padding: 20vh;
+  height: calc(60vh - 40px);
 `;
 
 /**
@@ -33,7 +34,7 @@ const AuthForm = (props) => {
 
   return (
     <LoginPage>
-      <SpotifyButton to="/auth/spotify">Login With Spotify</SpotifyButton>
+      <SpotifyButton href="/auth/spotify">Login With Spotify</SpotifyButton>
     </LoginPage>
   );
 };

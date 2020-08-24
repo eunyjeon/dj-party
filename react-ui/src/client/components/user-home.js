@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import Navbar from "./navbar";
 
 //Right now, redux is not set up to check if a user is logged in.  This because we are going to use Apollo to query for user information.  As of now, once you log into Spotify, you'll be redirected to this page.
 
@@ -21,10 +20,9 @@ const Heading = styled.div`
 export const UserHome = (props) => {
   return (
     <>
-      <Navbar />
       <WelcomeDiv>
         <Heading>
-          <h1>Welcome to The Capstone Goats</h1>
+          <h1>Welcome Username</h1>
         </Heading>
       </WelcomeDiv>
     </>
