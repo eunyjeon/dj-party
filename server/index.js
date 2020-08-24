@@ -16,7 +16,7 @@ const SpotifyStrategy = require('./passport-spotify/index').Strategy;
 const sessionStore = new SequelizeStore({db})
 
 //kristine add-ons
-const { ApolloServer } = require('apollo-server-express');
+const { ApolloServer, PubSub } = require('apollo-server-express');
 const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
 const typeDefs = require('./graphql/schema')
 const resolvers = require('./graphql/resolvers')
@@ -131,6 +131,8 @@ if (!isDev && cluster.isMaster) {
       });
 
   //apollo server setup
+    
+    const pubSub = new PubSub()  
     const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -139,12 +141,14 @@ if (!isDev && cluster.isMaster) {
     }),
     context: ({req, res}) => {
       return {
-        session: req.session
+        session: req.session,
+        pubSub
       }
       //return req, res
       // const apolloContext = await buildExecutionContext({req, res, User})
       // return apolloContext
     },
+    introspection: true,
     playground: true
   })
 

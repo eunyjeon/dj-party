@@ -4,19 +4,25 @@
 
 const db = require('../db');
 const User = db.models.user
+const Room = db.models.room
 
-//function(root,arg,context,info) root is not necessary for root-level Query. arg is basically parameter. context is authentication etc. info is probs not necessary
+//function(root,arg,conmessage,info) root is not necessary for root-level Query. arg is basically parameter. conmessage is authentication etc. info is probs not necessary
 //https://www.graphql-tools.com/docs/resolvers/
 
 module.exports = {
   Query: {
     // userPlaylist: (_, argument, { dataSources }) =>
-    // dataSources.playlistAPI.getUsersPlaylist(argument.id),
-    // allUsers: () => User.findAll(),
+    // dataSources.playlistAPI.getUserPlaylist(argument.id),
+    // allUser: () => User.findAll(),
     // baby needs to be added to schema
-    user: ({id}) => User.findOne({where: id})
+    user: ({id}) => User.findOne({where: id}),
+    roomInfo: ({id}) => Room.findOne({where: id}, {include: User})
   },
-  // Mutation: {
-
-  // }
+  Mutation: {
+    // createRoom (userId) = Room.Create({where:userId}),
+    // joinRoom, Room.update(where)
+    // sendMessage,
+  }
 }
+
+
