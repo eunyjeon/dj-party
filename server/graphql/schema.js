@@ -18,7 +18,7 @@ type User {
   refreshToken: String,
   playlist: Playlist
 },
-type Playlist {
+type UserPlaylist {
   id: ID!,
   name: String,
   tracks: [Track],

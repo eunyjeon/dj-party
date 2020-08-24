@@ -18,6 +18,8 @@ const sessionStore = new SequelizeStore({db})
 //kristine add-ons
 const { ApolloServer } = require('apollo-server-express');
 const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
+const typeDefs = require('./graphql/schema')
+const resolvers = require('./graphql/resolvers')
 
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) require("../secrets")
