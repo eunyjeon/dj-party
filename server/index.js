@@ -15,6 +15,10 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy;
 const sessionStore = new SequelizeStore({db})
 
+//kristine add-ons
+const { ApolloServer } = require('apollo-server-express');
+const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
+
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) require("../secrets")
 const PORT = process.env.PORT || 5000;
@@ -33,6 +37,7 @@ if (!isDev && cluster.isMaster) {
   });
 
 } else {
+
   const app = express();
 
   // body parsing middleware
@@ -69,15 +74,11 @@ if (!isDev && cluster.isMaster) {
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: 'http://localhost:5000/callback',
-<<<<<<< HEAD
-    // passReqToCallback: true
-=======
->>>>>>> d1e7300bcc32bfadf287522ffe36bc1ab9a10998
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         console.log('hi!')
-        const createUser = await User.findOrCreate({
+        const [user] = await db.models.user.findOrCreate({
           where: {
             spotifyId: profile.id
           },
@@ -88,8 +89,7 @@ if (!isDev && cluster.isMaster) {
             refreshToken: refreshToken
           }
         })
-        await console.log(createUser)
-        done(null, createUser);
+        done(null, user);
       } catch(err) { done(err) }
       }))
 
@@ -129,7 +129,23 @@ if (!isDev && cluster.isMaster) {
       res.redirect('/');
       });
 
-
+  //apollo server setup
+    const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    dataSources: () => ({
+      playlistAPI: new PlaylistAPI()
+    }),
+    context: ({req, res}) => {
+      return {
+        session: req.session
+      }
+      //return req, res
+      // const apolloContext = await buildExecutionContext({req, res, User})
+      // return apolloContext
+    },
+    playground: true
+  })
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function(request, response) {
@@ -137,6 +153,8 @@ if (!isDev && cluster.isMaster) {
   });
 
   const syncDb = () => db.sync({ force: true });
+
+  server.applyMiddleware({app, path: '/graphql'})
 
   app.listen(PORT, function () {
     syncDb()
