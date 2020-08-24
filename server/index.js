@@ -37,7 +37,6 @@ if (!isDev && cluster.isMaster) {
   });
 
 } else {
-
   const app = express();
 
   // body parsing middleware

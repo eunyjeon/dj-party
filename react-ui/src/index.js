@@ -4,7 +4,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 08fc57fa29fe78240b8bc3ebf9ae82fc89f5fe27
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

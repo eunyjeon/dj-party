@@ -1,12 +1,10 @@
 {
-  "name": "heroku-cra-node",
+  "name": "capstone goats",
   "description": "web app made of create-react-app UI + Node API",
   "scripts": {
-    "start": "node server/index.js",
-    "build": "cd react-ui/ && npm install && npm run build"
+    "start": "node server"
   },
-  "env": {
-  },
+  "env": {},
   "formation": {
     "web": {
       "quantity": 1
@@ -15,9 +13,7 @@
   "addons": [
 
   ],
-  "buildpacks": [
-    {
-      "url": "heroku/nodejs"
-    }
-  ]
+  "buildpacks": [{
+    "url": "heroku/nodejs"
+  }]
 }
