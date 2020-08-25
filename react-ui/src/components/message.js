@@ -1,9 +1,13 @@
 import React from "react";
 
-export default function Message() {
+function Message(props) {
   return (
     <div>
-      <h1>message goes here</h1>
+      <p>
+        {props.author}: {props.content}
+      </p>
     </div>
   );
 }
+
+export default Message;

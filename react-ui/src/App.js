@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { Navbar } from "./components";
-import Routes from "./components/routes";
+import Routes from "./routes";
 
 // import ThisApp from './components/howtologin'
 
