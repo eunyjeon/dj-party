@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 
 const Heading = styled.div`
   background-color: black;
@@ -13,52 +14,37 @@ const Heading = styled.div`
   padding: 20px;
 `;
 
-const Navbar = ({ handleClick, isLoggedIn }) => (
-  <div>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          {/*           <Link to="/login">Login</Link>
+const Navbar = () => {
+  const isLoggedIn = useSelector((state) => !!state.user.id);
+
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(logout());
+  };
+
+  return (
+    <div>
+      <nav>
+        {isLoggedIn ? (
+          <div>
+            {/* The navbar will show these links after you log in */}
+            <Link to="/home">Home</Link>
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+          </div>
+        ) : (
+          <div>
+            {/* The navbar will show these links before you log in */}
+            {/*           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link> */}
-          <Heading>CAPSTONE GOATS</Heading>
-        </div>
-      )}
-    </nav>
-  </div>
-);
-
-/**
- * CONTAINER
- */
-const mapState = (state) => {
-  return {
-    isLoggedIn: !!state.user.id,
-  };
+            <Heading>CAPSTONE GOATS</Heading>
+          </div>
+        )}
+      </nav>
+      <hr />
+    </div>
+  );
 };
 
-const mapDispatch = (dispatch) => {
-  return {
-    handleClick() {
-      dispatch(logout());
-    },
-  };
-};
-
-export default connect(mapState, mapDispatch)(Navbar);
-
-/**
- * PROP TYPES
- */
-Navbar.propTypes = {
-  handleClick: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-};
+export default Navbar;

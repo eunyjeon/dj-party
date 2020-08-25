@@ -2,22 +2,40 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import history from "./history";
-import store from "./store";
 import { ThemeProvider } from "styled-components";
 import theme from "./theme";
 import * as serviceWorker from "./serviceWorker";
+import ApolloClient, { InMemoryCache } from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+
+//can we do redux with apollo? if not what do we do with needed react hooks?
+import { Provider } from "react-redux";
+import store from "./store";
+
+const cache = new InMemoryCache({});
+
+const client = new ApolloClient({
+  cache: cache,
+  clientState: {
+    defaults: {
+      messages: [],
+      songs: [],
+    },
+  },
+});
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </Router>
-  </Provider>,
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <Router history={history}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </Router>
+    </Provider>
+  </ApolloProvider>,
   document.getElementById("root")
 );
 
