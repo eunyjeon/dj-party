@@ -22,6 +22,9 @@ type Mutation {
   createRoom(name: String!, creator: String) : Room
   sendMessage(text: String!, user: String): Message
 },
+type Subscription {
+  channelAdded: Channel    # subscription operation.
+},
 type User {
   id: ID!,
   spotifyId: String!,
@@ -32,10 +35,8 @@ type User {
   messages: [Message]
 },
 type Message {
-  id: ID!,
-  message: String!,
-  user: Int!,
-  createdAt: Timestamp!
+  author: ID!,
+  content: String!,
 },
 type Room {
   id: ID!,
