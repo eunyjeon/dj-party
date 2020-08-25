@@ -107,7 +107,7 @@ if (!isDev && cluster.isMaster) {
 
       app.get('/auth/me', (req, res) => {
         try {
-          console.log('CURRENT SESSION: is', req.user)
+          console.log('CURRENT HEADER: is', req.header)
           res.json(req.user)
         } catch (error) {
           console.log(error)
@@ -140,10 +140,10 @@ if (!isDev && cluster.isMaster) {
     debug: true,
     typeDefs,
     resolvers,
-    engine: {
-      reportSchema: true,
-      variant: "current"
-    }
+    // context: ({ req }) => ({
+    //   getUser: () => req.user,
+    //   logout: () => req.logout(),
+    // }),
   });
     
   //   const pubSub = new PubSub()  
@@ -180,7 +180,6 @@ if (!isDev && cluster.isMaster) {
   });
   
  
-
   app.listen(PORT, function () {
     syncDb()
     console.error(`Node ${isDev ? 'dev server' : 'cluster worker '+process.pid}: listening on port ${PORT}`);

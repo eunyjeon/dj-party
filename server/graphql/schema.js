@@ -28,10 +28,8 @@ type User {
   messages: [Message]
 },
 type Message {
-  id: ID!,
-  message: String!,
-  user: Int!,
-  createdAt: Timestamp!
+  author: ID!,
+  content: String!,
 },
 type Room {
   id: ID!,
