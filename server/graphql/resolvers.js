@@ -15,14 +15,23 @@ module.exports = {
     // dataSources.playlistAPI.getUserPlaylist(argument.id),
     // allUser: () => User.findAll(),
     // baby needs to be added to schema
-    user: ({id}) => User.findOne({where: id}),
-    roomInfo: ({id}) => Room.findOne({where: id}, {include: User})
-  },
-  Mutation: {
-    // createRoom (userId) = Room.Create({where:userId}),
-    // joinRoom, Room.update(where)
-    // sendMessage,
-  }
+    // user: ({id}) => User.findOne({where: id}),
+    // roomInfo: ({id}) => Room.findOne({where: id}, {include: User})
+    roomInfo: ({roomID}) => {
+      Room.findOne({
+        where: {
+          id: roomID
+        }, 
+        include: {
+          model: User,
+        }
+    })}}
+  // },
+  // Mutation: {
+  //   // createRoom (userId) = Room.Create({where:userId}),
+  //   // joinRoom, Room.update(where)
+  //   // sendMessage,
+  // }
 }
 
 

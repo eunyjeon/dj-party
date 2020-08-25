@@ -16,10 +16,11 @@ const SpotifyStrategy = require('./passport-spotify/index').Strategy;
 const sessionStore = new SequelizeStore({db})
 
 //kristine add-ons
-const { ApolloServer, PubSub } = require('apollo-server-express');
+// const { ApolloServer, AuthenticationError, PubSub } = require('apollo-server-express');
 const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
 const typeDefs = require('./graphql/schema')
 const resolvers = require('./graphql/resolvers')
+const { ApolloServer } = require('apollo-server')
 
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) require("../secrets")
@@ -131,35 +132,54 @@ if (!isDev && cluster.isMaster) {
       });
 
   //apollo server setup
-    
-    const pubSub = new PubSub()  
-    const server = new ApolloServer({
+
+  
+  const server = new ApolloServer({
+    introspection: true,
+    playground: true,
+    debug: true,
     typeDefs,
     resolvers,
-    dataSources: () => ({
-      playlistAPI: new PlaylistAPI()
-    }),
-    context: ({req, res}) => {
-      return {
-        session: req.session,
-        pubSub
-      }
-      //return req, res
-      // const apolloContext = await buildExecutionContext({req, res, User})
-      // return apolloContext
-    },
-    introspection: true,
-    playground: true
-  })
+    engine: {
+      reportSchema: true,
+      variant: "current"
+    }
+  });
+    
+  //   const pubSub = new PubSub()  
+  //   const server = new ApolloServer({
+  //   typeDefs,
+  //   resolvers,
+  //   dataSources: () => ({
+  //     playlistAPI: new PlaylistAPI()
+  //   }),
+  //   context: ({req, res}) => {
+  //     return {
+  //       session: req.session,
+  //       pubSub
+  //     }
+  //     //return req, res
+  //     // const apolloContext = await buildExecutionContext({req, res, User})
+  //     // return apolloContext
+  //   },
+  //   introspection: true,
+  //   playground: true
+  // })
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
   });
 
+  // server.applyMiddleware({app, path: '/graphql'})
+
   const syncDb = () => db.sync({ force: true });
 
-  server.applyMiddleware({app, path: '/graphql'})
+  server.listen().then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+  });
+  
+ 
 
   app.listen(PORT, function () {
     syncDb()
