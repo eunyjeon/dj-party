@@ -16,7 +16,7 @@ const SpotifyStrategy = require('./passport-spotify/index').Strategy;
 const sessionStore = new SequelizeStore({db})
 
 //kristine add-ons
-const { ApolloServer, PubSub } = require('apollo-server-express');
+const { ApolloServer, PubSub, GraphQLExtension } = require('apollo-server-express');
 const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
 const typeDefs = require('./graphql/schema')
 const resolvers = require('./graphql/resolvers')
@@ -131,8 +131,8 @@ if (!isDev && cluster.isMaster) {
       });
 
   //apollo server setup
-    
-    const pubSub = new PubSub()  
+
+    const pubSub = new PubSub()
     const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -151,6 +151,13 @@ if (!isDev && cluster.isMaster) {
     introspection: true,
     playground: true
   })
+
+  app.use(
+    '/graphiql',
+    graphiqlExpress({
+      endpointURL: '/graphql',
+    }),
+  );
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function(request, response) {

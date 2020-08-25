@@ -2,16 +2,20 @@
 const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
+
+
 scalar Timestamp
 
-## user schema ##
+union Room = User | Message
 
 type Query {
   user(id: ID!): User,
   # userPlaylist(user: User): UserPlaylist
-  #need to get the playlist by the user
+  # need to get the playlist by the user
   #Finding room info to get messages and users
-  roomInfo(id: ID!) : Room
+  roomInfo(id: ID!) : Room,
+  messages(room: Room): Message,
+  usersInARoom(room: Room): [User],
 },
 type Mutation {
   createPlaylist(name: String!, public: Boolean, collaborative: Boolean): UserPlaylist

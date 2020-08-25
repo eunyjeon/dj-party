@@ -7,6 +7,8 @@ const User = db.models.user
 const Room = db.models.room
 
 //function(root,arg,conmessage,info) root is not necessary for root-level Query. arg is basically parameter. conmessage is authentication etc. info is probs not necessary
+
+//root (result from previous/parent type), args (params), context (obj that's provided to all resolvers), info
 //https://www.graphql-tools.com/docs/resolvers/
 
 module.exports = {
@@ -16,7 +18,8 @@ module.exports = {
     // allUser: () => User.findAll(),
     // baby needs to be added to schema
     user: ({id}) => User.findOne({where: id}),
-    roomInfo: ({id}) => Room.findOne({where: id}, {include: User})
+    roomInfo: ({id}) => Room.findOne({where: id}, {include: User}),
+    messages: async (parent, {id}, {models}) => 
   },
   Mutation: {
     // createRoom (userId) = Room.Create({where:userId}),
@@ -26,3 +29,4 @@ module.exports = {
 }
 
 
+//make it so that CHILD fields are responsible for fetching parent data

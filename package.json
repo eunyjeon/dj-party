@@ -31,7 +31,6 @@
     "passport-spotify": "^1.1.0",
     "pg": "^8.3.2",
     "pkginfo": "^0.4.1",
-    "redux-devtools-extension": "^2.13.8",
     "sequelize": "^6.3.4"
   },
   "repository": {
