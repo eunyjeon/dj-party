@@ -8,6 +8,12 @@ const room = gql`
         users: [User!]!
         creator: User!
         public: Boolean!
+        description: String
+    }
+
+    type Query {
+        getAllRooms: [Room!]!
+        getRoom(id: ID!, name: String): Room!
     }
 
     type Mutation {
