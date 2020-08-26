@@ -8,9 +8,12 @@ const Room = db.define("room", {
     public: {
         type: Sequelize.BOOLEAN,
         defaultValue: true
-    }, 
+    },
     description: {
         type: Sequelize.STRING,
+    },
+    users: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER)
     }
 })
 

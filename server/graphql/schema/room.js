@@ -18,6 +18,7 @@ const room = gql`
 
     type Mutation {
         createRoom(name: String, public: Boolean): Boolean!
+        joinRoom(id: ID!): Boolean!
     }
 `
 

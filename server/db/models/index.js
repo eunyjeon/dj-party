@@ -21,8 +21,6 @@ Room.hasMany(Message)
 
 
 
-
-
 module.exports = {
   User,
   Message,

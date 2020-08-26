@@ -20,14 +20,25 @@ const roomResolver = {
     Mutation: {
       createRoom: async (parent, args, { models, user }) => {
         try {
-          await models.Room.create({...args, creator: user.id});
+          await models.Room.create({...args, creator: user, users: users.push(user)});
           return true;
         } catch (err) {
           console.log(err);
           return false;
         }
       },
-      
+      joinRoom: async (parent, {roomId}, { models, user }) => {
+        try {
+          const room = await models.Room.findByPk({id: roomId})
+          await room.update({users: users.push(user)})
+          return true;
+        } catch (err) {
+          console.log("couldn't join the room!", err);
+          return false
+        }
+      }
+      ,
+
     },
   }
 
