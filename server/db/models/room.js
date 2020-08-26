@@ -5,6 +5,9 @@ const Room = db.define("room", {
     name: {
         type: Sequelize.STRING,
         defaultValue: `Cool Room ${this.id}`
+    },
+    creator: {
+        type: Sequelize.INTEGER
     }
 })
 

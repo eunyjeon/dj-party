@@ -16,14 +16,10 @@ const SpotifyStrategy = require('./passport-spotify/index').Strategy;
 const sessionStore = new SequelizeStore({db})
 
 //kristine add-ons
-<<<<<<< HEAD
-const { ApolloServer, PubSub, GraphQLExtension } = require('apollo-server-express');
-=======
-// const { ApolloServer, AuthenticationError, PubSub } = require('apollo-server-express');
->>>>>>> 4180b5580fd7913e126b35560f81bd36ba13cc98
+// const { ApolloServer, PubSub, GraphQLExtension } = require('apollo-server-express');
 const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
-const typeDefs = require('./graphql/schema')
-const resolvers = require('./graphql/resolvers')
+const typeDefs = require('./db/schema')
+const resolvers = require('./db/resolvers')
 const { ApolloServer } = require('apollo-server')
 
 const isDev = process.env.NODE_ENV !== 'production';
@@ -137,25 +133,20 @@ if (!isDev && cluster.isMaster) {
 
   //apollo server setup
 
-<<<<<<< HEAD
-    const pubSub = new PubSub()
-    const server = new ApolloServer({
-=======
-  
+
   const server = new ApolloServer({
     introspection: true,
     playground: true,
     debug: true,
->>>>>>> 4180b5580fd7913e126b35560f81bd36ba13cc98
     typeDefs,
     resolvers,
-    // context: ({ req }) => ({
-    //   getUser: () => req.user,
-    //   logout: () => req.logout(),
-    // }),
+    context: ({ req }) => ({
+      getUser: () => req.user,
+      logout: () => req.logout(),
+    }),
   });
-    
-  //   const pubSub = new PubSub()  
+
+  //   const pubSub = new PubSub()
   //   const server = new ApolloServer({
   //   typeDefs,
   //   resolvers,
@@ -194,8 +185,8 @@ if (!isDev && cluster.isMaster) {
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`);
   });
-  
- 
+
+
   app.listen(PORT, function () {
     syncDb()
     console.error(`Node ${isDev ? 'dev server' : 'cluster worker '+process.pid}: listening on port ${PORT}`);
