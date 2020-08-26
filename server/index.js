@@ -15,14 +15,7 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy;
 const sessionStore = new SequelizeStore({db})
 
-//kristine add-ons
-// const { ApolloServer, PubSub } = require('apollo-server-express');
-// const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
-// const typeDefs = require('./graphql/schema')
-// const resolvers = require('./graphql/resolvers')
 const { ApolloServer} = require('apollo-server');
-// const { graphqlExpress, graphiqlExpress }= require('apollo-server-express');
-// const { makeExecutableSchema } = require('graphql-tools');
 const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
@@ -131,7 +124,7 @@ if (!isDev && cluster.isMaster) {
     debug: true,
     typeDefs,
     resolvers,
-    context: ({models, user: {id: 1}})
+    context: (req, models) => ({models, user: req.user})
     })
 
 
