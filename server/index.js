@@ -6,7 +6,7 @@ const numCPUs = require('os').cpus().length;
 const db = require("./db");
 
 //natalie add-ons
-const User = require('./db/models')
+const models = require('./db/models')
 const compression = require('compression')
 const session = require('express-session')
 const passport = require('passport')
@@ -16,10 +16,16 @@ const SpotifyStrategy = require('./passport-spotify/index').Strategy;
 const sessionStore = new SequelizeStore({db})
 
 //kristine add-ons
-const { ApolloServer, PubSub } = require('apollo-server-express');
-const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
-const typeDefs = require('./graphql/schema')
-const resolvers = require('./graphql/resolvers')
+// const { ApolloServer, PubSub } = require('apollo-server-express');
+// const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
+// const typeDefs = require('./graphql/schema')
+// const resolvers = require('./graphql/resolvers')
+const { ApolloServer} = require('apollo-server');
+// const { graphqlExpress, graphiqlExpress }= require('apollo-server-express');
+// const { makeExecutableSchema } = require('graphql-tools');
+const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
+const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
+const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
 
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) require("../secrets")
@@ -81,10 +87,10 @@ if (!isDev && cluster.isMaster) {
         console.log('hi!')
         const [user] = await db.models.user.findOrCreate({
           where: {
-            spotifyId: profile.id
+            spotifyUsername: profile.id
           },
           defaults: {
-            spotifyId: profile.id,
+            spotifyUsername: profile.id,
             accessToken: accessToken,
             proPic: profile.photos[0],
             refreshToken: refreshToken
@@ -93,13 +99,6 @@ if (!isDev && cluster.isMaster) {
         done(null, user);
       } catch(err) { done(err) }
       }))
-
-
-    // GET /auth/spotify
-    //   Use passport.authenticate() as route middleware to authenticate the
-    //   request. The first step in spotify authentication will involve redirecting
-    //   the user to spotify.com. After authorization, spotify will redirect the user
-    //   back to this application at /auth/spotify/callback
 
       app.get('/auth/spotify',
       passport.authenticate('spotify', {scope: [ 'user-read-email','playlist-modify-private', 'playlist-modify-public'], showDialog: true}))
@@ -113,11 +112,6 @@ if (!isDev && cluster.isMaster) {
         }
       })
 
-    // GET /auth/spotify/callback
-    //   Use passport.authenticate() as route middleware to authenticate the
-    //   request. If authentication fails, the user will be redirected back to the
-    //   login page. Otherwise, the primary route function function will be called,
-    //   which, in this example, will redirect the user to the home page.
     app.get(
       '/callback',
       passport.authenticate('spotify', {
@@ -130,28 +124,17 @@ if (!isDev && cluster.isMaster) {
       res.redirect('/');
       });
 
-  //apollo server setup
-    
-    const pubSub = new PubSub()  
-    const server = new ApolloServer({
+
+  const server = new ApolloServer({
+    introspection: true,
+    playground: true,
+    debug: true,
     typeDefs,
     resolvers,
-    dataSources: () => ({
-      playlistAPI: new PlaylistAPI()
-    }),
-    context: ({req, res}) => {
-      return {
-        session: req.session,
-        pubSub
-      }
-      //return req, res
-      // const apolloContext = await buildExecutionContext({req, res, User})
-      // return apolloContext
-    },
-    introspection: true,
-    playground: true
-  })
-
+    context: ({models, user: {id: 1}})
+    })
+    
+ 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
@@ -159,7 +142,10 @@ if (!isDev && cluster.isMaster) {
 
   const syncDb = () => db.sync({ force: true });
 
-  server.applyMiddleware({app, path: '/graphql'})
+  server.listen().then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+  });
+
 
   app.listen(PORT, function () {
     syncDb()
