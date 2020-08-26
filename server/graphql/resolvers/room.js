@@ -1,4 +1,5 @@
 const roomResolver = {
+  // TODO: query getAllRooms
     Mutation: {
       createRoom: async (parent, args, { models, user }) => {
         try {

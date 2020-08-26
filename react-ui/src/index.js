@@ -14,14 +14,14 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { Provider } from "react-redux";
 import store from "./store";
 
-const cache = new InMemoryCache({});
-
 const client = new ApolloClient({
-  cache: cache,
+  uri: 'http://localhost:4000',
+  cache: new InMemoryCache(),
   clientState: {
     defaults: {
       messages: [],
       songs: [],
+      rooms: []
     },
   },
 });
