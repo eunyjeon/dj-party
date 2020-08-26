@@ -8,11 +8,18 @@ const Room = require('./room')
 // User.belongsToMany(Message, {through: Room})
 
 Message.belongsTo(User)
-User.hasMany(Message)
-Room.hasMany(User)
-User.belongsTo(Room)
-Room.hasMany(Message)
 Message.belongsTo(Room)
+
+User.hasMany(Message)
+User.belongsToMany(Room, {through: 'roomUser'})
+
+Room.belongsToMany(User, {through: 'roomUser'})
+Room.belongsTo(User, {foreignKey: 'creator'})
+Room.hasMany(Message)
+
+
+
+
 
 module.exports = {
   User,

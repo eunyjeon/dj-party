@@ -10,6 +10,10 @@ import * as serviceWorker from "./serviceWorker";
 import ApolloClient, { InMemoryCache } from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
+//can we do redux with apollo? if not what do we do with needed react hooks?
+import { Provider } from "react-redux";
+import store from "./store";
+
 const cache = new InMemoryCache({});
 
 const client = new ApolloClient({
@@ -24,11 +28,13 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Router history={history}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </Router>
+    <Provider store={store}>
+      <Router history={history}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </Router>
+    </Provider>
   </ApolloProvider>,
   document.getElementById("root")
 );
