@@ -10,8 +10,8 @@ const user = gql`
     }
 
     type Query {
-        getUser(id: ID!): User!
-        getAllUsers: [User!]
+        getUser(roomId: ID!, id: ID!): User!
+        getAllUsers(roomId: ID!): [User!]
     }
 
     

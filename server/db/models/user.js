@@ -14,7 +14,11 @@ const User = db.define("user", {
   //maybe need this
   accessToken: Sequelize.STRING,
   proPic: Sequelize.STRING,
-  refreshToken: Sequelize.STRING
+  refreshToken: Sequelize.STRING,
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
 });
 
 module.exports = User;

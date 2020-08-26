@@ -5,7 +5,7 @@ const roomResolver = {
           const rooms = await models.Room.findAll()
           return rooms
         } catch (error) {
-          console.log(error)
+          console.log("cannot get alll the rooms!", error)
         }
       },
       getRoom: async (parent, {id}, {models}) => {
@@ -13,7 +13,7 @@ const roomResolver = {
           const room = await models.Room.findOne({where: {id}})
           return room
         } catch (error) {
-          console.log(error)
+          console.log(`cannot get room: ${id}`,error)
         }
       }
     },
@@ -27,6 +27,7 @@ const roomResolver = {
           return false;
         }
       },
+      
     },
   }
 
