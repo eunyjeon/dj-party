@@ -119,3 +119,5 @@ const roomSeed = [{
   "public": true,
   "creator": 1
 }]
+
+module.exports = roomSeed
