@@ -22,7 +22,7 @@ const Routes = () => {
   return (
     <Switch>
       {/* Routes placed here are available to all visitors */}
-      <Route exact path="/" component={UserHome} />
+      <Route exact path="/" component={LoginPage} />
       {isLoggedIn && (
         <Switch>
           {/* Routes placed here are only available after logging in */}
