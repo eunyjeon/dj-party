@@ -1,26 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { logout } from "../store";
-import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { logout } from '../store'
+import styled from 'styled-components'
+import { useSelector, useDispatch } from 'react-redux'
 
 const Heading = styled.div`
   background-color: black;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: ${({ theme }) => theme.primary};
   font-size: 5rem;
   padding: 20px;
-`;
+`
 
 const Navbar = () => {
-  const isLoggedIn = useSelector((state) => !!state.user.id);
+  const isLoggedIn = useSelector((state) => !!state.user.id)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const handleClick = () => {
-    dispatch(logout());
-  };
+    dispatch(logout())
+  }
 
   return (
     <div>
@@ -42,9 +40,8 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-      <hr />
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
