@@ -1,6 +1,26 @@
 import React from 'react'
-//import styled from 'styled-components'
+import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
+import { Link } from 'react-router-dom'
+
+const RoomList = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  background-color: ${({ theme }) => theme.primary};
+`
+
+const RoomCard = styled.div`
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.secondary};
+  box-shadow: 5px 5px 10px black;
+  flex-basis: 1fr;
+  width: 250px;
+  height: 300px;
+  margin-top: 20px;
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+`
 
 const GET_All_ROOMS = gql`
   {
@@ -32,14 +52,17 @@ export default function Rooms() {
     )
   else {
     return (
-      <div id="roomList">
+      <RoomList>
         {data.getAllRooms.map((room) => (
-          <div key={room.id}>
-            <h1>{room.name}</h1>
+          <RoomCard key={room.id}>
+            <Link to={`/room/${room.name}`}>
+              {' '}
+              <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
+            </Link>
             <p>{room.description}</p>
-          </div>
+          </RoomCard>
         ))}
-      </div>
+      </RoomList>
     )
   }
 }
