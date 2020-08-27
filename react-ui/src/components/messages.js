@@ -1,26 +1,26 @@
-import React from "react";
-import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/react-hooks";
+import React from 'react'
+import { gql } from 'apollo-boost'
+import { useQuery } from '@apollo/react-hooks'
 
 //
-import Message from "./message";
-import { messageData } from "./api";
+import Message from './message'
+import { messageData } from './api'
 
 const QUERY_MESSAGES = gql`
   query {
-    messages @client {
+    messages {
       id
       author
       content
     }
   }
-`;
+`
 
 export default function Messages() {
-  const { data } = useQuery(QUERY_MESSAGES);
+  const { data } = useQuery(QUERY_MESSAGES)
 
   function handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
   }
 
   return (
@@ -36,5 +36,5 @@ export default function Messages() {
         <button type="submit">Send</button>
       </form>
     </div>
-  );
+  )
 }
