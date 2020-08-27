@@ -19,6 +19,7 @@ async function seed() {
 // This way we can isolate the error handling and exit trapping.
 // The `seed` function is concerned only with modifying the database.
 async function runSeed() {
+
   console.log("seeding...");
   try {
     await seed();

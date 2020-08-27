@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "node server/index.js",
-    "build": "cd react-ui/ && npm install && npm run build",
-    "seed": "node seed/seedScript.js"
+    "seed": "node seed/seedScript.js",
+    "build": "cd react-ui/ && npm install && npm run build"
   },
   "cacheDirectories": [
     "node_modules",
