@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ChatRoom, Rooms } from './'
+import { Rooms } from './'
 
 //Right now, redux is not set up to check if a user is logged in.  This because we are going to use Apollo to query for user information.  As of now, once you log into Spotify, you'll be redirected to this page.
 
@@ -24,7 +24,6 @@ export const UserHome = (props) => {
           <h1>Welcome Username</h1>
         </Heading>
         <Rooms />
-        <ChatRoom />
       </WelcomeDiv>
     </>
   )

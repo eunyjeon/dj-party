@@ -31,7 +31,7 @@ const Routes = () => {
         </Switch>
       )}
       {/* Displays our Login component as a fallback */}
-      <Route component={UserHome} />
+      <Route path="/home" component={UserHome} />
       <Route path="/room/:roomName" component={Room} />
     </Switch>
   )
