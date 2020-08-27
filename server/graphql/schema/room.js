@@ -1,5 +1,7 @@
 const { gql } = require('apollo-server')
 
+// TODO: query getAllRooms
+
 const room = gql`
     type Room {
         id:ID!
