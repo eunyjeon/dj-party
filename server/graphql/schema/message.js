@@ -8,8 +8,16 @@ const message = gql`
   room: Room!
 }
 
+type Query {
+  getMessages(roomId: Int!): [Message!]
+}
+
 type Mutation {
     createMessage(roomId: Int!, message: String!): Boolean!
+}
+
+type Subscription {
+    messageAdded(id: Int!): Message!
 }
 
 
