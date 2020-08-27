@@ -1,10 +1,11 @@
 import React from "react";
 
 function Message(props) {
+  console.log("message props", props)
   return (
     <div>
       <p>
-        {props.author}: {props.content}
+        USER: {props.message}
       </p>
     </div>
   );
