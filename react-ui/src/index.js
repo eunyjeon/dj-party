@@ -9,6 +9,7 @@ import theme from './theme'
 import * as serviceWorker from './serviceWorker'
 import ApolloClient, { InMemoryCache } from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
+import { WebSocketLink } from '@apollo/client/link/ws'
 
 //can we do redux with apollo? if not what do we do with needed react hooks?
 import { Provider } from 'react-redux'
