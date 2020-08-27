@@ -1,7 +1,7 @@
 const User = require('./user')
 const Message = require('./message')
 const Room = require('./room')
-
+const RoomUser = require('./roomUser')
 // add associations
 
 // Message.belongsToMany(User, {through: Room})
@@ -14,9 +14,10 @@ Message.belongsTo(User)
 Message.belongsTo(Room)
 
 User.hasMany(Message)
-User.hasOne(Room)
+User.belongsToMany(Room, {through: RoomUser})
 
-Room.belongsTo(User, {foreignKey: 'creator'})
+Room.belongsToMany(User, {through: RoomUser})
+Room.belongsTo(User)
 Room.hasMany(Message)
 
 
@@ -24,5 +25,6 @@ Room.hasMany(Message)
 module.exports = {
   User,
   Message,
-  Room
+  Room,
+  RoomUser
 }
