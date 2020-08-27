@@ -124,7 +124,7 @@ if (!isDev && cluster.isMaster) {
     debug: true,
     typeDefs,
     resolvers,
-    context: (req, models) => ({models, user: req.user})
+    context: ({models, user: {id: 1}})
     })
     
  

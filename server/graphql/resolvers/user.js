@@ -1,9 +1,9 @@
 const userResolver = {
     Query: {
-        getAllUsers: (parent, {roomId}, {models}) => {
+        getAllUsers: async (parent, {roomId}, {models}) => {
             try {
-                const findUser = models.Room.findOne({
-                    where: {id: roomId},
+                const findUser = await models.RoomUser.findOne({
+                    where: {roomId},
                     include: {models: models.User}
                 })
                 return findUser
