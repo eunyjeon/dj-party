@@ -15,29 +15,14 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy
 const sessionStore = new SequelizeStore({ db })
 
-//kristine add-ons
-// const { ApolloServer, PubSub } = require('apollo-server-express');
-// const PlaylistAPI = require('./graphql/dataSources/playlistAPI');
-// const typeDefs = require('./graphql/schema')
-// const resolvers = require('./graphql/resolvers')
-const { ApolloServer } = require('apollo-server')
-// const { graphqlExpress, graphiqlExpress }= require('apollo-server-express');
-// const { makeExecutableSchema } = require('graphql-tools');
-const {
-  fileLoader,
-  mergeTypes,
-  mergeResolvers,
-} = require('merge-graphql-schemas')
-const typeDefs = mergeTypes(
-  fileLoader(path.join(__dirname, './graphql/schema'))
-)
-const resolvers = mergeResolvers(
-  fileLoader(path.join(__dirname, './graphql/resolvers'))
-)
+const { ApolloServer} = require('apollo-server');
+const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
+const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
+const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
 
-const isDev = process.env.NODE_ENV !== 'production'
-if (isDev) require('../secrets')
-const PORT = process.env.PORT || 5000
+const isDev = process.env.NODE_ENV !== 'production';
+if (isDev) require("../secrets")
+const PORT = process.env.PORT || 5000;
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -165,7 +150,7 @@ if (!isDev && cluster.isMaster) {
     )
   })
 
-  const syncDb = () => db.sync()
+  const syncDb = () => db.sync({force:true})
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
