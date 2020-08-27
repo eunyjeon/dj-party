@@ -30,7 +30,7 @@ const room = gql`
     }
 
     type Mutation {
-        createRoom(name: String, public: Boolean): CreateRoomResponse!
+        createRoom(name: String!, description: String, public: Boolean): CreateRoomResponse!
         addUserToRoom(spotifyUsername: String!, roomId: ID!): VoidResponse!
     }
 `
