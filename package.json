@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node server/index.js",
+    "seed": "node seed/seedScript.js",
     "build": "cd react-ui/ && npm install && npm run build"
   },
   "cacheDirectories": [
