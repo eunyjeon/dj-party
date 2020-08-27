@@ -9,7 +9,7 @@ const messageResolver = {
     Query: {
       getMessages: async (parent, {roomId}, { models }) => { //roomId is args
         try {
-          const messages = await models.Room.
+          // const messages = await models.Room.
         } catch (err) {
           console.log(`cannot get messages for room: ${roomId}`, err)
         }

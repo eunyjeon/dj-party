@@ -30,13 +30,8 @@ const room = gql`
     }
 
     type Mutation {
-<<<<<<< HEAD
-        createRoom(name: String, public: Boolean): Boolean!
-        joinRoom(id: ID!): Boolean!
-=======
         createRoom(name: String, public: Boolean): CreateRoomResponse!
         addUserToRoom(spotifyUsername: String!, roomId: ID!): VoidResponse!
->>>>>>> df79a5fb6cc1db18869c6c57f70a24183ab54b9d
     }
 `
 
