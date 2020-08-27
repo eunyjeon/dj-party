@@ -23,6 +23,7 @@ const client = new ApolloClient({
     defaults: {
       messages: [],
       songs: [],
+      rooms: []
     },
   },
 })
