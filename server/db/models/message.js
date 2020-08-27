@@ -1,10 +1,10 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require('sequelize')
+const db = require('../db')
 
-const Message = db.define("message", {
-    message: {
-        type: Sequelize.STRING
-    }
+const Message = db.define('message', {
+  message: {
+    type: Sequelize.STRING,
+  },
 })
 
 module.exports = Message
