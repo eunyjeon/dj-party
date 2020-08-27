@@ -1,9 +1,17 @@
 const userResolver = {
     Query: {
-        getUser: (parent, {id}, {models}) => models.User.findOne({where: {id}}),
-        getAllUsers: (parent, args, {models}) => models.User.findAll()
-    },
-
+        getAllUsers: async (parent, {roomId}, {models}) => {
+            try {
+                const findUser = await models.RoomUser.findOne({
+                    where: {roomId},
+                    include: {models: models.User}
+                })
+                return findUser
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
 }
 
 module.exports = userResolver
