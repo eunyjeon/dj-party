@@ -1,10 +1,10 @@
 
 const messageResolver = {
     Mutation: {
-        createMessage: async (parent, args, { models, user }) => {
+        createMessage: async (parent, args, { models, getUser }) => {
           try {
-            const message = await models.Message.create({...args, userId: user.id})
-            //return true
+            const currentRoom = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
+            const message = await models.Message.create({...args, userId: getUser(), roomId: currentRoom.roomId})
             if (message) return true;
             else return false;
           } catch (err) {

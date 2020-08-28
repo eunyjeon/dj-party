@@ -43,7 +43,6 @@ function NewRoomForm(props) {
     const handleSubmit = evt => {
         evt.preventDefault()
         createNewRoom({ variables })
-        console.log(props)
     }
 
     return (
