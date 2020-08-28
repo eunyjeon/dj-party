@@ -8,6 +8,14 @@ const roomResolver = {
         } catch (error) {
           console.log(error)
         }
+      }, 
+      messages: async ({id}, args, {models}) => {
+        try {
+          const messages = await models.Message.findAll({where: {roomId: id}})
+          return messages
+        } catch (error) {
+          console.log(error)
+        }
       }
     },
     
@@ -48,10 +56,15 @@ const roomResolver = {
     Mutation: {
       createRoom: async (parent, args, { models, getUser }) => {
         //have to edit to restrict for unique names
+        //when user creates a room, must make sure that everytime they create a room, they logout of their current room
         try {
+          const findCurrentRoom = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
+          if (findCurrentRoom){
+            await findCurrentRoom.update({activeRoom: false})
+          }
           const room = await models.Room.create({...args, userId: getUser()})
           await models.RoomUser.create({
-            roomId: room.id, userId: getUser(), isCreator: true
+            roomId: room.id, userId: getUser(), isCreator: true, activeRoom: true
           })
           return {ok: true, roomMade: room}
         } catch (err) {
@@ -94,7 +107,9 @@ const roomResolver = {
       joinRoom: async (parent, {roomId}, {models, getUser}) => {
         try {
           const roomUser = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
-          await roomUser.update({activeRoom:false})
+          if (roomUser){
+            await roomUser.update({activeRoom:false})
+          }
           // roomUser.delete()
           await models.RoomUser.create({isCreator: false, activeRoom: true, userId: getUser(), roomId})
           return {ok: true}

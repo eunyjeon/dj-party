@@ -10,8 +10,6 @@ const user = gql`
     }
 
     type Query {
-        getUser(id: ID!): User!
-        getAllUsersInRoom(roomId: ID!): [User!]
         me: User!
     }
 

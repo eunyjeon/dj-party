@@ -10,7 +10,7 @@ const message = gql`
 
 
 type Mutation {
-    createMessage(roomId: Int!, message: String!): Boolean!
+    createMessage(message: String!): Boolean!
 }
 
 
