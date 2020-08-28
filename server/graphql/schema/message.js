@@ -2,14 +2,11 @@ const { gql } = require('apollo-server')
 
 const message = gql`
   type Message {
-  id: Int!
-  message: String!
-  user: User
-  room: Room
-}
+  id: Int
+  message: String!}
 
 type Mutation {
-    createMessage(roomId: Int!, message: String!): Boolean!
+    createMessage(message: String!): Boolean!
 }
 
 type Query {
