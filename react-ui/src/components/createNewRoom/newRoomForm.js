@@ -35,9 +35,8 @@ function NewRoomForm(props) {
         public: true,
     })
     const [createNewRoom, { loading }] = useMutation(CREATE_ROOM, {
-        //FIXME: Have to refresh the page to render the userhome
-        //FIXME: Change the uri to room uri to make a user to redirect to the room just created
-        update: (_, __) => props.history.push('/home'),
+        //TODO: might be better to have roomId (not the roomname) in url? (Room name might have spaces)
+        update: (_, __) => props.history.push(`/room/${variables.name}`),
         onError: err => console.log(err),
     })
 

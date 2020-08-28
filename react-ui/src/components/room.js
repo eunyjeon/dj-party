@@ -1,8 +1,8 @@
-// import React from 'react'
-// import styled from 'styled-components'
-// import { ChatRoom } from './'
-// import { gql } from 'apollo-boost'
-// import { useQuery } from '@apollo/react-hooks'
+import React from 'react'
+import styled from 'styled-components'
+import { ChatRoom } from './'
+import { gql } from 'apollo-boost'
+import { useQuery } from '@apollo/react-hooks'
 
 // export const QUERY_MESSAGES = gql`
 //   query getMessages($roomId: RoomId!) {
@@ -54,11 +54,12 @@
 //   )
 // }
 
-// export default function Room(props) {
-//   return (
-//     <div>
-//       <h1>This room is liiiiit</h1>
-//       {MessagesPageWithData({ params })}
-//     </div>
-//   )
-// }
+export default function Room(props) {
+  return (
+    <div>
+      <h1>This room is liiiiit</h1>
+      {/* {MessagesPageWithData({ params })} */}
+        <ChatRoom />
+      </div>
+  )
+}
