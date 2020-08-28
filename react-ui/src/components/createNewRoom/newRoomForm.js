@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { withRouter } from "react-router";
 import { Form, Button } from 'react-bootstrap'
 import { gql, useMutation } from '@apollo/client'
+
 
 const CREATE_ROOM = gql`
     mutation createRoom(
@@ -12,28 +14,37 @@ const CREATE_ROOM = gql`
             name: $name
             description: $description
             public: $public
-        ) {
-            ok
-            roomMade
+        ) { ok
+            roomMade {
+                id
+                name
+                # messages
+                # users
+                # isCreator
+                # public
+                # description
+            }
         }
     }
 `
-//TODO: where this props(history) comes from??
-export default function NewRoomForm({history}) {
+//where this props(history) comes from?? -> withRouter
+function NewRoomForm(props) {
     const [variables, setVariables] = useState({
         name: '',
         description: '',
         public: true,
     })
-    const [createRoom, { loading }] = useMutation(CREATE_ROOM, {
-        //TODO: add route
-        update: (_, __) => history.push('/whereToGo??'),
-        onError: err => console.log(err)
+    const [createNewRoom, { loading }] = useMutation(CREATE_ROOM, {
+        //FIXME: Have to refresh the page to render the userhome
+        //FIXME: Change the uri to room uri to make a user to redirect to the room just created
+        update: (_, __) => props.history.push('/home'),
+        onError: err => console.log(err),
     })
 
     const handleSubmit = evt => {
         evt.preventDefault()
-        createRoom({ variables })
+        createNewRoom({ variables })
+        console.log(props)
     }
 
     return (
@@ -54,17 +65,19 @@ export default function NewRoomForm({history}) {
                 <Form.Label>Room Description</Form.Label>
                 <Form.Control
                     type="text"
-                    value={variables.name}
+                    value={variables.description}
                     onChange={(e) =>
                         setVariables({ ...variables, description: e.target.value })
                     }
                     placeholder="Enter Room Description"
                 />
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
+            <div>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+            </div>
         </Form>
     )
 }
+export default withRouter(NewRoomForm)
