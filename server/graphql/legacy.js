@@ -82,3 +82,5 @@
   //     ok: Boolean!
   //     errors: [Error!]
   // }
+
+  // getUser(roomId: ID!, id: ID!): User!

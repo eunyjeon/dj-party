@@ -16,6 +16,7 @@ const room = gql`
     type Query {
         getAllRooms: [Room!]!
         getActiveRoom: Room!
+        getSingleRoom(roomId: ID!): Room!
     }
 
     type CreateRoomResponse {
@@ -32,6 +33,7 @@ const room = gql`
     type Mutation {
         createRoom(name: String, public: Boolean): CreateRoomResponse!
         addUserToRoom(spotifyUsername: String!, roomId: ID!): VoidResponse!
+        joinRoom(roomId: ID!): VoidResponse!
     }
 `
 
