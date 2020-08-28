@@ -5,7 +5,7 @@ const message = gql`
   id: Int!
   message: String!
   user: User
-  room: Room!
+  room: Room
 }
 
 type Mutation {
@@ -13,7 +13,7 @@ type Mutation {
 }
 
 type Query {
-    getMessages(roomId: Int!): [Message!]
+    getMessages(roomId: Int!): [Message]
 }
 
 `

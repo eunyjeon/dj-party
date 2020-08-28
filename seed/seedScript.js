@@ -1,6 +1,6 @@
 "use strict";
 
-const { Room, Message } = require("../server/db/models/index");
+const { Room, Message, User } = require("../server/db/models/index");
 const db = require("../server/db/db")
 const { roomSeed, messageSeed } = require("../seed");
 

@@ -7,14 +7,13 @@ import history from './history'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import * as serviceWorker from './serviceWorker'
-import ApolloClient, { InMemoryCache } from 'apollo-boost'
-import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloClient,  InMemoryCache, ApolloProvider } from '@apollo/client'
 
 //can we do redux with apollo? if not what do we do with needed react hooks?
 import { Provider } from 'react-redux'
 import store from './store'
 
-const cache = new InMemoryCache({})
+const cache = new InMemoryCache()
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -25,6 +24,7 @@ const client = new ApolloClient({
       songs: [],
       rooms: []
     },
+  connectToDevTools: true
   },
 })
 

@@ -36,7 +36,7 @@ const GET_All_ROOMS = gql`
 export default function Rooms() {
   const { loading, error, data } = useQuery(GET_All_ROOMS)
 
-  console.log('room data', { data })
+  console.log('room data', data.getAllRooms)
 
   if (loading)
     return (
