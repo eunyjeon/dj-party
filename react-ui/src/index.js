@@ -7,13 +7,7 @@ import history from './history'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import * as serviceWorker from './serviceWorker'
-<<<<<<< HEAD
 import { ApolloClient,  InMemoryCache, ApolloProvider } from '@apollo/client'
-=======
-import ApolloClient, { InMemoryCache } from 'apollo-boost'
-import { ApolloProvider } from '@apollo/react-hooks'
-import { WebSocketLink } from '@apollo/client/link/ws'
->>>>>>> c5d4a580af8ef614b8271d461cf97b741b68b437
 
 //can we do redux with apollo? if not what do we do with needed react hooks?
 import { Provider } from 'react-redux'

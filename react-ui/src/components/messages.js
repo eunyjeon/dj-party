@@ -1,51 +1,8 @@
 import React from 'react'
-<<<<<<< HEAD
-import { gql, useQuery } from '@apollo/client'
-// import { useQuery } from '@apollo/react-hooks'
-// import { QUERY_MESSAGES, MESSAGES_SUBSCRIPTION } from './room'
-import { useParams } from 'react-router-dom'
-
-//socket stuff
-/* import { useSubscription } from '@apollo/client'
-import { getMainDefinition } from '@apollo/client/utilities' */
-
-//
-import Message from './message'
-//import { messageData } from './api'
-
-//subscription stuff
-/* function LatestMessage({ roomId }) {
-  const {
-    data: { messageAdded },
-    loading,
-  } = useSubscription(MESSAGES_SUBSCRIPTION, { variables: { roomId } })
-  return <h4>New message: {!loading && messageAdded.message}</h4>
-} */
-
-// const QUERY_MESSAGES = gql`
-//   query getMessages($roomId: Int){
-//       id
-//       message
-//     }
-// `
-
-const QUERY_MESSAGES = gql`
-{
-    message(roomId: 1) {
-      id
-      message
-  }
-}
-`
-
-export default function Messages({roomId}) {
-  const { error, loading, data } = useQuery(QUERY_MESSAGES, {variables: { roomId },
-  })
-  console.log(error.toString())
-=======
 //import { gql } from 'apollo-boost'
-import { useQuery } from '@apollo/react-hooks'
-import { QUERY_MESSAGES } from './room'
+import { gql, useMutation } from '@apollo/client'
+// import { GET_ROOM_INFO } from './room'
+import Message from './message'
 
 //socket stuff
 // import { useSubscription } from '@apollo/client'
@@ -63,29 +20,46 @@ import { QUERY_MESSAGES } from './room'
 //   return <h4>New message: {!loading && messageAdded.message}</h4>
 // }
 
-export default function Messages() {
-  // const { data } = useQuery(QUERY_MESSAGES)
 
->>>>>>> c5d4a580af8ef614b8271d461cf97b741b68b437
+
+/* C
+mutation createMessage($message: String!) {
+  createMessage(message: $message) {
+      message
+      user {
+        spotifyUsername
+      }
+ 	 }
+  }
+*/
+const CREATE_MESSAGE = gql`
+    mutation createMessage($message: String!) {
+        createMessage(message: $message) {
+              message
+              user {
+                spotifyUsername
+            }
+        }
+    }
+`
+
+export default function Messages(props) {
+  // const { loading, error, data } = useQuery(GET_ROOM_INFO)
+  console.log("props.messages here:",props.messages)
+
   function handleSubmit(event) {
     event.preventDefault()
   }
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :( </p>
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error :( </p>
 
   return (
     <div>
       <h1>ChatRoom</h1>
-<<<<<<< HEAD
-      <div>{data.getMessages.map(({ id, message }) => (<p key={id}>{message}</p>))}</div>
-{/*       {data.getMessages.map((message) => (
-        <Message key={message.id} {...message} />
-=======
-      {/* {data.messages.map((message) => ( */}
-        {/* <Message key={message.id} {...message} />
->>>>>>> c5d4a580af8ef614b8271d461cf97b741b68b437
-      ))} */}
+      {props.messages.map((message) => (
+       <Message key={message.id} {...message} />
+      ))}
       <form onSubmit={handleSubmit}>
         <label htmlFor="message">
           <input name="message" type="text" />
