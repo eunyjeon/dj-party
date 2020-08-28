@@ -8,8 +8,9 @@ const message = gql`
   room: Room!
 }
 
+
 type Mutation {
-    createMessage(roomId: Int!, message: String!): Boolean!
+    createMessage(message: String!): Boolean!
 }
 
 

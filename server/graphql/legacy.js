@@ -82,3 +82,20 @@
   //     ok: Boolean!
   //     errors: [Error!]
   // }
+
+  // getUser(roomId: ID!, id: ID!): User!
+
+//   getAllUsersInRoom: async (parent, {roomId}, {models}) => {
+//     try {
+//         const findUser = await models.RoomUser.findOne({
+//             where: {roomId},
+//             include: {models: models.User}
+//         })
+//         return findUser
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }, 
+
+// getUser(id: ID!): User!
+// getAllUsersInRoom(roomId: ID!): [User!]
