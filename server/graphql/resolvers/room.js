@@ -105,13 +105,14 @@ const roomResolver = {
         }
       },
       joinRoom: async (parent, {roomId}, {models, getUser}) => {
+        //still not working
         try {
           const roomUser = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
           if (roomUser){
             await roomUser.update({activeRoom:false})
           }
           // roomUser.delete()
-          await models.RoomUser.create({isCreator: false, activeRoom: true, userId: getUser(), roomId})
+          await models.RoomUser.Create({isCreator: false, activeRoom: true, userId: getUser(), roomId})
           return {ok: true}
         } catch (error) {
           console.log(error)
