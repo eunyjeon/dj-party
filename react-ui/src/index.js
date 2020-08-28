@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
-import { Router } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import history from './history'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
@@ -32,11 +32,11 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
-      <Router history={history}>
+      <BrowserRouter history={history}>
         <ThemeProvider theme={theme}>
           <App />
         </ThemeProvider>
-      </Router>
+      </BrowserRouter>
     </Provider>
   </ApolloProvider>,
   document.getElementById('root')

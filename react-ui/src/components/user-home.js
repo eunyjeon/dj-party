@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Rooms } from './'
+import NewRoomModal from './createNewRoom/newRoomModal'
 
 //Right now, redux is not set up to check if a user is logged in.  This because we are going to use Apollo to query for user information.  As of now, once you log into Spotify, you'll be redirected to this page.
 
@@ -17,12 +18,16 @@ const Heading = styled.div`
  * COMPONENT
  */
 export const UserHome = (props) => {
+
   return (
     <>
       <WelcomeDiv>
         <Heading>
           <h1>Welcome Username</h1>
         </Heading>
+
+        <NewRoomModal />
+
         <Rooms />
       </WelcomeDiv>
     </>
