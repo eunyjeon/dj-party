@@ -55,7 +55,7 @@ export default function Rooms() {
       <RoomList>
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id}>
-            <Link to={`/room/${room.name}`}>
+            <Link to={`/room/${room.id}`}>
               {' '}
               <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
             </Link>
