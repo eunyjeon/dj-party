@@ -2,10 +2,10 @@ const { gql } = require('apollo-server')
 
 const message = gql`
   type Message {
-  id: Int!
+  id: Int
   message: String!
   user: User!
-  room: Room!
+  room: Room
 }
 
 

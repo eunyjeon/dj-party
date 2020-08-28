@@ -73,6 +73,7 @@ const roomResolver = {
         }
       },
       addUserToRoom: async (parent, {spotifyUsername, roomId}, {models, getUser}) => {
+        //only creators can add users to their active room
         try {
           const creatorUserPromise = models.RoomUser.findOne({where: {roomId, userId: getUser(), activeRoom: true}})
           const addToRoomUserPromise = models.User.findOne({where: {spotifyUsername}})
@@ -105,15 +106,23 @@ const roomResolver = {
         }
       },
       joinRoom: async (parent, {roomId}, {models, getUser}) => {
-        //still not working
         try {
+          //find the room that they are currently in and switch activeRoom to be false
           const roomUser = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
           if (roomUser){
             await roomUser.update({activeRoom:false})
           }
-          // roomUser.delete()
-          await models.RoomUser.Create({isCreator: false, activeRoom: true, userId: getUser(), roomId})
-          return {ok: true}
+          //now check to see if that user has already been in the room they want to join
+          //if so, find that instance and update activeRoom to true
+          //if not, create an instance in roomUser for that user and room
+          const roomUserToJoin = await models.RoomUser.findOne({where: {userId: getUser(), roomId}})
+          if (roomUserToJoin){
+            roomUserToJoin.update({activeRoom:true})
+            return {ok: true}
+          } else {
+            await models.RoomUser.create({where: {isCreator: false, activeRoom: true, userId: getUser(), roomId}})
+            return {ok: true}
+          }
         } catch (error) {
           console.log(error)
           return {ok: false}
