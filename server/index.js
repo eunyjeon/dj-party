@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const db = require('./db')
+const seed = require('../seed/seedScript')
 
 //natalie add-ons
 const models = require('./db/models')
@@ -164,6 +165,7 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, function () {
     syncDb()
+    seed()
     console.error(
       `Node ${
         isDev ? 'dev server' : 'cluster worker ' + process.pid

@@ -3,48 +3,76 @@
 export const messageData = [
   {
     id: 1,
-    author: "deanna",
-    content: "yo wazzup",
+    user: "deanna",
+    message: "yo wazzup",
+room: {
+  roomId: 1
+},
+
   },
   {
     id: 2,
-    author: "natalie",
-    content: "nm cuz how u doin",
+    user: "natalie",
+    message: "nm cuz how u doin",
+    room: {
+      roomId: 1
+    },
   },
   {
     id: 3,
-    author: "deanna",
-    content:
+    user: "deanna",
+    message:
       "just chillin over here learning how to be a hacker and make this chat room",
+      room: {
+        roomId: 1
+      },
   },
   {
     id: 4,
-    author: "natalie",
-    content: "feel that sis, this app bout to be liiiiiiit",
+    user: "natalie",
+    message: "feel that sis, this app bout to be liiiiiiit",
+    room: {
+      roomId: 1
+    },
   },
   {
     id: 5,
-    author: "euny",
-    content: "OH WHAZZUP MY HOMIES EUNY IN THE HOUSE",
+    user: "euny",
+    message: "OH WHAZZUP MY HOMIES EUNY IN THE HOUSE",
+    room: {
+      roomId: 1
+    },
   },
   {
     id: 6,
-    author: "deanna",
-    content: "ayeeee",
+    user: "deanna",
+    message: "ayeeee",
+    room: {
+      roomId: 1
+    },
   },
   {
     id: 7,
-    author: "natalie",
-    content: "yerrrrrr",
+    user: "natalie",
+    message: "yerrrrrr",
+    room: {
+      roomId: 1
+    },
   },
   {
     id: 8,
-    author: "kristine",
-    content: "heyyyyy a/s/l ?!?! ",
+    user: "kristine",
+    message: "heyyyyy a/s/l ?!?! ",
+    room: {
+      roomId: 1
+    },
   },
   {
     id: 9,
-    author: "kristine",
-    content: "FUCK THEM KIDS",
+    user: "kristine",
+    message: "FUCK THEM KIDS",
+    room: {
+      roomId: 1
+    },
   },
 ];

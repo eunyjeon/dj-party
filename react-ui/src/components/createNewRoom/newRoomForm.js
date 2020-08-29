@@ -35,8 +35,7 @@ function NewRoomForm(props) {
         public: true,
     })
     const [createNewRoom, { loading }] = useMutation(CREATE_ROOM, {
-        //TODO: might be better to have roomId (not the roomname) in url? (Room name might have spaces)
-        update: (_, __) => props.history.push(`/room/${variables.name}`),
+        update: (_, __) => props.history.push(`/room/${variables.id}`),
         onError: err => console.log(err),
     })
 
