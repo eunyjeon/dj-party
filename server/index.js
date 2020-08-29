@@ -157,7 +157,7 @@ if (!isDev && cluster.isMaster) {
     )
   })
 
-  const syncDb = () => db.sync()
+  const syncDb = () => db.sync({force:true})
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
@@ -165,7 +165,7 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, function () {
     syncDb()
-    // seed()
+    seed()
     console.error(
       `Node ${
         isDev ? 'dev server' : 'cluster worker ' + process.pid
