@@ -1,8 +1,8 @@
 "use strict";
 
-const { Room, Message } = require("../server/db/models/index");
+const { Room, Message, User } = require("../server/db/models/index");
 const db = require("../server/db/db")
-const { roomSeed, messageSeed } = require("../seed");
+const { roomSeed, messageSeed, userSeed } = require("../seed");
 
 async function seed() {
   await db.sync();
@@ -11,6 +11,7 @@ async function seed() {
   // const users = await Promise.all([User.bulkCreate(userSeed)]);
   const rooms = await Promise.all([Room.bulkCreate(roomSeed)]);
   const messages = await Promise.all([Message.bulkCreate(messageSeed)]);
+  const users = await Promise.all([User.bulkCreate(userSeed)])
 
   console.log(`seeded rooms and message`);
 }

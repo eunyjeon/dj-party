@@ -80,7 +80,6 @@ if (!isDev && cluster.isMaster) {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log('hi!')
           const [user] = await db.models.user.findOrCreate({
             where: {
               spotifyUsername: profile.id,
@@ -156,7 +155,7 @@ if (!isDev && cluster.isMaster) {
     )
   })
 
-  const syncDb = () => db.sync({force:true})
+  const syncDb = () => db.sync()
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
