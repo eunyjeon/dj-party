@@ -1,29 +1,32 @@
 
 const messageResolver = {
   Message: {
-    user: async (parent, args, {models, getUser}) => {
+    user: async ({id}, args, {models, getUser}) => {
       try {
-        const user = await models.User.findOne({where: {id: getUser()}})
+        const message = await models.Message.findOne({where: {id}})
+        const user = await models.User.findOne({where:{id: message.userId}})
         return user
       } catch (error) {
         console.log(error)
       }
     }
   },
-    Mutation: {
+   Mutation: {
         createMessage: async (parent, args, { models, getUser }) => {
           try {
-            console.log('hi')
             const currentRoom = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
+            console.log("right afer 16 lol")
             const message = await models.Message.create({...args, userId: getUser(), roomId: currentRoom.roomId})
-            if (message) return true;
-            else return false;
+            console.log("message being returned from createMessage resolver", message)
+            // if (message) return true;
+            // else return false;
+            return message;
           } catch (err) {
             console.log(err)
-            return false
+            return {ok: false, error: 'Something went wrong!'}
           }
         },
-      }
+  }
 }
 
 module.exports = messageResolver

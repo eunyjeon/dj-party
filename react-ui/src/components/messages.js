@@ -1,7 +1,8 @@
 import React from 'react'
 //import { gql } from 'apollo-boost'
-import { useQuery } from '@apollo/react-hooks'
-import { QUERY_MESSAGES } from './room'
+import { gql, useMutation } from '@apollo/client'
+// import { GET_ROOM_INFO } from './room'
+import Message from './message'
 
 //socket stuff
 // import { useSubscription } from '@apollo/client'
@@ -19,19 +20,46 @@ import { QUERY_MESSAGES } from './room'
 //   return <h4>New message: {!loading && messageAdded.message}</h4>
 // }
 
-export default function Messages() {
-  // const { data } = useQuery(QUERY_MESSAGES)
+
+
+/* C
+mutation createMessage($message: String!) {
+  createMessage(message: $message) {
+      message
+      user {
+        spotifyUsername
+      }
+ 	 }
+  }
+*/
+const CREATE_MESSAGE = gql`
+    mutation createMessage($message: String!) {
+        createMessage(message: $message) {
+              message
+              user {
+                spotifyUsername
+            }
+        }
+    }
+`
+
+export default function Messages(props) {
+  // const { loading, error, data } = useQuery(GET_ROOM_INFO)
+  console.log("props.messages here:",props.messages)
 
   function handleSubmit(event) {
     event.preventDefault()
   }
 
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error :( </p>
+
   return (
     <div>
       <h1>ChatRoom</h1>
-      {/* {data.messages.map((message) => ( */}
-        {/* <Message key={message.id} {...message} />
-      ))} */}
+      {props.messages.map((message) => (
+       <Message key={message.id} {...message} />
+      ))}
       <form onSubmit={handleSubmit}>
         <label htmlFor="message">
           <input name="message" type="text" />

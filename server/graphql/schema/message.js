@@ -6,13 +6,12 @@ const message = gql`
   message: String!
   user: User!
   room: Room
+  
 }
-
 
 type Mutation {
-    createMessage(message: String!): Boolean!
+    createMessage(message: String!): Message!
 }
-
 
 `
 module.exports= message

@@ -1,13 +1,14 @@
-// import React from "react";
+import React from "react";
 
-// function Message(props) {
-//   return (
-//     <div>
-//       <p>
-//         {props.author}: {props.content}
-//       </p>
-//     </div>
-//   );
-// }
+function Message(props) {
+  console.log("props for the MESSAGE component:", props)
+  return (
+    <div>
+      <p>
+        {props.user.spotifyUsername}: {props.message}
+      </p>
+    </div>
+  );
+}
 
-// export default Message;
+export default Message;
