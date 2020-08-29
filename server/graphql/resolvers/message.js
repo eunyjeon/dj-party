@@ -1,9 +1,10 @@
 
 const messageResolver = {
   Message: {
-    user: async (parent, args, {models, getUser}) => {
+    user: async ({id}, args, {models, getUser}) => {
       try {
-        const user = await models.User.findOne({where: {id: getUser()}})
+        const message = await models.Message.findOne({where: {id}})
+        const user = await models.User.findOne({where:{id: message.userId}})
         return user
       } catch (error) {
         console.log(error)

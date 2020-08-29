@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const db = require('./db')
+const seed = require('../seed/seedScript')
 
 //natalie add-ons
 const models = require('./db/models')
@@ -41,7 +42,20 @@ if (!isDev && cluster.isMaster) {
 } else {
   const app = express()
 
+  passport.serializeUser((user, done) => done(null, user.id))
+
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const user = await db.models.user.findByPk(id)
+      console.log('this is:', user)
+      done(null, user)
+    } catch (err) {
+      done(err)
+    }
+  })
+
   // body parsing middleware
+  const build = () =>{
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(bodyParser.json())
@@ -63,13 +77,8 @@ if (!isDev && cluster.isMaster) {
   app.use(passport.initialize())
   app.use(passport.session())
 
-  passport.serializeUser(function (user, done) {
-    done(null, user.id)
-  })
 
-  passport.deserializeUser(function (obj, done) {
-    done(null, obj)
-  })
+ 
 
   passport.use(
     new SpotifyStrategy(
@@ -111,11 +120,11 @@ if (!isDev && cluster.isMaster) {
     })
   )
 
-  app.get('/auth/me', (req, res) => {
+  app.get('/auth/me', async (req, res) => {
     try {
-      console.log('CURRENT SESSION: is', req.user)
+      console.log('CURRENT SESSION: is', req.user.id)
       userId = req.user
-      res.json(req.user)
+      await res.json(req.user.id)
     } catch (error) {
       console.log(error)
     }
@@ -134,6 +143,13 @@ if (!isDev && cluster.isMaster) {
     res.redirect('/')
   })
 
+  app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../react-ui/build/index.html'))
+  })
+
+}
+  
+
 
   const server = new ApolloServer({
     introspection: true,
@@ -148,12 +164,12 @@ if (!isDev && cluster.isMaster) {
     }},
   })
 
-  // All remaining requests return the React app, so it can handle routing.
-  app.get('*', function (request, response) {
-    response.sendFile(
-      path.resolve(__dirname, '../react-ui/build', 'index.html')
-    )
-  })
+  // // All remaining requests return the React app, so it can handle routing.
+  // app.get('*', function (request, response) {
+  //   response.sendFile(
+  //     path.resolve(__dirname, '../react-ui/build', 'index.html')
+  //   )
+  // })
 
   const syncDb = () => db.sync()
 
@@ -161,12 +177,21 @@ if (!isDev && cluster.isMaster) {
     console.log(`🚀 Server ready at ${url}`)
   })
 
-  app.listen(PORT, function () {
-    syncDb()
-    console.error(
-      `Node ${
-        isDev ? 'dev server' : 'cluster worker ' + process.pid
-      }: listening on port ${PORT}`
-    )
-  })
+  
+
+  async function boot() {
+    await  syncDb()
+    await build()
+    seed()
+    app.listen(PORT, function () {
+      // syncDb()
+      console.error(
+        `Node ${
+          isDev ? 'dev server' : 'cluster worker ' + process.pid
+        }: listening on port ${PORT}`
+      )
+    })
+  }
+
+  boot()
 }
