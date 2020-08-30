@@ -7,8 +7,11 @@ import history from './history'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import * as serviceWorker from './serviceWorker'
-import { ApolloClient, ApolloProvider, getMainDefinition,  ApolloLink, split, HttpLink, InMemoryCache} from '@apollo/client'
+import { ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client'
 import { WebSocketLink } from "apollo-link-ws"
+import { getMainDefinition } from 'apollo-utilities'
+import { ApolloLink, split } from 'apollo-link'
+import { HttpLink } from 'apollo-link-http'
 import { SubscriptionClient } from "subscriptions-transport-ws"
 import { Provider } from 'react-redux'
 import store from './store'
