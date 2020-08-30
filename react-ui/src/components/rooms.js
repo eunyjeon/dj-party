@@ -33,6 +33,18 @@ const GET_All_ROOMS = gql`
   }
 `
 
+// const JOIN_ROOM = gql`
+//   {
+//     matation joinRoom($roomId:ID!) {
+//       joinRoom(roomId: $roomId) {
+//         ok
+//         error
+//       }
+
+//     }
+//   }
+// `
+
 export default function Rooms() {
   const { loading, error, data } = useQuery(GET_All_ROOMS)
 
@@ -53,6 +65,7 @@ export default function Rooms() {
       <RoomList>
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id}>
+            {/* <Link to={`/room/${room.id}`} onClick={clickHandler}> */}
             <Link to={`/room/${room.id}`}>
               {' '}
               <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
