@@ -7,17 +7,50 @@ import history from './history'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import * as serviceWorker from './serviceWorker'
-import { ApolloClient,  InMemoryCache, ApolloProvider } from '@apollo/client'
-
-//can we do redux with apollo? if not what do we do with needed react hooks?
+import { ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client'
+import { WebSocketLink } from "apollo-link-ws"
+import { getMainDefinition } from 'apollo-utilities'
+import { ApolloLink, split } from 'apollo-link'
+import { HttpLink } from 'apollo-link-http'
+import { SubscriptionClient } from "subscriptions-transport-ws"
 import { Provider } from 'react-redux'
 import store from './store'
+
+
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4000',
+});
+
+const GRAPHQL_ENDPOINT = `ws://localhost:4000`
+const clientWS = new SubscriptionClient(GRAPHQL_ENDPOINT, {
+  reconnect: true
+});
+
+const wsLink = new WebSocketLink(clientWS)
+
+const terminatingLink = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
+    return (
+      kind === 'OperationDefinition' && operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
+
+const link = ApolloLink.from([terminatingLink])
+
+//can we do redux with apollo? if not what do we do with needed react hooks?
+
 
 const cache = new InMemoryCache()
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
-  cache: cache,
+  // uri: httpLink,
+  // cache: cache,
+  link, 
+  cache,
   clientState: {
     defaults: {
       messages: [],
