@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useMutation } from '@apollo/client'
 import { Link } from 'react-router-dom'
 
 const RoomList = styled.div`
@@ -33,20 +33,31 @@ const GET_All_ROOMS = gql`
   }
 `
 
-// const JOIN_ROOM = gql`
-//   {
-//     matation joinRoom($roomId:ID!) {
-//       joinRoom(roomId: $roomId) {
-//         ok
-//         error
-//       }
+const JOIN_ROOM = gql`
+  {
+    matation joinRoom($roomId:ID!) {
+      joinRoom(roomId: $roomId) {
+        ok
+        error
+      }
 
-//     }
-//   }
-// `
+    }
+  }
+`
 
 export default function Rooms() {
+
   const { loading, error, data } = useQuery(GET_All_ROOMS)
+  const [joinExistingRoom,_] = useMutation(JOIN_ROOM, {
+    onError: err => console.log(err)
+  })
+
+  const handleCardClick = evt => {
+    evt.preventDefault()
+    console.log('evt ', evt)
+    joinExistingRoom(evt.key)
+  }
+
 
   if (loading)
     return (
@@ -57,7 +68,7 @@ export default function Rooms() {
   else if (error)
     return (
       <>
-        <h1>Error! ${error.message}</h1>
+        <h1>{`Error! ${error.message}`}</h1>
       </>
     )
   else {
@@ -65,8 +76,8 @@ export default function Rooms() {
       <RoomList>
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id}>
-            {/* <Link to={`/room/${room.id}`} onClick={clickHandler}> */}
-            <Link to={`/room/${room.id}`}>
+            <Link to={`/room/${room.id}`} onClick={handleCardClick}>
+            {/* <Link to={`/room/${room.id}`}> */}
               {' '}
               <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
             </Link>
