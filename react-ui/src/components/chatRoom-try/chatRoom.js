@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom';
 import { gql, useMutation, useSubscription } from '@apollo/client'
 import Message from './message'
-import { GET_ROOM_INFO } from '../room'
+// import { GET_ROOM_INFO } from '../room'
 
 
 //TODO: can we change $roomId: ID --> ID! ???
@@ -20,24 +20,24 @@ function ChatRoom(props) {
     message: ''
   })
   const [sendMessage, loading] = useMutation(CREATE_MESSAGE, {
-    update: (cache, { data }) => {
-      // adding the new message to the existing cached collections
-      // ?. syntanx: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
-      const newMessageFromResponse = data?.createMessage.message
-      const existingMessages = cache.readQuery({
-        query: GET_ROOM_INFO,
-      })
+    // update: (cache, { data }) => {
+    //   // adding the new message to the existing cached collections
+    //   // ?. syntanx: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
+    //   const newMessageFromResponse = data?.createMessage.message
+    //   const existingMessages = cache.readQuery({
+    //     query: GET_ROOM_INFO,
+    //   })
 
-      cache.writeQuery({
-        query: GET_ROOM_INFO,
-        data: {
-          messages: [
-            ...existingMessages?.message,
-            newMessageFromResponse,
-          ]
-        }
-      })
-    },
+    //   cache.writeQuery({
+    //     query: GET_ROOM_INFO,
+    //     data: {
+    //       messages: [
+    //         ...existingMessages?.message,
+    //         newMessageFromResponse,
+    //       ]
+    //     }
+    //   })
+    // },
     onError: err => console.error(err)
   })
 

@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react'
+import { withRouter } from 'react-router-dom';
 import { gql, useMutation} from '@apollo/client'
 import SingleMessage from './singleMessage'
 import { Form, Button } from 'react-bootstrap'
 
-export default function MessageList(props) {
-  let input
+function MessageList(props) {
   useEffect(() => {
     props.subscribeToNewMessages()
   })
 
   const [variables, setVariables] = useState({
+    roomId: props.match.params.roomId,
     message: '',
-    roomId: props.roomId,
 })
 
   const [createMessage, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_MESSAGE)
@@ -19,8 +19,10 @@ export default function MessageList(props) {
   const handleSubmit = evt => {
     evt.preventDefault()
     createMessage({ variables })
+    setVariables({...variables, message:''})
 }
 console.log('what is happening')
+
   return (
   <div>
       <h1>Message List</h1>
@@ -33,7 +35,7 @@ console.log('what is happening')
                   type="text"
                   value={variables.message}
                   onChange={(e) =>
-                      setVariables({ roomId: props.roomId, message: e.target.value })
+                      setVariables({...variables, message: e.target.value})
                   }
                   placeholder="New Message"
               />
@@ -64,8 +66,8 @@ console.log('what is happening')
 
 
 const CREATE_MESSAGE = gql`
-mutation createMessage($message: String! $roomId: Int!) {
-    createMessage(message: $message roomId: $roomId) {
+mutation createMessage($roomId: ID $message: String! ) {
+    createMessage(roomId: $roomId message:$message) {
           message
           user {
             spotifyUsername
@@ -73,3 +75,4 @@ mutation createMessage($message: String! $roomId: Int!) {
     }
 }
 `
+export default withRouter(MessageList)

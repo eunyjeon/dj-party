@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ChatRoom } from './chatRoom-try/chatRoom'
+import ChatRoom from './chatRoom-try/chatRoom'
 import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { Container, Row, Col } from 'react-bootstrap'
