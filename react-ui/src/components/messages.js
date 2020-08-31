@@ -32,6 +32,7 @@ mutation createMessage($message: String!) {
  	 }
   }
 */
+
 const CREATE_MESSAGE = gql`
     mutation createMessage($message: String!) {
         createMessage(message: $message) {
@@ -45,10 +46,29 @@ const CREATE_MESSAGE = gql`
 
 export default function Messages(props) {
   // const { loading, error, data } = useQuery(GET_ROOM_INFO)
-  console.log("props.messages here:",props.messages)
+  console.log("props.messages here:",props.messages);
+  // let input;
+  // const [createMessage, { loading, data }] = useMutation(CREATE_MESSAGE, {
+  //   update(cache, {data: { createMessage } }) {
+  //     cache.modify({
+  //       fields: {
+  //         message(messages=[]){
+  //           const newMessageRef = cache.writeFragment({
+  //             data: createMessage,
+  //             fragment: gql`
+  //             `
+  //           })
+  //         }
+  //       }
+  //     })
+  //   }
+  // })
+
 
   function handleSubmit(event) {
     event.preventDefault()
+    // createMessage({variables: {type: input.value}} );
+    // input.value = ''
   }
 
   // if (loading) return <p>Loading...</p>;

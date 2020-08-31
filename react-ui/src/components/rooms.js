@@ -33,8 +33,23 @@ const GET_All_ROOMS = gql`
   }
 `
 
+const JOIN_ROOM = gql`
+  mutation joinRoom($roomId: ID!){
+    joinRoom(roomId: $roomId){
+      ok
+    }
+  }
+`
+
+
+
 export default function Rooms() {
   const { loading, error, data } = useQuery(GET_All_ROOMS)
+  const [joinRoom] = useMutation(JOIN_ROOM, {update: updateUser})
+
+  const updateUser = (cache, {data}) => {
+    
+  }
 
   if (loading)
     return (

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { withRouter, Route, Switch } from 'react-router-dom'
 import { LoginPage, UserHome, Room } from './components'
 import { me } from './store'
@@ -38,3 +39,8 @@ const Routes = () => {
 }
 
 export default withRouter(Routes)
+
+Routes.propTypes = {
+  loadInitialData: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
+}

@@ -7,24 +7,41 @@ import history from './history'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import * as serviceWorker from './serviceWorker'
-import { ApolloClient,  InMemoryCache, ApolloProvider } from '@apollo/client'
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 
 //can we do redux with apollo? if not what do we do with needed react hooks?
 import { Provider } from 'react-redux'
 import store from './store'
+import { typeDefs, resolvers } from './apollo/clientResolver'
 
-const cache = new InMemoryCache()
+const authLink = setContext((_, {headers, ...context}) => {
+  const token = localStorage.getItem('auth: token');
+  return {
+    headers: {
+      ...headers,
+      ...(token ? {authorization: `Bearer ${token}`} : {}),
+    },
+    ...context,
+  };
+});
+
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000'
+})
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
-  cache: cache,
+  cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
+  credentials: 'include',
   clientState: {
     defaults: {
+      user: {},
       messages: [],
       songs: [],
       rooms: []
     },
-  connectToDevTools: true
+  connectToDevTools: true,
   },
 })
 
