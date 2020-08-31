@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import history from './history'
@@ -15,12 +14,14 @@ import { HttpLink } from 'apollo-link-http'
 import { SubscriptionClient } from "subscriptions-transport-ws"
 import { Provider } from 'react-redux'
 import store from './store'
+import './index.css'
 
-
+// for queries & mutations
 const httpLink = new HttpLink({
   uri: 'http://localhost:4000',
 });
 
+// for subscription & push notifications
 const GRAPHQL_ENDPOINT = `ws://localhost:4000`
 const clientWS = new SubscriptionClient(GRAPHQL_ENDPOINT, {
   reconnect: true
@@ -44,12 +45,25 @@ const link = ApolloLink.from([terminatingLink])
 //can we do redux with apollo? if not what do we do with needed react hooks?
 
 
-const cache = new InMemoryCache()
+const cache = new InMemoryCache({
+  //TODO: Euny is testing this part.
+  // typePolicies: {
+  //   User: {
+  //     keyFields: ["id", "spotifyUsername"]
+  //   },
+  //   Room: {
+  //     keyFields: ["id"]
+  //   },
+  //   Message: {
+  //     keyFields: ["id"]
+  //   }
+  // }
+})
 
 const client = new ApolloClient({
   // uri: httpLink,
   // cache: cache,
-  link, 
+  link,
   cache,
   clientState: {
     defaults: {
