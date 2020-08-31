@@ -6,11 +6,14 @@ const message = gql`
   message: String!
   user: User!
   room: Room
-  
 }
 
 type Mutation {
-    createMessage(message: String!): Message!
+    createMessage(roomId: ID, message: String!  ): Message!
+}
+
+type Subscription {
+  messageCreated(roomId: ID!): Message!
 }
 
 `

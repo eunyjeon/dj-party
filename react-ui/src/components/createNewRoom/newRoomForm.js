@@ -7,7 +7,7 @@ import { gql, useMutation } from '@apollo/client'
 const CREATE_ROOM = gql`
     mutation createRoom(
         $name: String!
-        $description: String!
+        $description: String
         $public: Boolean
     ) {
         createRoom(
@@ -27,21 +27,24 @@ const CREATE_ROOM = gql`
         }
     }
 `
-//where this props(history) comes from?? -> withRouter
+
 function NewRoomForm(props) {
     const [variables, setVariables] = useState({
         name: '',
         description: '',
         public: true,
     })
-    const [createNewRoom, { loading }] = useMutation(CREATE_ROOM, {
-        update: (_, __) => props.history.push(`/room/${variables.id}`),
+    const [createNewRoom, { loading, data }] = useMutation(CREATE_ROOM, {
+        // update: (_, __) => props.history.push(`/room/${data.createRoom.roomMade.id}`),
         onError: err => console.log(err),
     })
 
     const handleSubmit = evt => {
         evt.preventDefault()
         createNewRoom({ variables })
+            .then((res)=>
+                props.history.push(`/room/${res.data.createRoom.roomMade.id}`)
+            )
     }
 
     return (

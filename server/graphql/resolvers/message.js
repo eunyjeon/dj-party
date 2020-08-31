@@ -1,7 +1,11 @@
+const { withFilter }= require('apollo-server')
+
+const MESSAGE_CREATED = 'MESSAGE_CREATED'
+
 
 const messageResolver = {
   Message: {
-    user: async ({id}, args, {models, getUser}) => {
+    user: async ({id}, args, {models}) => {
       try {
         const message = await models.Message.findOne({where: {id}})
         const user = await models.User.findOne({where:{id: message.userId}})
@@ -11,21 +15,28 @@ const messageResolver = {
       }
     }
   },
-   Mutation: {
-        createMessage: async (parent, args, { models, getUser }) => {
-          try {
-            const currentRoom = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
-            console.log("right afer 16 lol")
-            const message = await models.Message.create({...args, userId: getUser(), roomId: currentRoom.roomId})
-            console.log("message being returned from createMessage resolver", message)
-            // if (message) return true;
-            // else return false;
-            return message;
-          } catch (err) {
-            console.log(err)
-            return {ok: false, error: 'Something went wrong!'}
-          }
-        },
+  Mutation: {
+    createMessage: async (parent, args, { models, pubSub, getUser }) => {
+      try {
+        // const currentRoom = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
+        // const message = await models.Message.create({...args, userId: getUser(), roomId: currentRoom.roomId})
+        const message = await models.Message.create({...args, userId: getUser()})
+        await pubSub.publish(MESSAGE_CREATED, {roomId: args.roomId, messageCreated: message})
+        return message;
+      } catch (err) {
+        console.log(err)
+        return {ok: false, error: 'Something went wrong!'}
+      }
+    }
+  },
+  Subscription: {
+      messageCreated: {
+        subscribe: withFilter(
+          (parent, args, {pubSub}) => pubSub.asyncIterator([MESSAGE_CREATED]),
+                (payload, variables) => {
+                        return payload.roomId === variables.roomId;
+                    }),
+      },
   }
 }
 
