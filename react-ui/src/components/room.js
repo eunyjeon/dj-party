@@ -4,7 +4,7 @@ import { ChatRoom } from './'
 import { withRouter } from 'react-router-dom'
 // import { gql } from 'apollo-boost'
 import { gql, useQuery } from '@apollo/client'
-import {Row, Col} from 'react-bootstrap'
+import {Container, Row, Col} from 'react-bootstrap'
 
 const GET_ROOM_INFO = gql`
 query getSingleRoom($roomId: ID!){
@@ -92,13 +92,15 @@ export const Room = (props) => {
       <h2>Room Name: {data.getSingleRoom.name}</h2>
       <p>Room Description: {data.getSingleRoom.description}</p>
       {/* {MessagesPageWithData({ params })} */}
-      <Row>
-        <Col className="music-player">Music Player</Col>
-          Placeholder for Music Player: Listen to some DJ Khaled dawg!
-        <Col className="chat-room">
-          <ChatRoom messages={messages}/>
-        </Col>
-        </Row>
+      <Container>
+        <Row>
+          <Col className="music-player">Music Player</Col>
+            Placeholder for Music Player: Listen to some DJ Khaled dawg!
+          <Col className="chat-room">
+            <ChatRoom messages={messages}/>
+          </Col>
+          </Row>
+      </Container>
       </div>
   )
 }
