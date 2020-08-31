@@ -17,6 +17,8 @@ const Heading = styled.div`
 /**
  * COMPONENT
  */
+
+ //TODO: username should reflect the current loggedin user
 export const UserHome = (props) => {
 
   return (

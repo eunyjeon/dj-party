@@ -11,6 +11,7 @@ const user = gql`
 
     type Query {
         me: User!
+        # isLoggedIn: Boolean
     }
 
 

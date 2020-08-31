@@ -6,7 +6,6 @@ const message = gql`
   message: String!
   user: User!
   room: Room
-  
 }
 
 type Mutation {
