@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter, Route, Switch } from 'react-router-dom'
-import { LoginPage, UserHome, Room } from './components'
+import { LoginPage, UserHome, SingleRoom } from './components'
 import { me } from './store'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -28,12 +28,14 @@ const Routes = () => {
         <Switch>
           {/* Routes placed here are only available after logging in */}
           <Route path="/home" component={UserHome} />
-          <Route path="/room/:roomId" component={Room} />
+          {/* <Route path="/room/:roomId" component={Room} /> */}
+          <Route path="/room/:roomId" component={SingleRoom} />
         </Switch>
       )}
       {/* Displays our Login component as a fallback */}
       <Route path="/home" component={UserHome} />
-      <Route path="/room/:roomId" component={Room} />
+      {/* <Route path="/room/:roomId" component={Room} /> */}
+      <Route path="/room/:roomId" component={SingleRoom} />
     </Switch>
   )
 }

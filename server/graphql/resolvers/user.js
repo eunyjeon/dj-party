@@ -7,7 +7,17 @@ const userResolver = {
             } catch (error) {
                 console.log(error)
             }
-        }
+        },
+        //TODO: for checking the current user is guest or loggedin
+        //TODO: delete if not used (also delete the typedef)
+        // isLoggedIn: (parent, args, {getUser}) => {
+        //     const userId = getUser()
+        //    if (userId) {
+        //        return true
+        //    } else {
+        //        false
+        //    }
+        // }
     }
 }
 
