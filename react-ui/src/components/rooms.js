@@ -50,8 +50,8 @@ function Rooms(props) {
 
   const handleCardClick = evt => {
     evt.preventDefault()
-    joinExistingRoom({ variables: { roomId: evt.target.id }})
-      .then(props.history.push(`/room/${evt.target.id}`))
+    joinExistingRoom({ variables: { roomId: evt.currentTarget.id }})
+      .then(props.history.push(`/room/${evt.currentTarget.id}`))
   }
 
 
