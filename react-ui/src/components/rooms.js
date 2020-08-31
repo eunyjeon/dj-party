@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { withRouter } from "react-router"
+import { withRouter } from 'react-router'
 
 const RoomList = styled.div`
   display: flex;
@@ -42,18 +42,18 @@ const JOIN_ROOM = gql`
 `
 
 function Rooms(props) {
-
   const { loading, error, data } = useQuery(GET_All_ROOMS)
   const [joinExistingRoom] = useMutation(JOIN_ROOM, {
-    onError: err => console.error(err)
+    onError: (err) => console.error(err),
   })
 
-  const handleCardClick = evt => {
+  const handleCardClick = (evt) => {
     evt.preventDefault()
-    joinExistingRoom({ variables: { roomId: evt.target.id }})
-      .then(props.history.push(`/room/${evt.target.id}`))
+    console.log('click event', evt)
+    joinExistingRoom({ variables: { roomId: evt.target.id } }).then(
+      props.history.push(`/room/${evt.target.id}`)
+    )
   }
-
 
   if (loading)
     return (
@@ -72,7 +72,7 @@ function Rooms(props) {
       <RoomList>
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id} id={room.id} onClick={handleCardClick}>
-              <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
+            <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
           </RoomCard>
         ))}
       </RoomList>
