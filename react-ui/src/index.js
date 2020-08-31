@@ -22,7 +22,7 @@ const httpLink = new HttpLink({
 });
 
 // for subscription & push notifications
-const GRAPHQL_ENDPOINT = `ws://localhost:4000`
+const GRAPHQL_ENDPOINT = `ws://localhost:4000/`
 const clientWS = new SubscriptionClient(GRAPHQL_ENDPOINT, {
   reconnect: true
 });
