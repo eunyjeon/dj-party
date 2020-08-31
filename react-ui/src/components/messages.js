@@ -1,5 +1,6 @@
 import React from 'react'
 //import { gql } from 'apollo-boost'
+<<<<<<< HEAD
 import { gql, useMutation } from '@apollo/client'
 // import { GET_ROOM_INFO } from './room'
 import Message from './message'
@@ -10,6 +11,21 @@ import Message from './message'
 
 //
 // import Message from './message'
+=======
+import { useQuery } from '@apollo/react-hooks'
+import {
+  QUERY_MESSAGES,
+  MESSAGES_SUBSCRIPTION,
+  QUERY_ROOM_MESSAGES,
+} from './room'
+
+//socket stuff
+import { useSubscription } from '@apollo/client'
+import { getMainDefinition } from '@apollo/client/utilities'
+
+//
+import Message from './message'
+>>>>>>> c229949d72c9bb78aea42ea00471fcfbcb4f29ce
 //import { messageData } from './api'
 
 // function LatestMessage({ roomId }) {
@@ -20,58 +36,31 @@ import Message from './message'
 //   return <h4>New message: {!loading && messageAdded.message}</h4>
 // }
 
+function loadMessages({ id }) {
+  const { loading, error, data } = useQuery(QUERY_ROOM_MESSAGES, {
+    variables: { id },
+  })
 
+  if (loading) return null
+  if (error) return `Error! ${error}`
 
-/* C
-mutation createMessage($message: String!) {
-  createMessage(message: $message) {
-      message
-      user {
-        spotifyUsername
-      }
- 	 }
-  }
-*/
+  return data
+}
 
-const CREATE_MESSAGE = gql`
-    mutation createMessage($message: String!) {
-        createMessage(message: $message) {
-              message
-              user {
-                spotifyUsername
-            }
-        }
-    }
-`
-
-export default function Messages(props) {
-  // const { loading, error, data } = useQuery(GET_ROOM_INFO)
-  console.log("props.messages here:",props.messages);
-  let input;
-  const [createMessage, { loading }] = useMutation(CREATE_MESSAGE,
-    update: (cache, { data: { createMessage } }) => {
-      const data = cache.readQuery({ query: GET_MESSAGES});
-      data.messages = [...data.messages, createMessage];
-      cache.writeQuery({ query: GET_MESSAGES }, data)
-    }
-  )
-
+export default function Messages({ id }) {
+  const messages = loadMessages(id)
+  console.log('message data', messages)
 
   function handleSubmit(event) {
-    event.preventDefault();
-    createMessage({variables: {type: input.value}} );
-    input.value = ''
+    event.preventDefault()
   }
-
-  // if (loading) return <p>Loading...</p>;
-  // if (error) return <p>Error :( </p>
 
   return (
     <div>
       <h1>ChatRoom</h1>
-      {props.messages.map((message) => (
-       <Message key={message.id} disabled={loading} {...message} />
-      ))}
+      {/*       {data.rooms.messages.map((message) => (
+        <Message key={message.id} {...message} />
+      ))} */}
       <form onSubmit={handleSubmit}>
         <label htmlFor="message">
           <input name="message" type="text" />
