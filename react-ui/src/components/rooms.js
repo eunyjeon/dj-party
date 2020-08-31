@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useMutation } from '@apollo/client'
 import { Link } from 'react-router-dom'
 
 const RoomList = styled.div`
@@ -45,11 +45,7 @@ const JOIN_ROOM = gql`
 
 export default function Rooms() {
   const { loading, error, data } = useQuery(GET_All_ROOMS)
-  const [joinRoom] = useMutation(JOIN_ROOM, {update: updateUser})
-
-  const updateUser = (cache, {data}) => {
-    
-  }
+  const [joinRoom] = useMutation(JOIN_ROOM)
 
   if (loading)
     return (
@@ -68,7 +64,7 @@ export default function Rooms() {
       <RoomList>
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id}>
-            <Link to={`/room/${room.id}`}>
+            <Link to={`/room/${room.id}`} onClick={()=> joinRoom}>
               {' '}
               <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
             </Link>

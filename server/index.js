@@ -16,7 +16,7 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy
 const sessionStore = new SequelizeStore({ db })
 
-const { ApolloServer} = require('apollo-server');
+const { ApolloServer, PubSub} = require('apollo-server');
 const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
@@ -136,6 +136,8 @@ if (!isDev && cluster.isMaster) {
     res.redirect('/')
   })
 
+  const pubSub = new PubSub()
+
 
   const server = new ApolloServer({
     introspection: true,
@@ -146,6 +148,7 @@ if (!isDev && cluster.isMaster) {
     context: () => {
       return {
         models,
+        pubSub,
         getUser:() => userId
     }},
   })
@@ -157,7 +160,7 @@ if (!isDev && cluster.isMaster) {
     )
   })
 
-  const syncDb = () => db.sync({force:true})
+  const syncDb = () => db.sync()
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
