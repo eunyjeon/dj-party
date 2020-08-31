@@ -7,7 +7,7 @@ import NewRoomModal from './createNewRoom/newRoomModal'
 
 const WelcomeDiv = styled.div`
   background-color: ${({ theme }) => theme.primary};
-  font-family: 'Cardo', serif;
+  font-family: 'Montserrat', sans-serif;
 `
 const Heading = styled.div`
   font-family: 'Montserrat', sans-serif;
@@ -18,14 +18,13 @@ const Heading = styled.div`
  * COMPONENT
  */
 
- //TODO: username should reflect the current loggedin user
+//TODO: username should reflect the current loggedin user
 export const UserHome = (props) => {
-
   return (
     <>
       <WelcomeDiv>
         <Heading>
-          <h1>Welcome Username</h1>
+          <h1>Welcome to the party!</h1>
         </Heading>
 
         <NewRoomModal />
