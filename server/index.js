@@ -16,10 +16,12 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy
 const sessionStore = new SequelizeStore({ db })
 
+
 const { ApolloServer, PubSub} = require('apollo-server');
 const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
+const { SubscriptionServer }=require('subscriptions-transport-ws')
 let userId = ''
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) require("../secrets")

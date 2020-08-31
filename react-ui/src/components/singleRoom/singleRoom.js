@@ -31,7 +31,7 @@ export const SingleRoom = (props) => {
         <Col className="chat-room">
           <MessageList roomId={roomId} messages={messages} subscribeToNewMessages= {()=> subscribeToMore({
               document: MESSAGE_CREATED,
-              varaiables: {roomId},
+              variables: {roomId},
               updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev
                 const messageCreated = subscriptionData.data.messageCreated
