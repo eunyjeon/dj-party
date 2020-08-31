@@ -49,10 +49,15 @@ function Rooms(props) {
 
   const handleCardClick = (evt) => {
     evt.preventDefault()
+<<<<<<< HEAD
     console.log('click event', evt)
     joinExistingRoom({ variables: { roomId: evt.target.id } }).then(
       props.history.push(`/room/${evt.target.id}`)
     )
+=======
+    joinExistingRoom({ variables: { roomId: evt.currentTarget.id }})
+      .then(props.history.push(`/room/${evt.currentTarget.id}`))
+>>>>>>> 173298344f6ee81558a2db5e2224e7b262c2de49
   }
 
   if (loading)
