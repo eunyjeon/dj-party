@@ -18,11 +18,12 @@ import './index.css'
 
 // for queries & mutations
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000',
+  // uri: 'http://localhost:4000',
+  uri: 'http://localhost:4000/graphql'
 });
 
 // for subscription & push notifications
-const GRAPHQL_ENDPOINT = `ws://localhost:4000/`
+const GRAPHQL_ENDPOINT = `ws://localhost:4000/graphql`
 const clientWS = new SubscriptionClient(GRAPHQL_ENDPOINT, {
   reconnect: true
 });
