@@ -4,4 +4,5 @@ export default {
   accent: '#dee2ff',
   peach: '#efd3d7',
   blush: '#feeafa',
+  offWhite: '#f7f7f7'
 }

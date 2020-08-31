@@ -1,19 +1,58 @@
 "use strict";
 
-const { Room, Message } = require("../server/db/models/index");
+const { Room, Message, User, RoomUser } = require("../server/db/models/index");
 const db = require("../server/db/db")
-const { roomSeed, messageSeed } = require("../seed");
+const { roomSeed, messageSeed, userSeed, roomUserSeed } = require("../seed");
+
 
 async function seed() {
-  await db.sync();
-  console.log("db synced!");
+  try {
+    await db.sync({force: true})
+    await Promise.all(
+      userSeed.map(user => {
+        return User.create(user)
+      })
+    )
+    await Promise.all(
+      roomSeed.map(room => {
+        return Room.create(room)
+      })
+    )
+    await Promise.all(
+      roomUserSeed.map(roomUser => {
+        return RoomUser.create(roomUser)
+      })
+    )
+    await Promise.all(
+      messageSeed.map(message => {
+        return Message.create(message)
+      })
+    )
+    
+    // await Promise.all(sessions.map(session => { return Session.create(session) }));
 
-  // const users = await Promise.all([User.bulkCreate(userSeed)]);
-  const rooms = await Promise.all([Room.bulkCreate(roomSeed)]);
-  const messages = await Promise.all([Message.bulkCreate(messageSeed)]);
-
-  console.log(`seeded rooms and message`);
+    console.log('db synced!')
+    console.log(`seeded ${userSeed.length} users`)
+    console.log(`seeded ${messageSeed.length} messages`)
+    console.log(`seeded ${roomSeed.length} room`)
+    console.log(`seeded ${roomUserSeed.length} room/user`)
+    //console.log(`seeded ${sessions.length} sessions`)
+    console.log(`seeded successfully`)
+  } catch (err) {
+    console.log(err)
+  }
 }
+  // await db.sync();
+  // console.log("db synced!");
+
+  // // const users = await Promise.all([User.bulkCreate(userSeed)]);
+  // const rooms = await Promise.all([Room.bulkCreate(roomSeed)]);
+  // const messages = await Promise.all([Message.bulkCreate(messageSeed)]);
+  // const users = await Promise.all([User.bulkCreate(userSeed)])
+  // const roomUsers = await Promise.all([RoomUser.bulkCreate(roomUserSeed)])
+
+  // console.log(`seeded rooms and message`);
+
 
 // We've separated the `seed` function from the `runSeed` function.
 // This way we can isolate the error handling and exit trapping.

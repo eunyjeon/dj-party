@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { gql, useQuery } from '@apollo/client'
-import { Link } from 'react-router-dom'
+import { gql, useQuery, useMutation } from '@apollo/client'
+import { withRouter } from 'react-router'
 
 const RoomList = styled.div`
   display: flex;
@@ -33,10 +33,26 @@ const GET_All_ROOMS = gql`
   }
 `
 
-export default function Rooms() {
-  const { loading, error, data } = useQuery(GET_All_ROOMS)
+const JOIN_ROOM = gql`
+  mutation joinRoom($roomId: ID!) {
+    joinRoom(roomId: $roomId) {
+      ok
+    }
+  }
+`
 
-  console.log({ data })
+function Rooms(props) {
+  const { loading, error, data } = useQuery(GET_All_ROOMS)
+  const [joinExistingRoom] = useMutation(JOIN_ROOM, {
+    onError: (err) => console.error(err),
+  })
+
+  const handleCardClick = (evt) => {
+    evt.preventDefault()
+    joinExistingRoom({ variables: { roomId: evt.currentTarget.id } }).then(
+      props.history.push(`/room/${evt.currentTarget.id}`)
+    )
+  }
 
   if (loading)
     return (
@@ -47,22 +63,19 @@ export default function Rooms() {
   else if (error)
     return (
       <>
-        <h1>Error! ${error.message}</h1>
+        <h1>{`Error! ${error.message}`}</h1>
       </>
     )
   else {
     return (
       <RoomList>
         {data.getAllRooms.map((room) => (
-          <RoomCard key={room.id}>
-            <Link to={`/room/${room.id}`}>
-              {' '}
-              <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
-            </Link>
-            <p>{room.description}</p>
+          <RoomCard key={room.id} id={room.id} onClick={handleCardClick}>
+            <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
           </RoomCard>
         ))}
       </RoomList>
     )
   }
 }
+export default withRouter(Rooms)

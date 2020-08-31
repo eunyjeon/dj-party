@@ -2,7 +2,7 @@ const { gql } = require('apollo-server')
 
 const user = gql`
     type User {
-        id: ID!
+        id: ID
         spotifyUsername: String!
         accessToken: String!
         refreshToken: String!
@@ -10,11 +10,9 @@ const user = gql`
     }
 
     type Query {
-        getUser(roomId: ID!, id: ID!): User!
-        getAllUsers(roomId: ID!): [User!]
+        me: User!
+        # isLoggedIn: Boolean
     }
-
-    
 
 
 `

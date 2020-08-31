@@ -6,6 +6,10 @@
 export { default as Navbar } from './navbar'
 export { default as UserHome } from './user-home'
 export { default as LoginPage } from './auth-form'
-export { default as ChatRoom } from './messages'
 export { default as Rooms } from './rooms'
-export { default as Room } from './room'
+<<<<<<< HEAD
+export { default as SingleRoom } from './singleRoom/singleRoom'
+=======
+export {default as SingleRoom} from './singleRoom/singleRoom'
+
+>>>>>>> 173298344f6ee81558a2db5e2224e7b262c2de49
