@@ -16,15 +16,22 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy
 const sessionStore = new SequelizeStore({ db })
 
-
-const { ApolloServer, PubSub } = require('apollo-server');
-const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
-const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
-const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
+const { ApolloServer, PubSub } = require('apollo-server')
+const {
+  fileLoader,
+  mergeTypes,
+  mergeResolvers,
+} = require('merge-graphql-schemas')
+const typeDefs = mergeTypes(
+  fileLoader(path.join(__dirname, './graphql/schema'))
+)
+const resolvers = mergeResolvers(
+  fileLoader(path.join(__dirname, './graphql/resolvers'))
+)
 let userId = ''
-const isDev = process.env.NODE_ENV !== 'production';
-if (isDev) require("../secrets")
-const PORT = process.env.PORT || 5000;
+const isDev = process.env.NODE_ENV !== 'production'
+if (isDev) require('../secrets')
+const PORT = process.env.PORT || 5000
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -139,7 +146,6 @@ if (!isDev && cluster.isMaster) {
 
   const pubSub = new PubSub()
 
-
   const server = new ApolloServer({
     introspection: true,
     playground: true,
@@ -150,8 +156,9 @@ if (!isDev && cluster.isMaster) {
       return {
         models,
         pubSub,
-        getUser:() => userId
-    }},
+        getUser: () => userId,
+      }
+    },
   })
 
   // All remaining requests return the React app, so it can handle routing.
