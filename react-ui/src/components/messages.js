@@ -1,5 +1,17 @@
 import React from 'react'
 //import { gql } from 'apollo-boost'
+<<<<<<< HEAD
+import { gql, useMutation } from '@apollo/client'
+// import { GET_ROOM_INFO } from './room'
+import Message from './message'
+
+//socket stuff
+// import { useSubscription } from '@apollo/client'
+// import { getMainDefinition } from '@apollo/client/utilities'
+
+//
+// import Message from './message'
+=======
 import { useQuery } from '@apollo/react-hooks'
 import {
   QUERY_MESSAGES,
@@ -13,6 +25,7 @@ import { getMainDefinition } from '@apollo/client/utilities'
 
 //
 import Message from './message'
+>>>>>>> c229949d72c9bb78aea42ea00471fcfbcb4f29ce
 //import { messageData } from './api'
 
 // function LatestMessage({ roomId }) {

@@ -17,3 +17,8 @@ const Routes = () => {
 }
 
 export default withRouter(Routes)
+
+Routes.propTypes = {
+  loadInitialData: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
+}

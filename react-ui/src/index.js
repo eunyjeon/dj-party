@@ -63,6 +63,7 @@ const client = new ApolloClient({
   cache,
   clientState: {
     defaults: {
+      user: {},
       messages: [],
       songs: [],
       rooms: [],

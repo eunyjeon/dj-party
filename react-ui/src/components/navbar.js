@@ -12,6 +12,14 @@ const StyledNav = styled.nav`
   font-family: 'Montserrat', sans-serif;
   color: ${({ theme }) => theme.primary};
 `
+// const SpotifyButton = styled.a`
+//   padding: 10px 30px 10px 30px;
+//   margin-top: 500px;
+//   background-color: rgb(36, 212, 78);
+//   font-family: "Montserrat", sans-serif;
+//   border-radius: 30px;
+//   color: white;
+// `;
 
 const Navbar = () => {
   return (
@@ -27,3 +35,7 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+
+//navbar must show login before logging in; logout after logging out
+//the info must be attached to the apollo context
