@@ -14,6 +14,9 @@ const User = db.define('user', {
   accessToken: Sequelize.STRING,
   proPic: Sequelize.STRING,
   refreshToken: Sequelize.STRING,
+  currentRoom: {
+    type: Sequelize.INTEGER
+  }
 })
 
 module.exports = User

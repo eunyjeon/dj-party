@@ -176,7 +176,7 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, function () {
     syncDb()
-    seed()
+    // seed()
     console.error(
       `Node ${
         isDev ? 'dev server' : 'cluster worker ' + process.pid

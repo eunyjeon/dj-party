@@ -5,9 +5,11 @@ import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { Row, Col } from 'react-bootstrap'
 import Player from './player'
+import UsersList from './usersList'
 
 export const SingleRoom = (props) => {
   const roomId = props.match.params.roomId
+  const users = data.getSingleRoom.users
 
   const { loading, error, data, subscribeToMore } = useQuery(GET_ROOM_INFO, {
     variables: { roomId },
@@ -24,7 +26,7 @@ export const SingleRoom = (props) => {
       <h1>This room is liiiiit</h1>
       <h2>Room Name: {data.getSingleRoom.name}</h2>
       <p>Room Description: {data.getSingleRoom.description}</p>
-      {/* {MessagesPageWithData({ params })} */}
+      <UsersList users= {users} />
       <Row>
         <Col className="music-player">
           <Player />
