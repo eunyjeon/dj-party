@@ -41,6 +41,14 @@ class PlaylistAPI extends RESTDataSource {
     }
   }
 
+  async searchForAPlaylist() {
+    try {
+      
+    } catch (error) {
+      console.log(`cannot search for the playlist`, error)
+    }
+  }
+
   playlistReducer(playlist) {
     return {
       id: playlist.id,

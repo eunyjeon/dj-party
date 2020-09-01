@@ -16,26 +16,8 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy
 const sessionStore = new SequelizeStore({ db })
 
-<<<<<<< HEAD
-const { ApolloServer } = require('apollo-server')
-const {
-  fileLoader,
-  mergeTypes,
-  mergeResolvers,
-} = require('merge-graphql-schemas')
-const typeDefs = mergeTypes(
-  fileLoader(path.join(__dirname, './graphql/schema'))
-)
-const resolvers = mergeResolvers(
-  fileLoader(path.join(__dirname, './graphql/resolvers'))
-)
 
-const isDev = process.env.NODE_ENV !== 'production'
-if (isDev) require('../secrets')
-const PORT = process.env.PORT || 5000
-=======
-
-const { ApolloServer, PubSub} = require('apollo-server');
+const { ApolloServer, PubSub } = require('apollo-server');
 const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
@@ -43,7 +25,6 @@ let userId = ''
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) require("../secrets")
 const PORT = process.env.PORT || 5000;
->>>>>>> main
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
