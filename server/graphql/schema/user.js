@@ -10,6 +10,7 @@ const user = gql`
     }
 
     type Query {
+        # getAllUsers: [User]!
         me: User!
         # isLoggedIn: Boolean
     }

@@ -1,5 +1,13 @@
 const userResolver = {
     Query: {
+        // getAllUsers: async (parent, args, {models}) => {
+        //     try {
+        //       const users = await models.User.findAll({include: {model: models.RoomUser}})
+        //       return users
+        //     } catch (error) {
+        //       console.log("cannot get all the users!", error)
+        //     }
+        //   },
         me: async (parent, args, {models, getUser}) => {
             try {
                 const user = await models.User.findOne({where: {id: getUser()}})
@@ -8,6 +16,7 @@ const userResolver = {
                 console.log(error)
             }
         },
+
         //TODO: for checking the current user is guest or loggedin
         //TODO: delete if not used (also delete the typedef)
         // isLoggedIn: (parent, args, {getUser}) => {

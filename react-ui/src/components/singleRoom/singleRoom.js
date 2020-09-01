@@ -3,7 +3,8 @@ import React from 'react'
 import  MessageList from './messageList'
 import { withRouter } from 'react-router-dom'
 import { gql, useQuery} from '@apollo/client'
-import {Row, Col} from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
+import SearchBar from './userSearchBar'
 
 
 export const SingleRoom = (props) => {
@@ -25,27 +26,35 @@ export const SingleRoom = (props) => {
       <h2>Room Name: {data.getSingleRoom.name}</h2>
       <p>Room Description: {data.getSingleRoom.description}</p>
       {/* {MessagesPageWithData({ params })} */}
-      <Row>
-        <Col className="music-player">Music Player</Col>
-          Placeholder for Music Player: Listen to some DJ Khaled dawg!
-        <Col className="chat-room">
-          <MessageList roomId={roomId} messages={messages} subscribeToNewMessages= {()=> subscribeToMore({
-              document: MESSAGE_CREATED,
-              variables: {roomId},
-              updateQuery: (prev, {subscriptionData}) => {
-                if (!subscriptionData.data) return prev
-                const messageCreated = subscriptionData.data.messageCreated
-                return Object.assign({}, prev, {
-                  getSingleRoom: {
-                    messages: [messageCreated, ...prev.getSingleRoom.messages]
-                  }
-                })
-              }
-            })
-          }
-        />
-      </Col>
-      </Row>
+      <Container fluid>
+        <Row>
+          <Col className="music-player">
+            <h4>Music Player</h4>
+            <h4>Placeholder for Music Player: Listen to some DJ Khaled dawg!</h4>
+          </Col>
+
+          <Col className="chat-room">
+            <MessageList roomId={roomId} messages={messages} subscribeToNewMessages= {()=> subscribeToMore({
+                document: MESSAGE_CREATED,
+                variables: {roomId},
+                updateQuery: (prev, {subscriptionData}) => {
+                  if (!subscriptionData.data) return prev
+                  const messageCreated = subscriptionData.data.messageCreated
+                  return Object.assign({}, prev, {
+                    getSingleRoom: {
+                      messages: [messageCreated, ...prev.getSingleRoom.messages]
+                    }
+                  })
+                }
+              })
+            }/>
+          </Col>
+
+          <Col>
+            <SearchBar />
+          </Col>
+        </Row>
+      </Container>
     </div>
   )
 }

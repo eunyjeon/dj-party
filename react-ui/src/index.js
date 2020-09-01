@@ -46,20 +46,7 @@ const link = ApolloLink.from([terminatingLink])
 //can we do redux with apollo? if not what do we do with needed react hooks?
 
 
-const cache = new InMemoryCache({
-  //TODO: Euny is testing this part.
-  // typePolicies: {
-  //   User: {
-  //     keyFields: ["id", "spotifyUsername"]
-  //   },
-  //   Room: {
-  //     keyFields: ["id"]
-  //   },
-  //   Message: {
-  //     keyFields: ["id"]
-  //   }
-  // }
-})
+const cache = new InMemoryCache()
 
 const client = new ApolloClient({
   // uri: httpLink,
