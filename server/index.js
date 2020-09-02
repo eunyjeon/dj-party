@@ -145,19 +145,18 @@ if (!isDev && cluster.isMaster) {
     debug: true,
     typeDefs,
     resolvers,
-    //TODO: I am getting an error saying "MaxListenersExceededWarning: Possible EventEmitter memory leak detected."
-    //TODO: do we need this?
-    //  context: async ({ req, connection }) => {
-    //   if (connection) {
-    //     // check connection for metadata
-    //     return connection.context;
-    //   } else {
-    //     // check from req
-    //     const token = req.headers.authorization || "";
 
-    //     return { token };
+    // TODO: would this break the code??
+    // constext: ({ req }) => {
+    //   const token = req.headers.authorization;
+    //   const currentUser = User.getUserByToken(token);
+    //   return {
+    //     models,
+    //     pubSub,
+    //     getUser:() => userId,
+    //     user: currentUser,
     //   }
-    // }
+    // },
 
     context: () => {
       return {

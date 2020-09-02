@@ -1,9 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
+import { gql, useQuery} from '@apollo/client'
 import { Rooms } from './'
 import NewRoomModal from './createNewRoom/newRoomModal'
 
 //Right now, redux is not set up to check if a user is logged in.  This because we are going to use Apollo to query for user information.  As of now, once you log into Spotify, you'll be redirected to this page.
+
+const GET_ME = gql`
+  query getMe {
+    me{
+      id
+      spotifyUsername
+      accessToken
+    }
+  }
+`
 
 const WelcomeDiv = styled.div`
   background-color: ${({ theme }) => theme.primary};
@@ -18,8 +29,8 @@ const Heading = styled.div`
  * COMPONENT
  */
 
-//TODO: username should reflect the current loggedin user
 export const UserHome = (props) => {
+
   return (
     <>
       <WelcomeDiv>
@@ -36,3 +47,5 @@ export const UserHome = (props) => {
 }
 
 export default UserHome
+
+
