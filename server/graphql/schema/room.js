@@ -4,7 +4,7 @@ const { gql } = require('apollo-server')
 
 const room = gql`
     type Room {
-        id:Int!
+        id:ID!
         name: String!
         messages: [Message!]
         users: [User!]

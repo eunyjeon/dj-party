@@ -101,6 +101,8 @@ if (!isDev && cluster.isMaster) {
               refreshToken: refreshToken,
             },
           })
+          console.log('newreq', user.id)
+          userId = user.id
           done(null, user)
         } catch (err) {
           done(err)
@@ -121,11 +123,11 @@ if (!isDev && cluster.isMaster) {
     })
   )
 
-  app.get('/auth/me', (req, res) => {
+  app.get('/', (req, res) => {
     try {
       console.log('CURRENT SESSION: is', req.user)
       userId = req.user
-      res.json(req.user)
+      // res.json(req.user)
     } catch (error) {
       console.log(error)
     }
@@ -168,7 +170,7 @@ if (!isDev && cluster.isMaster) {
     )
   })
 
-  const syncDb = () => db.sync()
+  const syncDb = () => db.sync({force:true})
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
@@ -176,7 +178,7 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, function () {
     syncDb()
-    // seed()
+    seed()
     console.error(
       `Node ${
         isDev ? 'dev server' : 'cluster worker ' + process.pid
