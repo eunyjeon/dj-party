@@ -4,7 +4,8 @@ import  MessageList from './messageList'
 import { withRouter } from 'react-router-dom'
 import { gql, useQuery} from '@apollo/client'
 import { Container, Row, Col } from 'react-bootstrap'
-import SearchBar from './userSearchBar'
+import UserSearchBar from './userSearchBar'
+import TrackSearchBar from './trackSearchBar'
 
 
 export const SingleRoom = (props) => {
@@ -31,6 +32,7 @@ export const SingleRoom = (props) => {
           <Col className="music-player">
             <h4>Music Player</h4>
             <h4>Placeholder for Music Player: Listen to some DJ Khaled dawg!</h4>
+            <TrackSearchBar />
           </Col>
 
           <Col className="chat-room">
@@ -51,7 +53,7 @@ export const SingleRoom = (props) => {
           </Col>
 
           <Col>
-            <SearchBar />
+            <UserSearchBar />
           </Col>
         </Row>
       </Container>
