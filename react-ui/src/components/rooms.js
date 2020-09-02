@@ -72,6 +72,10 @@ function Rooms(props) {
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id} id={room.id} onClick={handleCardClick}>
             <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
+            <h2 style={{ fontFamily: 'Cardo' }}>{room.description}</h2>
+            <div>
+              {room.public === true ? (<h2>Public</h2>) : (<h3>Private</h3>)}
+            </div>
           </RoomCard>
         ))}
       </RoomList>
