@@ -85,7 +85,7 @@ if (!isDev && cluster.isMaster) {
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: 'http://localhost:5000/callback',
+        callbackURL: `${process.env.ROOT_URL}/callback`,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -118,20 +118,22 @@ if (!isDev && cluster.isMaster) {
         'user-read-email',
         'playlist-modify-private',
         'playlist-modify-public',
+        'user-read-currently-playing',
+        'user-read-playback-state',
       ],
       showDialog: true,
     })
   )
 
-  app.get('/', (req, res) => {
+  /*   app.get("/", (req, res) => {
     try {
-      console.log('CURRENT SESSION: is', req.user)
-      userId = req.user
+      console.log("CURRENT SESSION: is", req.user);
+      userId = req.user;
       // res.json(req.user)
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  })
+  }); */
 
   app.get(
     '/callback',
@@ -140,11 +142,6 @@ if (!isDev && cluster.isMaster) {
       failureRedirect: '/login',
     })
   )
-
-  app.get('/logout', function (req, res) {
-    req.logout()
-    res.redirect('/')
-  })
 
   const pubSub = new PubSub()
 
@@ -170,7 +167,7 @@ if (!isDev && cluster.isMaster) {
     )
   })
 
-  const syncDb = () => db.sync({force:true})
+  const syncDb = () => db.sync()
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
