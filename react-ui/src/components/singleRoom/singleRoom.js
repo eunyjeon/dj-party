@@ -14,11 +14,11 @@ export const SingleRoom = (props) => {
     variables: { roomId },
   })
 
-  if (error) return <h1>Something went wrong!</h1>
+  //if (error) return <h1>Something went wrong in the rooms!</h1>
   if (loading) return <h1>Loading...</h1>
 
   const messages = data.getSingleRoom.messages
-  const songs = data.getSingleRoom.songs
+  //const songs = data.getSingleRoom.songs
   console.log(data.getSingleRoom, 'singleRoom data')
   console.log(data.getSingleRoom.users, 'users')
   const users = data.getSingleRoom.users
@@ -98,9 +98,6 @@ const GET_ROOM_INFO = gql`
       messages {
         message
         user {
-          spotifyUsername
-        }
-        users {
           spotifyUsername
         }
       }
