@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { Row, Col } from 'react-bootstrap'
 import UsersList from './usersList'
-import Player from './player'
+//import Player from './player'
 
 export const SingleRoom = (props) => {
   const roomId = props.match.params.roomId
@@ -29,9 +29,9 @@ export const SingleRoom = (props) => {
       <h2>Room Name: {data.getSingleRoom.name}</h2>
       <p>Room Description: {data.getSingleRoom.description}</p>
       <Row>
-        <Col className="music-player">
+        {/* <Col className="music-player">
           <Player
-          /*           roomId={roomId}
+                     roomId={roomId}
           songs={songs}
           subscribeToNewSongs={() =>
             subscribeToMore({
@@ -50,9 +50,9 @@ export const SingleRoom = (props) => {
                 })
               },
             })
-          } */
+          }
           />
-        </Col>
+        </Col> */}
       </Row>
       <UsersList users={users} />
       <Row>
