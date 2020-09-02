@@ -116,6 +116,8 @@ if (!isDev && cluster.isMaster) {
         'user-read-email',
         'playlist-modify-private',
         'playlist-modify-public',
+        'user-read-currently-playing',
+        'user-read-playback-state',
       ],
       showDialog: true,
     })
