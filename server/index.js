@@ -80,7 +80,7 @@ if (!isDev && cluster.isMaster) {
     done(null, obj)
   })
 
-  let homeUrl = passport.use(
+  passport.use(
     new SpotifyStrategy(
       {
         clientID: process.env.CLIENT_ID,
