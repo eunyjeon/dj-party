@@ -125,7 +125,7 @@ if (!isDev && cluster.isMaster) {
     })
   );
 
-  app.get("/", (req, res) => {
+  /*   app.get("/", (req, res) => {
     try {
       console.log("CURRENT SESSION: is", req.user);
       userId = req.user;
@@ -133,7 +133,7 @@ if (!isDev && cluster.isMaster) {
     } catch (error) {
       console.log(error);
     }
-  });
+  }); */
 
   app.get(
     "/callback",
@@ -142,11 +142,6 @@ if (!isDev && cluster.isMaster) {
       failureRedirect: "/login",
     })
   );
-
-  app.get("/logout", function (req, res) {
-    req.logout();
-    res.redirect("/");
-  });
 
   const pubSub = new PubSub();
 
