@@ -40,7 +40,7 @@ export const SingleRoom = (props) => {
           </Col>
           <UsersList users={users} />
           <Col className="music-player">Music Player</Col>
-          <Player accessToken = {accessToken}/>
+          {/* <Player accessToken = {accessToken}/> */}
           <TrackSearchBar/>
           <Col className="chat-room">
             <MessageList
