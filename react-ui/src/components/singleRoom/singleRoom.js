@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { Row, Col } from 'react-bootstrap'
 import UsersList from './usersList'
-//import Player from './player'
+import Player from './player'
 
 export const SingleRoom = (props) => {
   const roomId = props.match.params.roomId
@@ -22,6 +22,7 @@ export const SingleRoom = (props) => {
   console.log(data.getSingleRoom, 'singleRoom data')
   console.log(data.getSingleRoom.users, 'users')
   const users = data.getSingleRoom.users
+  const accessToken = data.getSingleRoom.accessToken
 
   return (
     <div>
@@ -29,6 +30,7 @@ export const SingleRoom = (props) => {
       <h2>Room Name: {data.getSingleRoom.name}</h2>
       <p>Room Description: {data.getSingleRoom.description}</p>
       <Row>
+        <Player accessToken = {accessToken}/>
         {/* <Col className="music-player">
           <Player
                      roomId={roomId}
@@ -103,6 +105,7 @@ const GET_ROOM_INFO = gql`
       }
       users {
         spotifyUsername
+        accessToken
       }
     }
   }
