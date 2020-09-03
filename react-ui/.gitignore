@@ -21,5 +21,4 @@
 npm-debug.log*
 
 #from top git ignore
-secrets.js
 
