@@ -37,7 +37,6 @@
     "pg": "^8.3.2",
     "pkginfo": "^0.4.1",
     "react": "^16.13.1",
-    "reactstrap": "^8.5.1",
     "sequelize": "^6.3.4"
   },
   "repository": {

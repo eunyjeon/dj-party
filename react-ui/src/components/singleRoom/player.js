@@ -22,6 +22,9 @@ import {
 	faPause,
 	faTv
 } from "@fortawesome/free-solid-svg-icons";
+import axios from 'axios'
+import UserContext from '../../userContext'
+
 
 class Player extends Component {
 	constructor(props) {
@@ -42,12 +45,23 @@ class Player extends Component {
 		this.playerCheckInterval = null;
 	}
 
+	static contextType = UserContext
+
 	componentDidMount = () => {
 		this.playerCheckInterval = setInterval(
 			() => this.checkForPlayer(),
 			1000
 		);
-	};
+
+		axios({
+      method: 'GET',
+      url: 'https://api.spotify.com/v1/me/player/devices',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+					'Authorization': `Bearer ${this.context.accessToken}`,
+				}});
+      }
 
 	checkForPlayer() {
 		const token = this.props.accessToken;
@@ -272,7 +286,7 @@ export default Player
 
 
 
- 
+
 
 
 
