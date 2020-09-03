@@ -21,7 +21,7 @@
     - clcikHandler (click a track from the search result)-> using playlistID + a track uri
 
 5. Playing a song
-  - How??????
+  - Web Player SDK
 
 6. Leaving a room
 

@@ -145,19 +145,6 @@ if (!isDev && cluster.isMaster) {
     debug: true,
     typeDefs,
     resolvers,
-
-    // TODO: would this break the code??
-    // constext: ({ req }) => {
-    //   const token = req.headers.authorization;
-    //   const currentUser = User.getUserByToken(token);
-    //   return {
-    //     models,
-    //     pubSub,
-    //     getUser:() => userId,
-    //     user: currentUser,
-    //   }
-    // },
-
     context: () => {
       return {
         models,

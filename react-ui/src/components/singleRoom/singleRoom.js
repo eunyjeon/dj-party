@@ -32,7 +32,7 @@ export const SingleRoom = (props) => {
           <Col className="music-player">
             <h4>Music Player</h4>
             <h4>Placeholder for Music Player: Listen to some DJ Khaled dawg!</h4>
-            <TrackSearchBar />
+            <TrackSearchBar/>
           </Col>
 
           <Col className="chat-room">
@@ -75,6 +75,9 @@ query getSingleRoom($roomId: ID!){
         spotifyUsername
       }
   	}
+    users {
+      spotifyUsername
+    }
   }
 }
 `
