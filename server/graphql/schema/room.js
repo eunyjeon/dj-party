@@ -15,8 +15,9 @@ const room = gql`
 
     type Query {
         getAllRooms: [Room!]!
-        getActiveRoom: Room!
         getSingleRoom(roomId: ID!): Room!
+        getPublicRooms: [Room!]!
+        getPrivateRooms: [Room!]!
     }
 
     type CreateRoomResponse {

@@ -68,11 +68,14 @@ function Rooms(props) {
       </>
     )
   else {
+    console.log('rooms', data.getAllRooms)
     return (
       <RoomList>
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id} id={room.id} onClick={handleCardClick}>
-            <h1 style={{ fontFamily: 'Cardo' }}>{room.name}</h1>
+            <h1>{room.name}</h1>
+            <h2>{room.description}</h2>
+            <div>{room.public ? <h2>Public</h2> : <h3>Private</h3>}</div>
           </RoomCard>
         ))}
       </RoomList>
