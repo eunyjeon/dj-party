@@ -3,9 +3,12 @@ import React from 'react'
 import MessageList from './messageList'
 import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
-import { Row, Col } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import UsersList from './usersList'
 import Player from './player'
+import UserSearchBar from './userSearchBar'
+import TrackSearchBar from './trackSearchBar'
+
 
 export const SingleRoom = (props) => {
   const roomId = props.match.params.roomId
@@ -29,46 +32,25 @@ export const SingleRoom = (props) => {
       <h1>This room is liiiiit</h1>
       <h2>Room Name: {data.getSingleRoom.name}</h2>
       <p>Room Description: {data.getSingleRoom.description}</p>
-      <Row>
-        <Player accessToken = {accessToken}/>
-        {/* <Col className="music-player">
-          <Player
-                     roomId={roomId}
-          songs={songs}
-          subscribeToNewSongs={() =>
-            subscribeToMore({
-              document: SONG_CREATED,
-              variables: { roomId },
-              updateQuery: (prev, { subscriptionData }) => {
-                if (!subscriptionData.data) return prev
-                const songCreated = subscriptionData.data.songCreated
-                return Object.assign({}, prev, {
-                  getSingleRoom: {
-                    songs: [
-                      songCreated,
-                      ...prev.getSingleRoom.songs,
-                    ],
-                  },
-                })
-              },
-            })
-          }
-          />
-        </Col> */}
-      </Row>
-      <UsersList users={users} />
-      <Row>
-        <Col className="music-player">Music Player</Col>
-        Placeholder for Music Player: Listen to some DJ Khaled dawg!
-        <Col className="chat-room">
-          <MessageList
-            roomId={roomId}
-            messages={messages}
-            subscribeToNewMessages={() =>
-              subscribeToMore({
-                document: MESSAGE_CREATED,
-                variables: { roomId },
-                updateQuery: (prev, { subscriptionData }) => {
+
+      <Container fluid>
+        <Row>
+          <Col>
+            <UserSearchBar />
+          </Col>
+          <UsersList users={users} />
+          <Col className="music-player">Music Player</Col>
+          <Player accessToken = {accessToken}/>
+          <TrackSearchBar/>
+          <Col className="chat-room">
+            <MessageList
+              roomId={roomId}
+              messages={messages}
+              subscribeToNewMessages={() =>
+                subscribeToMore({
+                  document: MESSAGE_CREATED,
+                  variables: { roomId },
+                  updateQuery: (prev, { subscriptionData }) => {
                   if (!subscriptionData.data) return prev
                   const messageCreated = subscriptionData.data.messageCreated
                   return Object.assign({}, prev, {
@@ -85,6 +67,7 @@ export const SingleRoom = (props) => {
           />
         </Col>
       </Row>
+      </Container>
     </div>
   )
 }
