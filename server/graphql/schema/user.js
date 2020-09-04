@@ -9,9 +9,13 @@ const user = gql`
         imageUrl: String
     }
 
+    type UserResponse {
+        user: User
+        gotUser: Boolean
+    }
+
     type Query {
-        me: User!
-        # isLoggedIn: Boolean
+        me: UserResponse!
     }
 
 

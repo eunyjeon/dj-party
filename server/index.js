@@ -120,6 +120,8 @@ if (!isDev && cluster.isMaster) {
         'playlist-modify-public',
         'user-read-currently-playing',
         'user-read-playback-state',
+        'streaming',
+        "user-read-private"
       ],
       showDialog: true,
     })
@@ -175,7 +177,7 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, function () {
     syncDb()
-    seed()
+    // seed()
     console.error(
       `Node ${
         isDev ? 'dev server' : 'cluster worker ' + process.pid
