@@ -48,6 +48,8 @@ class Player extends Component {
 	static contextType = UserContext
 
 	componentDidMount = () => {
+		const user = this.context
+		console.log("user :", user)
 		this.playerCheckInterval = setInterval(
 			() => this.checkForPlayer(),
 			1000
@@ -59,12 +61,12 @@ class Player extends Component {
       headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-					'Authorization': `Bearer ${this.context.accessToken}`,
+					'Authorization': `Bearer ${user.accessToken}`,
 				}});
       }
 
 	checkForPlayer() {
-		const token = this.props.accessToken;
+		const token = this.context.user.accessToken;
 
 		if (window.Spotify !== null) {
 			clearInterval(this.playerCheckInterval);

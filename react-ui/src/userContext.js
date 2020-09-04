@@ -6,7 +6,7 @@ const UserContext = React.createContext({});
 
 export const UserProvider = props => {
   const { loading, data } = useQuery(GET_ME)
-  const user = loading || !data.gotUser ? null: data.user
+  const user = loading || !data.me.gotUser ? null: data.me.user
   return (
     <UserContext.Provider value={user}>
       {props.children}
@@ -16,3 +16,4 @@ export const UserProvider = props => {
 
 export const UserConsumer = UserContext.Consumer;
 export default UserContext;
+
