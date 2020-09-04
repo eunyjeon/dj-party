@@ -24,12 +24,12 @@ class Player extends Component {
   componentDidMount = () => {
     const user = this.context
     this.setState({ token: user.accessToken })
-    console.log(user, 'user')
-    this.getDeviceId()
+    console.log('user in component did mount', user)
+    this.getDeviceId(user.accessToken)
   }
 
-  async getDeviceId() {
-    const { token } = this.state
+  async getDeviceId(token) {
+    console.log('token in device id fetch', token)
     const response = await fetch(
       'https://api.spotify.com/v1/me/player/devices',
       {
@@ -40,8 +40,10 @@ class Player extends Component {
         },
       }
     )
-    console.log('DEVICE ID RESPONSE', response)
-    return response
+    //.then((response) => response.json())
+    const data = await response.json()
+    await this.setState({ deviceId: data.devices[0].id })
+    console.log('device id state', this.state.deviceId)
   }
 
   checkForPlayer() {
