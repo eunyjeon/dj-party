@@ -2,10 +2,10 @@ const { gql } = require('apollo-server')
 
 const message = gql`
   type Message {
-  id: Int!
+  id: Int
   message: String!
   user: User!
-  room: Room!
+  room: Room
 }
 
 type Query {
@@ -13,13 +13,12 @@ type Query {
 }
 
 type Mutation {
-    createMessage(roomId: Int!, message: String!): Boolean!
+    createMessage(roomId: ID, message: String!  ): Message!
 }
 
 type Subscription {
-    messageAdded(id: Int!): Message!
+  messageCreated(roomId: ID!): Message!
 }
-
 
 `
 module.exports= message

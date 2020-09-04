@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const db = require('./db')
+const seed = require('../seed/seedScript')
 
 //natalie add-ons
 const models = require('./db/models')
@@ -15,11 +16,11 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy
 const sessionStore = new SequelizeStore({ db })
 
-const { ApolloServer} = require('apollo-server');
+const { ApolloServer, PubSub} = require('apollo-server');
 const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
-
+let userId = ''
 const isDev = process.env.NODE_ENV !== 'production';
 if (isDev) require("../secrets")
 const PORT = process.env.PORT || 5000;
@@ -115,6 +116,7 @@ if (!isDev && cluster.isMaster) {
   app.get('/auth/me', (req, res) => {
     try {
       console.log('CURRENT SESSION: is', req.user)
+      userId = req.user
       res.json(req.user)
     } catch (error) {
       console.log(error)
@@ -134,13 +136,21 @@ if (!isDev && cluster.isMaster) {
     res.redirect('/')
   })
 
+  const pubSub = new PubSub()
+
+
   const server = new ApolloServer({
     introspection: true,
     playground: true,
     debug: true,
     typeDefs,
     resolvers,
-    context: { models, user: { id: 1 } },
+    context: () => {
+      return {
+        models,
+        pubSub,
+        getUser:() => userId
+    }},
   })
 
   // All remaining requests return the React app, so it can handle routing.
@@ -150,7 +160,7 @@ if (!isDev && cluster.isMaster) {
     )
   })
 
-  const syncDb = () => db.sync({force:true})
+  const syncDb = () => db.sync()
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
@@ -158,6 +168,7 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, function () {
     syncDb()
+    // seed()
     console.error(
       `Node ${
         isDev ? 'dev server' : 'cluster worker ' + process.pid

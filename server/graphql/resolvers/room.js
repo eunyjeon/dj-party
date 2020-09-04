@@ -1,5 +1,23 @@
 
 const roomResolver = {
+    Room: {
+      users: async ({id}, args, {models}) => {
+        try {
+          const room = await models.Room.findOne({where:{id}})
+          return room.getUsers()
+        } catch (error) {
+          console.log(error)
+        }
+      },
+      messages: async ({id}, args, {models}) => {
+        try {
+          const messages = await models.Message.findAll({where: {roomId: id}})
+          return messages
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    },
 
     Query: {
       getAllRooms: async (parent, args, {models}) => {
@@ -10,11 +28,11 @@ const roomResolver = {
           console.log("cannot get all the rooms!", error)
         }
       },
-      getActiveRoom: async (parent, args, {models, user}) => {
+      getActiveRoom: async (parent, args, {models, getUser}) => {
         try {
           //if set to active room is true, then maybe that's how we'll get the single room view?
           //Then we don't need roomId?
-          const room = await models.RoomUser.findOne({where: {userId: user.id, activeRoom: true}}, {
+          const room = await models.RoomUser.findOne({where: {userId: getUser(), activeRoom: true}}, {
             include: {
               model: models.User
             }
@@ -23,14 +41,30 @@ const roomResolver = {
         } catch (error) {
           console.log(`cannot get room: ${id}`,error)
         }
+      },
+      getSingleRoom: async (parent, {roomId}, {models}) => {
+        //still need to test this one
+        try {
+          const room = await models.Room.findOne({where: {id: roomId}})
+          return room
+        } catch (error) {
+          console.log("cannot get all the rooms!", error)
+        }
       }
     },
+
     Mutation: {
-      createRoom: async (parent, args, { models, user }) => {
+      createRoom: async (parent, args, { models, getUser }) => {
+        //have to edit to restrict for unique names
+        //when user creates a room, must make sure that everytime they create a room, they logout of their current room
         try {
-          const room = await models.Room.create({...args, userId: user.id})
+          const findCurrentRoom = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
+          if (findCurrentRoom){
+            await findCurrentRoom.update({activeRoom: false})
+          }
+          const room = await models.Room.create({...args, userId: getUser()})
           await models.RoomUser.create({
-            roomId: room.id, userId: user.id, isCreator: true
+            roomId: room.id, userId: getUser(), isCreator: true, activeRoom: true
           })
           return {ok: true, roomMade: room}
         } catch (err) {
@@ -38,9 +72,10 @@ const roomResolver = {
           return {ok: false, error: 'Something went wrong!'}
         }
       },
-      addUserToRoom: async (parent, {spotifyUsername, roomId}, {models, user}) => {
+      addUserToRoom: async (parent, {spotifyUsername, roomId}, {models, getUser}) => {
+        //only creators can add users to their active room
         try {
-          const creatorUserPromise = models.RoomUser.findOne({where: {roomId, userId: user.id, activeRoom: true}})
+          const creatorUserPromise = models.RoomUser.findOne({where: {roomId, userId: getUser(), activeRoom: true}})
           const addToRoomUserPromise = models.User.findOne({where: {spotifyUsername}})
           const [creatorUser, addToRoomUser] = await Promise.all([creatorUserPromise, addToRoomUserPromise])
 
@@ -68,6 +103,29 @@ const roomResolver = {
             ok: false,
             error: 'Something went wrong!'
           }
+        }
+      },
+      joinRoom: async (parent, {roomId}, {models, getUser}) => {
+        try {
+          //find the room that they are currently in and switch activeRoom to be false
+          const roomUser = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
+          if (roomUser){
+            await roomUser.update({activeRoom:false})
+          }
+          //now check to see if that user has already been in the room they want to join
+          //if so, find that instance and update activeRoom to true
+          //if not, create an instance in roomUser for that user and room
+          const roomUserToJoin = await models.RoomUser.findOne({where: {userId: getUser(), roomId}})
+          if (roomUserToJoin){
+            roomUserToJoin.update({activeRoom:true})
+            return {ok: true}
+          } else {
+            await models.RoomUser.create({where: {isCreator: false, activeRoom: true, userId: getUser(), roomId}})
+            return {ok: true}
+          }
+        } catch (error) {
+          console.log(error)
+          return {ok: false}
         }
       }
     }

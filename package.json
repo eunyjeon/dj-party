@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node server/index.js",
     "seed": "node seed/seedScript.js",
-    "build": "cd react-ui/ && npm install && npm run build"
+    "build": "cd react-ui/ && npm install && npm run build",
+    "restart": "cd react-ui/ && npm run build && cd ../ && npm run start"
   },
   "cacheDirectories": [
     "node_modules",
