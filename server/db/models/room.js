@@ -11,9 +11,6 @@ const Room = db.define("room", {
     },
     description: {
         type: Sequelize.STRING,
-    },
-    users: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER)
     }
 })
 

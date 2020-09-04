@@ -18,24 +18,24 @@ async function seed() {
         return Room.create(room)
       })
     )
-    await Promise.all(
-      roomUserSeed.map(roomUser => {
-        return RoomUser.create(roomUser)
-      })
-    )
+    // await Promise.all(
+    //   roomUserSeed.map(roomUser => {
+    //     return RoomUser.create(roomUser)
+    //   })
+    // )
     // await Promise.all(
     //   messageSeed.map(message => {
     //     return Message.create(message)
     //   })
     // )
-    
+
     // await Promise.all(sessions.map(session => { return Session.create(session) }));
 
     console.log('db synced!')
     console.log(`seeded ${userSeed.length} users`)
     console.log(`seeded ${messageSeed.length} messages`)
     console.log(`seeded ${roomSeed.length} room`)
-    console.log(`seeded ${roomUserSeed.length} room/user`)
+    // console.log(`seeded ${roomUserSeed.length} room/user`)
     //console.log(`seeded ${sessions.length} sessions`)
     console.log(`seeded successfully`)
   } catch (err) {
