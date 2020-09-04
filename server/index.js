@@ -121,7 +121,10 @@ if (!isDev && cluster.isMaster) {
         'user-read-currently-playing',
         'user-read-playback-state',
         'streaming',
-        "user-read-private"
+        'user-read-private',
+        'user-modify-playback-state',
+        'user-read-currently-playing',
+        'app-remote-control'
       ],
       showDialog: true,
     })
