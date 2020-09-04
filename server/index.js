@@ -16,14 +16,22 @@ const bodyParser = require('body-parser')
 const SpotifyStrategy = require('./passport-spotify/index').Strategy
 const sessionStore = new SequelizeStore({ db })
 
-const { ApolloServer, PubSub} = require('apollo-server');
-const { fileLoader, mergeTypes, mergeResolvers }= require('merge-graphql-schemas');
-const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
-const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
+const { ApolloServer, PubSub } = require('apollo-server')
+const {
+  fileLoader,
+  mergeTypes,
+  mergeResolvers,
+} = require('merge-graphql-schemas')
+const typeDefs = mergeTypes(
+  fileLoader(path.join(__dirname, './graphql/schema'))
+)
+const resolvers = mergeResolvers(
+  fileLoader(path.join(__dirname, './graphql/resolvers'))
+)
 let userId = ''
-const isDev = process.env.NODE_ENV !== 'production';
-if (isDev) require("../secrets")
-const PORT = process.env.PORT || 5000;
+const isDev = process.env.NODE_ENV !== 'production'
+if (isDev) require('../secrets')
+const PORT = process.env.PORT || 5000
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -77,7 +85,7 @@ if (!isDev && cluster.isMaster) {
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: 'http://localhost:5000/callback',
+        callbackURL: `${process.env.ROOT_URL}/callback`,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -93,6 +101,8 @@ if (!isDev && cluster.isMaster) {
               refreshToken: refreshToken,
             },
           })
+          console.log('newreq', user.id)
+          userId = user.id
           done(null, user)
         } catch (err) {
           done(err)
@@ -108,20 +118,24 @@ if (!isDev && cluster.isMaster) {
         'user-read-email',
         'playlist-modify-private',
         'playlist-modify-public',
+        'user-read-currently-playing',
+        'user-read-playback-state',
+        'streaming',
+        "user-read-private"
       ],
       showDialog: true,
     })
   )
 
-  app.get('/auth/me', (req, res) => {
+  /*   app.get("/", (req, res) => {
     try {
-      console.log('CURRENT SESSION: is', req.user)
-      userId = req.user
-      res.json(req.user)
+      console.log("CURRENT SESSION: is", req.user);
+      userId = req.user;
+      // res.json(req.user)
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  })
+  }); */
 
   app.get(
     '/callback',
@@ -131,13 +145,7 @@ if (!isDev && cluster.isMaster) {
     })
   )
 
-  app.get('/logout', function (req, res) {
-    req.logout()
-    res.redirect('/')
-  })
-
   const pubSub = new PubSub()
-
 
   const server = new ApolloServer({
     introspection: true,
@@ -149,8 +157,9 @@ if (!isDev && cluster.isMaster) {
       return {
         models,
         pubSub,
-        getUser:() => userId
-    }},
+        getUser: () => userId,
+      }
+    },
   })
 
   // All remaining requests return the React app, so it can handle routing.

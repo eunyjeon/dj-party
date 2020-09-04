@@ -2,15 +2,17 @@ import React from "react";
 import "./App.css";
 import { Navbar } from "./components";
 import Routes from "./routes";
+import { UserProvider } from './userContext'
 
-// import ThisApp from './components/howtologin'
 
-function App() {
+function App(props) {
   return (
-    <div className="App">
-      <Navbar />
-      {/* <Routes /> */}
-    </div>
+    <UserProvider>
+      <div className="App">
+        <Navbar />
+        <Routes />
+      </div>
+    </UserProvider>
   );
 }
 

@@ -6,40 +6,36 @@ import history from './history'
 import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import * as serviceWorker from './serviceWorker'
-import { ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client'
-import { WebSocketLink } from "apollo-link-ws"
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 import { ApolloLink, split } from 'apollo-link'
 import { HttpLink } from 'apollo-link-http'
-import { SubscriptionClient } from "subscriptions-transport-ws"
-import { Provider } from 'react-redux'
-import store from './store'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 import './index.css'
 
 // for queries & mutations
 const httpLink = new HttpLink({
   // uri: 'http://localhost:4000',
-  uri: 'http://localhost:4000/graphql'
-});
+  uri: 'http://localhost:4000/graphql',
+})
 
 // for subscription & push notifications
 const GRAPHQL_ENDPOINT = `ws://localhost:4000/graphql`
 const clientWS = new SubscriptionClient(GRAPHQL_ENDPOINT, {
-  reconnect: true
-});
+  reconnect: true,
+})
 
 const wsLink = new WebSocketLink(clientWS)
 
 const terminatingLink = split(
   ({ query }) => {
-    const { kind, operation } = getMainDefinition(query);
-    return (
-      kind === 'OperationDefinition' && operation === 'subscription'
-    );
+    const { kind, operation } = getMainDefinition(query)
+    return kind === 'OperationDefinition' && operation === 'subscription'
   },
   wsLink,
-  httpLink,
-);
+  httpLink
+)
 
 const link = ApolloLink.from([terminatingLink])
 
@@ -55,23 +51,22 @@ const client = new ApolloClient({
   cache,
   clientState: {
     defaults: {
+      user: {},
       messages: [],
       songs: [],
-      rooms: []
+      rooms: [],
     },
-  connectToDevTools: true
+    connectToDevTools: true,
   },
 })
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Provider store={store}>
-      <BrowserRouter history={history}>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter history={history}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root')
 )
@@ -80,3 +75,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister()
+
+
