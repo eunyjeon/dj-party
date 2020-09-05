@@ -12,13 +12,13 @@ const SpotifyButton = styled.a`
 
 const LoginPage = styled.div`
   background-image: url(https://www.freepngimg.com/thumb/headphones/1-2-headphones-png-hd.png),
-    linear-gradient(black, ${({ theme }) => theme.primary});
+    linear-gradient(black, ${({ theme }) => theme.cherry});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   font-family: 'Montserrat', sans-serif;
   padding: 20vh;
-  height: calc(60vh - 40px);
+  height: calc(50vh - 5rem);
 `
 
 export default function AuthForm() {

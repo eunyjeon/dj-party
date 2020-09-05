@@ -1,103 +1,126 @@
-const roomSeed = [{
-  "name": "ffasey0",
-  "description": "In est risus, auctor sed, tristique in, tempus sit amet, sem.",
-  "public": true,
-  // "userId" : 1
-}, {
-  "name": "rbarthrop1",
-  "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
-  "public": true,
-  // "userId" : 1
-}, {
-  "name": "omatlock2",
-  "description": "Integer ac leo.",
-  "public": true,
-  // "userId" : 2
-}, {
-  "name": "khandley3",
-  "description": "Etiam pretium iaculis justo.",
-  "public": true,
-  // "userId" : 2
-}, {
-  "name": "cberrey4",
-  "description": "Nam dui.",
-  "public": true,
-  // "userId" : 3
-}, {
-  "name": "locarroll5",
-  "description": "Integer tincidunt ante vel ipsum.",
-  "public": true,
-  // "userId" : 1
-}, {
-  "name": "dquarrell6",
-  "description": "Maecenas rhoncus aliquam lacus.",
-  "public": true,
-  // "userId" : 2
-}, {
-  "name": "ldevlin7",
-  "description": "Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.",
-  "public": true,
-  // "userId" : 2
-}, {
-  "name": "ocoultard8",
-  "description": "Nulla ut erat id mauris vulputate elementum.",
-  "public": true,
-  // "userId" : 2
-}, {
-  "name": "spiborn9",
-  "description": "Mauris sit amet eros.",
-  "public": true,
-  // "userId" : 2
-}, {
-  "name": "abengefielda",
-  "description": "Nulla ut erat id mauris vulputate elementum.",
-  "public": true,
-  // "userId" : 3
-}, {
-  "name": "cfilmerb",
-  "description": "Aliquam non mauris.",
-  "public": true,
-  // "userId" : 2
-}, {
-  "name": "bmauroc",
-  "description": "Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo.",
-  "public": true,
-  // "userId" : 2
-}, {
-  "name": "ehurleyd",
-  "description": "Proin at turpis a pede posuere nonummy.",
-  "public": true,
-  // "userId" : 4
-}, {
-  "name": "lbuddelle",
-  "description": "Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl.",
-  "public": true,
-  // "userId" : 5
-}, {
-  "name": "cdinningf",
-  "description": "In congue.",
-  "public": true,
-  // "userId" : 6
-}, {
-  "name": "nogroganeg",
-  "description": "Aenean sit amet justo.",
-  "public": true,
-  // "userId" : 9
-}, {
-  "name": "phanselmannh",
-  "description": "Suspendisse potenti.",
-  "public": true,
-  // "userId" : 9
-}, {
-  "name": "tleathwoodi",
-  "description": "Vivamus tortor.",
-  "public": true,
-  // "userId" : 9
-}, {
-  "name": "kdearlepalserj",
-  "description": "Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo.",
-  "public": true,
-  // "userId" : 4
-}]
+const roomSeed = [
+  {
+    name: 'BASSment',
+    description: 'Heavy basslines only',
+    public: true,
+    // "userId" : 4
+  },
+  {
+    name: 'Summer Hits',
+    description: 'Top hits from summer 2020',
+    public: true,
+    // "userId" : 1
+  },
+  {
+    name: 'Feelin Myself',
+    description: 'Heavy hitters from female hip hop',
+    public: true,
+    // "userId" : 1
+  },
+  {
+    name: 'Belt it!',
+    description: 'Songs that make you want to sing from vocal powerhouses ',
+    public: true,
+    // "userId" : 2
+  },
+  {
+    name: 'House Party',
+    description: 'House music only',
+    public: true,
+    // "userId" : 3
+  },
+  {
+    name: 'Hip Hop Heads',
+    description: 'Keep it 100',
+    public: true,
+    // "userId" : 1
+  },
+  {
+    name: 'LoFi Focus',
+    description: 'Curating the perfect study sounds',
+    public: true,
+    // "userId" : 2
+  },
+  {
+    name: 'Low-Key',
+    description: 'For them chilled out vibes',
+    public: true,
+    // "userId" : 2
+  },
+  {
+    name: 'Get Turnt',
+    description: 'This party cant turn down',
+    public: true,
+    // "userId" : 2
+  },
+  {
+    name: 'Throwback Jams',
+    description: 'Nostalgia inducing party',
+    public: true,
+    // "userId" : 2
+  },
+  {
+    name: 'Latin Party Anthems',
+    description: 'Celebrate the culture!',
+    public: true,
+    // "userId" : 3
+  },
+  {
+    name: "Girls' Night",
+    description: 'In here its girls night every night',
+    public: true,
+    // "userId" : 2
+  },
+  {
+    name: 'Backyard BBQ',
+    description: 'Crowdpleasing classics for an easy, carefree day.',
+    public: true,
+    // "userId" : 2
+  },
+  {
+    name: 'K-Club Party',
+    description:
+      "Let's party and clubbing with your favorite K-pop dance hits!!",
+    public: true,
+    // "userId" : 4
+  },
+  {
+    name: 'Warehouse Party',
+    description: 'Underground clkub music',
+    public: true,
+    // "userId" : 5
+  },
+  {
+    name: 'Techno',
+    description: 'Dress code: black',
+    public: true,
+    // "userId" : 6
+  },
+  {
+    name: 'Country Nights',
+    description:
+      'Small town chillin back on the dirt roads with a couple beers',
+    public: true,
+    // "userId" : 9
+  },
+  {
+    name: 'Wook Party',
+    description: "Where's the next festival? Can I get a ride?",
+    public: true,
+    // "userId" : 9
+  },
+  {
+    name: 'Power Hour',
+    description: '60 second turn up',
+    public: true,
+    // "userId" : 9
+  },
+  {
+    name: 'Cleaning Kit',
+    description: 'Songs for cleaning around the house',
+    public: true,
+    // "userId" : 2
+  },
+]
 
 module.exports = roomSeed

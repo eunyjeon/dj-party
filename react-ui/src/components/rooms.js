@@ -7,19 +7,26 @@ const RoomList = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-  background-color: ${({ theme }) => theme.primary};
 `
 
 const RoomCard = styled.div`
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.secondary};
-  box-shadow: 5px 5px 10px black;
+  background-image: linear-gradient(
+    to bottom right,
+    ${({ theme }) => theme.purple},
+    ${({ theme }) => theme.darkPurple}
+  );
+  box-shadow: 8px 8px 10px black;
   flex-basis: 1fr;
   width: 250px;
-  height: 300px;
+  height: 275px;
   margin-top: 20px;
   font-family: 'Montserrat', sans-serif;
   color: black;
+  opacity: 0.85;
+  :hover {
+    opacity: 1;
+  }
 `
 
 const GET_All_ROOMS = gql`
@@ -49,8 +56,7 @@ function Rooms(props) {
 
   const handleCardClick = (evt) => {
     evt.preventDefault()
-    joinExistingRoom({ variables: { roomId: evt.currentTarget.id } })
-    .then(
+    joinExistingRoom({ variables: { roomId: evt.currentTarget.id } }).then(
       props.history.push(`/room/${evt.currentTarget.id}`)
     )
   }
@@ -74,7 +80,7 @@ function Rooms(props) {
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id} id={room.id} onClick={handleCardClick}>
             <h1>{room.name}</h1>
-            <h2>{room.description}</h2>
+            <h4>{room.description}</h4>
             <div>{room.public ? <h2>Public</h2> : <h3>Private</h3>}</div>
           </RoomCard>
         ))}

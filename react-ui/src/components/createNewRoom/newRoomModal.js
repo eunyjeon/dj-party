@@ -6,12 +6,12 @@ import NewRoomForm from './newRoomForm'
 const StyledButton = styled(Button)`
   color: #000000;
   font-size: 1.2em;
-  font-weight: bold;
+  font-weight: 800;
   margin: 1em;
   padding: 0.5em 1.5em;
-  border: 2px solid ${({ theme }) => theme.blush};
+  border: 2px solid ${({ theme }) => theme.mint};
   border-radius: 20px;
-  background-color: ${({ theme }) => theme.blush};
+  background-color: ${({ theme }) => theme.mint};
 `
 
 const StyledModal = styled(Modal)`
@@ -23,7 +23,7 @@ const StyledModal = styled(Modal)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.secondary};
+  background-color: ${({ theme }) => theme.mint};
   position: fixed;
   top: 20%;
   left: 20%;

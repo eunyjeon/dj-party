@@ -42,7 +42,8 @@ class Player extends Component {
     )
     //.then((response) => response.json())
     const data = await response.json()
-    await this.setState({ deviceId: data.devices[0].id })
+    //.then((data) => this.setState({ deviceId: data.devices[0].id}))
+    this.setState({ deviceId: data.devices[0].id })
     console.log('device id state', this.state.deviceId)
   }
 
