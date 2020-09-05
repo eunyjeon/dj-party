@@ -13,10 +13,12 @@ const SpotifyResolver = {
                     }
                 })
                 const data = await response.json()
+                console.log('data:',data)
+                console.log('THIS IS THE tracks:\n',data.tracks.items)
                 return {
                     description: data.description,
                     id: data.id,
-                    tracks: data.tracks,
+                    tracks: data.tracks.items,
                     uri: data.uri
                 }
             } catch (error) {
