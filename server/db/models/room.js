@@ -5,12 +5,15 @@ const Room = db.define("room", {
     name: {
         type: Sequelize.STRING,
     },
-    public: {  
+    public: {
         type: Sequelize.BOOLEAN,
         defaultValue: true
-    }, 
+    },
     description: {
         type: Sequelize.STRING,
+    },
+    playlistId: {
+        type: Sequelize.TEXT
     }
 })
 

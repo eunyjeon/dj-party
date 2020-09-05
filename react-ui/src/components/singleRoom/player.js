@@ -7,6 +7,7 @@ class Player extends Component {
     super(props)
     this.state = {
       token: '',
+      refreshToken: '',
       deviceId: '',
       // loggedIn: false,
       error: '',
