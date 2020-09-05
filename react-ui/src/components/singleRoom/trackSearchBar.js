@@ -1,35 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useState, useContext } from 'react'
 import { useCombobox } from 'downshift'
-
-// TODO: query me to get access token?
-
-
-
+import UserContext from '../../userContext'
 function TrackSearchBar() {
   const [inputItems, setInputItems] = useState([])
   const [tracks, setTracks] = useState([])
-  const [track, setTrack] = useState({}) //TODO: for user click && will be added to playlist
-
-  // useEffect(() => {
-  //   axios({
-  //     method: 'GET',
-  //     url: `https://api.spotify.com/v1/search`,
-  //     params: {
-  //         q: 'jazz',
-  //         type: 'track'
-  //     },
-  //     headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json',
-  //         'Authorization': "Bearer BQC5p7g5YUsYretSzf8dEF3DBkCcj2NTmto5fzq8PWt4WBKIxD5GXNGSi4LzzMAs2uKA-EkFtyRgy8xAWZ8PdjDmdZRTJ8SZvzTGNf73PgTb1-ni1Um0-VbCf_z6_LzjvFAZP9XM9kXdTH4u2zL4aGEKzu3PJ_AZnO5V0ZzXiNxU1wAYfqlA289SQf97zCCwS5CQxIOIU441EA",
-  //     }})
-  //     .then(res => {
-  //       console.log(res)
-  //       setTracks(res.data.tracks.items)
-  //     })
-  // })
-
+  const [track, setTrack] = useState({}) // TODO: Track should be added to a playlist
+  const user = useContext(UserContext)
+  const [token, setToken] = useState(user.accessToken)
   const {
     isOpen,
     getMenuProps,
@@ -39,33 +16,30 @@ function TrackSearchBar() {
     getItemProps,
   } = useCombobox({
     items: inputItems,
-    onInputValueChange: ({ inputValue }) => {
-        axios({
-      method: 'GET',
-      url: `https://api.spotify.com/v1/search`,
-      params: {
-          // q: 'jazz',
-          q: `${inputItems}`,
-          type: 'track'
-      },
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer BQC5p7g5YUsYretSzf8dEF3DBkCcj2NTmto5fzq8PWt4WBKIxD5GXNGSi4LzzMAs2uKA-EkFtyRgy8xAWZ8PdjDmdZRTJ8SZvzTGNf73PgTb1-ni1Um0-VbCf_z6_LzjvFAZP9XM9kXdTH4u2zL4aGEKzu3PJ_AZnO5V0ZzXiNxU1wAYfqlA289SQf97zCCwS5CQxIOIU441EA",
-      }})
-      .then(res => {
-        console.log(res)
-        setTracks(res.data.tracks.items)
+    onInputValueChange: async ({ inputValue }) => {
+      const urlSafeInputValue = encodeURI(inputValue)
+      const response = await fetch("https://api.spotify.com/v1/search", {
+        method: 'GET',
+        params: {
+            q: `${urlSafeInputValue}`,
+            type: 'track'
+        },
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`,
+        },
       })
-
+      const data = await response.json()
+      console.log(data)
+      setTracks(data.tracks)
       setInputItems(
         tracks.filter((item) =>
-          item.name.toLowerCase().startsWith(inputValue.toLowerCase())
+          item.items.name.toLowerCase().startsWith(inputValue.toLowerCase())
         )
       )
     },
   })
-
   return (
     <div className="searchTrack">
       <h2>Find Song</h2>
@@ -80,11 +54,11 @@ function TrackSearchBar() {
         {isOpen &&
           inputItems.map((item, index) => (
             <span
-              key={item.id} {...getItemProps({item, index})}
+              key={item.items.id} {...getItemProps({item, index})}
               onClick={() => setTrack(item)}
             >
               <li style={highlightedIndex === index? {background: "#ede"} : {}}>
-                <h4>{item}</h4>
+                <h4>{item.items.name}</h4>
               </li>
             </span>
           ))
@@ -93,6 +67,4 @@ function TrackSearchBar() {
     </div>
   )
 }
-
 export default TrackSearchBar
-

@@ -1,17 +1,50 @@
-// const { gql } = require('apollo-server')
+const { gql } = require('apollo-server')
 
-// const spotify = gql`
+// TODO: query getAllRooms
 
-// type Track {
-//   id: ID,
-//   name: String,
-//   artists: [Artist]
-// }
+const Spotify = gql`
+    
+    type Image {
+        url: String
+    }
 
-// type Playlist {
-//   id: ID,
-//   tracks: [Track]
-// }
+    type Album {
+        images: [Image!]
+        name: String
+    }
+    
+    type Artist {
+        name: String
+    }
 
-// `
-// module.exports = spotify
+    type Track {
+        id: String
+        name: String
+        uri: String
+        duration_ms: Int
+        artists: [Artist!]
+        album: [Album!]
+    }
+    
+
+    type Playlist {
+        collaborative: Boolean
+        description: String
+        id: String
+        name: String
+        owner: String
+        tracks: [Track!]
+        uri: String
+    }
+
+    type Query {
+        getPlaylist(playlistId: String!): Playlist
+    }
+
+    type Mutation {
+        createPlaylist(name: String, description: String, roomId: ID!): Boolean!
+        addSongToPlaylist(playlistId: String, trackUri: String): Boolean!
+    }
+`
+
+module.exports = Spotify

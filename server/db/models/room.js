@@ -11,6 +11,9 @@ const Room = db.define("room", {
     },
     description: {
         type: Sequelize.STRING,
+    },
+    playlistId: {
+        type: Sequelize.TEXT
     }
 })
 

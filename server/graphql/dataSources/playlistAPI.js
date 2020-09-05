@@ -9,13 +9,13 @@ class PlaylistAPI extends RESTDataSource {
     super()
     this.baseURL = "https://api.spotify.com/v1/"
   }
+  
 
-  // willSendRequest(request) {
-  //   request.headers.set('Authorization', this.context.token);
-  // }
+  aysnc getSpotifyMe(){
 
-  async createPlaylist() {
-    const response = await this.post(`users/${req.user.id}/playlists`, {
+  }
+  async createPlaylist(accessToken) {
+    const response = await this.post(`users/${a}/playlists`, {
       body: JSON.stringify({
         name: `new playlist for ${req.user.id}`,
         public: false,

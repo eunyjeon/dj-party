@@ -11,6 +11,7 @@ const room = gql`
         isCreator: Boolean
         public: Boolean!
         description: String
+        playlistId: String
     }
 
     type Query {
