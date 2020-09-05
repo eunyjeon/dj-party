@@ -120,10 +120,9 @@ if (!isDev && cluster.isMaster) {
         'playlist-modify-public',
         'user-read-currently-playing',
         'user-read-playback-state',
+        'user-modify-playback-state',
         'streaming',
         'user-read-private',
-        'user-modify-playback-state',
-        'user-read-currently-playing',
         'app-remote-control'
       ],
       showDialog: true,
