@@ -1,3 +1,4 @@
+const fetch = require("node-fetch")
 const SpotifyResolver = {
     Query: {
         getPlaylist: async (parent, {playlistId}, {models, getUser}) => {
