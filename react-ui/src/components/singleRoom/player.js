@@ -1,5 +1,5 @@
 import UserContext from '../../userContext'
-
+import styled from 'styled-components'
 import React, { Component, Fragment } from 'react'
 
 class Player extends Component {
@@ -177,9 +177,10 @@ class Player extends Component {
     } = this.state
 
     return (
-      <div className="App">
-        <div className="App-header">
+      <div>
+        <div>
           <h2>Now playing</h2>
+          <p>Album Image</p>
         </div>
 
         {error && <p>Error: {error}</p>}
@@ -190,16 +191,28 @@ class Player extends Component {
           <p>Album: {albumName}</p>
 
           <p>
-            <button onClick={() => this.onPrevClick()}>Previous</button>
-            <button onClick={() => this.onPlayClick()}>
+            <PlayerButton onClick={() => this.onPrevClick()}>
+              Previous
+            </PlayerButton>
+            <PlayerButton onClick={() => this.onPlayClick()}>
               {playing ? 'Pause' : 'Play'}
-            </button>
-            <button onClick={() => this.onNextClick()}>Next</button>
+            </PlayerButton>
+            <PlayerButton onClick={() => this.onNextClick()}>Next</PlayerButton>
           </p>
         </div>
       </div>
     )
   }
 }
+
+const PlayerButton = styled.button`
+  background-color: ${({ theme }) => theme.mint};
+  color: #000000;
+  font-size: 1em;
+  font-weight: 800;
+  margin: 0.5em;
+  border-radius: 20px;
+  padding: 0.5em 1em;
+`
 
 export default Player

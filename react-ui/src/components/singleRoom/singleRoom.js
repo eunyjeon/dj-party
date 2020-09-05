@@ -8,7 +8,7 @@ import UsersList from './usersList'
 import Player from './player'
 import UserSearchBar from './userSearchBar'
 import TrackSearchBar from './trackSearchBar'
-
+import { Heading, PageDiv } from '../user-home.js'
 
 export const SingleRoom = (props) => {
   const roomId = props.match.params.roomId
@@ -28,21 +28,18 @@ export const SingleRoom = (props) => {
   const accessToken = data.getSingleRoom.accessToken
 
   return (
-    <div>
-      <h1>This room is liiiiit</h1>
-      <h2>Room Name: {data.getSingleRoom.name}</h2>
-      <p>Room Description: {data.getSingleRoom.description}</p>
+    <PageDiv>
+      <Heading>{data.getSingleRoom.name}</Heading>
+      <h3>{data.getSingleRoom.description}</h3>
 
       <Container fluid>
         <Row>
           <Col>
-            <UserSearchBar />
+            <Player accessToken={accessToken} />
           </Col>
-          <UsersList users={users} />
-          <Col className="music-player">Music Player</Col>
-          <Player accessToken = {accessToken}/>
-          <TrackSearchBar/>
-          <Col className="chat-room">
+          <Col>
+            <UserSearchBar />
+            <UsersList users={users} />
             <MessageList
               roomId={roomId}
               messages={messages}
@@ -51,24 +48,29 @@ export const SingleRoom = (props) => {
                   document: MESSAGE_CREATED,
                   variables: { roomId },
                   updateQuery: (prev, { subscriptionData }) => {
-                  if (!subscriptionData.data) return prev
-                  const messageCreated = subscriptionData.data.messageCreated
-                  return Object.assign({}, prev, {
-                    getSingleRoom: {
-                      messages: [
-                        messageCreated,
-                        ...prev.getSingleRoom.messages,
-                      ],
-                    },
-                  })
-                },
-              })
-            }
-          />
-        </Col>
-      </Row>
+                    if (!subscriptionData.data) return prev
+                    const messageCreated = subscriptionData.data.messageCreated
+                    return Object.assign({}, prev, {
+                      getSingleRoom: {
+                        messages: [
+                          messageCreated,
+                          ...prev.getSingleRoom.messages,
+                        ],
+                      },
+                    })
+                  },
+                })
+              }
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <TrackSearchBar />
+          </Col>
+        </Row>
       </Container>
-    </div>
+    </PageDiv>
   )
 }
 
