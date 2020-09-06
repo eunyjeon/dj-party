@@ -7,6 +7,7 @@ const roomSeed = [{
   "name": "rbarthrop1",
   "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
   "public": true,
+  "playlist": "3onDgZECMfHoIbewAA6Tuk"
   // "userId" : 1
 }, {
   "name": "omatlock2",
