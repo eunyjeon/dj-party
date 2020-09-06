@@ -1,6 +1,20 @@
 import React, { useState, useContext } from 'react'
 import { useCombobox } from 'downshift'
 import UserContext from '../../userContext'
+import styled from 'styled-components'
+
+const SongSearchDiv = styled.div`
+  margin: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  width: 50vw;
+  box-shadow: 8px 8px 10px black;
+  background-image: linear-gradient(
+    to bottom right,
+    ${({ theme }) => theme.purple},
+    ${({ theme }) => theme.darkPurple}
+  );
+`
 
 function TrackSearchBar() {
   const [inputItems, setInputItems] = useState([])
@@ -26,9 +40,9 @@ function TrackSearchBar() {
       const response = await fetch("https://api.spotify.com/v1/search?"+searchParams, {
         method: 'GET',
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token}`,
         },
       })
 
@@ -41,10 +55,11 @@ function TrackSearchBar() {
     },
   })
   return (
-    <div className="searchTrack">
+    <SongSearchDiv className="searchTrack">
       <h2>Find Song</h2>
       <div {...getComboboxProps()}>
-        <input {...getInputProps()}
+        <input
+          {...getInputProps()}
           placeholder="Search songs"
           enterBotton="Search"
           size="large"
@@ -64,10 +79,9 @@ function TrackSearchBar() {
               <h4>{item.name} by {item.artists[0].name}</h4>
               </li>
             </span>
-          ))
-        }
+          ))}
       </ul>
-    </div>
+    </SongSearchDiv>
   )
 }
 export default TrackSearchBar

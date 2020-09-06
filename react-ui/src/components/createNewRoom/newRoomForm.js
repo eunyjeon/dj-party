@@ -24,6 +24,17 @@ const CREATE_ROOM = gql`
 const StyledForm = styled(Form)`
   font-family: 'Montserrat', sans-serif;
   text-align: center;
+  width: 22rem;
+`
+
+const FormButton = styled.button`
+  background-color: ${({ theme }) => theme.sky};
+  color: #000000;
+  font-size: 1em;
+  font-weight: 800;
+  margin: 0.5em;
+  border-radius: 20px;
+  padding: 0.5em 1em;
 `
 
 function NewRoomForm(props) {
@@ -67,11 +78,8 @@ function NewRoomForm(props) {
           placeholder="Enter Room Description"
         />
       </Form.Group>
-      <div>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </div>
+      <br />
+      <FormButton type="submit">Submit</FormButton>
     </StyledForm>
   )
 }

@@ -25,6 +25,10 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 label {
   display: block;
 }
@@ -41,15 +45,15 @@ form div {
 
 
 .player {
-  display: flex;
-  flex-direction: row;
+  /* display: flex;
+  flex-direction: row; */
   cursor: pointer;
 }
 
 .app {
   text-align: center;
-  display: flex;
+  /*   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: center; */
 }

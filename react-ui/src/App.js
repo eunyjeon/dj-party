@@ -1,9 +1,9 @@
-import React from "react";
-import "./App.css";
-import { Navbar } from "./components";
-import Routes from "./routes";
+import React from 'react'
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { Navbar } from './components'
+import Routes from './routes'
 import { UserProvider } from './userContext'
-
 
 function App(props) {
   return (
@@ -13,7 +13,7 @@ function App(props) {
         <Routes />
       </div>
     </UserProvider>
-  );
+  )
 }
 
-export default App;
+export default App

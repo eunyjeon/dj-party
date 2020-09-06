@@ -32,9 +32,10 @@ function UserSearchBar() {
 
   return (
     <div className="searchUser">
-      <h2>Hi user! {singleUser}</h2>
+      <h2>Hi {singleUser}!</h2>
       <div {...getComboboxProps()}>
-        <input {...getInputProps()}
+        <input
+          {...getInputProps()}
           placeholder="Search users"
           enterBotton="Search"
           size="large"
@@ -43,17 +44,21 @@ function UserSearchBar() {
       <ul {...getMenuProps}>
         {isOpen &&
           inputItems.map((item, index) => (
-            <span key={item.id} {...getItemProps({item, index})} onClick={() => setSingleUser(item.name)}>
-              <li style={highlightedIndex === index? {background: "#ede"} : {}}>
+            <span
+              key={item.id}
+              {...getItemProps({ item, index })}
+              onClick={() => setSingleUser(item.name)}>
+              <li
+                style={
+                  highlightedIndex === index ? { background: '#ede' } : {}
+                }>
                 <h4>{item.name}</h4>
               </li>
             </span>
-          ))
-        }
+          ))}
       </ul>
     </div>
   )
 }
 
 export default UserSearchBar
-
