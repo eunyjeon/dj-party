@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useCombobox } from 'downshift'
 import UserContext from '../../userContext'
+
 function TrackSearchBar() {
   const [inputItems, setInputItems] = useState([])
   const [tracks, setTracks] = useState([])
@@ -17,6 +18,7 @@ function TrackSearchBar() {
   } = useCombobox({
     items: inputItems,
     onInputValueChange: async ({ inputValue }) => {
+
       const urlSafeInputValue = encodeURI(inputValue)
       const response = await fetch("https://api.spotify.com/v1/search", {
         method: 'GET',

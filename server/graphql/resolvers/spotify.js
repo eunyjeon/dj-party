@@ -15,10 +15,23 @@ const SpotifyResolver = {
                 const data = await response.json()
                 console.log('data:',data)
                 console.log('THIS IS THE tracks:\n',data.tracks.items)
+                const arrOfTracks = data.tracks.items.reduce((accum, track) => {
+                    const trackObj = {
+                        id: track.track.id,
+                        name: track.track.name,
+                        uri: track.track.uri,
+                        duration_ms: track.track.duration_ms,
+                        artists: track.track.artists,
+                        album: track.track.album
+                    }
+                    accum.push(trackObj)
+                    return accum
+                },[])
+                console.log(arrOfTracks, 'arrOfTRACkS')
                 return {
                     description: data.description,
                     id: data.id,
-                    tracks: data.tracks.items,
+                    tracks: arrOfTracks,
                     uri: data.uri
                 }
             } catch (error) {
@@ -57,20 +70,23 @@ const SpotifyResolver = {
                 console.log(error)
                 return false
             }
-        }, 
-        addSongToPlaylist: async (parent, {playlistId, trackUri}) => {
+        },
+        addSongToPlaylist: async (parent, {playlistId, trackUri}, {models, getUser}) => {
             try {
+                const currUser = await models.User.findOne({where: {id: getUser()}})
+                const accessToken = currUser.accessToken
                 const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
                     method: 'POST',
                     headers: {
                         authorization: `Bearer ${accessToken}`,
                         'Content-Type': 'application/json',
                     },
-                    body: {
+                    body: JSON.stringify({
                         uris: [trackUri]
-                    }
+                    })
                 })
                 const data = await response.json()
+                console.log("data: ", data)
                 if (data){
                     return true
                 }
