@@ -1,6 +1,9 @@
 import UserContext from '../../userContext'
 import styled from 'styled-components'
 import React, { Component, Fragment } from 'react'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 class Player extends Component {
   constructor(props) {
@@ -22,7 +25,7 @@ class Player extends Component {
       queue: [],
       albumImage: '',
     }
-    this.playerCheckInterval = null;
+    this.playerCheckInterval = null
   }
 
   static contextType = UserContext
@@ -31,10 +34,7 @@ class Player extends Component {
     this.setState({ token: user.accessToken })
     console.log('user in component did mount', user)
     this.getDeviceId(user.accessToken)
-    this.playerCheckInterval = setInterval(
-			() => this.checkForPlayer(),
-			1000
-    );
+    this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000)
   }
 
   async getDeviceId(token) {
@@ -119,67 +119,66 @@ class Player extends Component {
       console.log('is this working')
       this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f')
     })
-
   }
 
   onStateChanged(state) {
-		// if we're no longer listening to music, we'll get a null state.
-		if (state !== null) {
-			const {
-				current_track: currentTrack,
-				position,
-				duration
-			} = state.track_window;
-			const trackName = currentTrack.name;
-			const albumName = currentTrack.album.name;
-			const trackImage = currentTrack.album.images[0].url;
-			const artistName = currentTrack.artists
-				.map(artist => artist.name)
-				.join(", ");
-			const playing = !state.paused;
-			this.setState(
-				{
-					position,
-					duration,
-					trackName,
-					albumName,
-					artistName,
-					playing,
-					trackImage
-				},
-				() => {
-					var local_this = this;
-					if (this.state.playing) {
-						this.setState({
-							paused: false
-						});
-					} else {
-						if (!this.state.paused) {
-							var temp = this.state.holder + 1;
-							this.setState(
-								{
-									holder: temp
-								},
-								() => {
-									if (this.state.holder === 3) {
-										local_this.props.loadSong();
-										this.setState({
-											holder: 0
-										});
-									} else {
-										console.log(this.state.holder);
-									}
-								}
-							);
-						}
-					}
-				}
-			);
-		}
-		if (state === null) {
-			console.log("state null");
-		}
-	}
+    // if we're no longer listening to music, we'll get a null state.
+    if (state !== null) {
+      const {
+        current_track: currentTrack,
+        position,
+        duration,
+      } = state.track_window
+      const trackName = currentTrack.name
+      const albumName = currentTrack.album.name
+      const trackImage = currentTrack.album.images[0].url
+      const artistName = currentTrack.artists
+        .map((artist) => artist.name)
+        .join(', ')
+      const playing = !state.paused
+      this.setState(
+        {
+          position,
+          duration,
+          trackName,
+          albumName,
+          artistName,
+          playing,
+          trackImage,
+        },
+        () => {
+          var local_this = this
+          if (this.state.playing) {
+            this.setState({
+              paused: false,
+            })
+          } else {
+            if (!this.state.paused) {
+              var temp = this.state.holder + 1
+              this.setState(
+                {
+                  holder: temp,
+                },
+                () => {
+                  if (this.state.holder === 3) {
+                    local_this.props.loadSong()
+                    this.setState({
+                      holder: 0,
+                    })
+                  } else {
+                    console.log(this.state.holder)
+                  }
+                }
+              )
+            }
+          }
+        }
+      )
+    }
+    if (state === null) {
+      console.log('state null')
+    }
+  }
 
   onPrevClick() {
     this.player.previousTrack()
@@ -194,45 +193,41 @@ class Player extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-		if (
-			prevProps.currentlyPlaying !== this.props.currentlyPlaying &&
-			this.props.currentlyPlaying
-		) {
-			this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f');
+    if (
+      prevProps.currentlyPlaying !== this.props.currentlyPlaying &&
+      this.props.currentlyPlaying
+    ) {
+      this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f')
     }
-
   }
 
-   play = spotify_uri => {
+  play = (spotify_uri) => {
     console.log('hi')
     console.log(spotify_uri)
-		 fetch(
-			`https://api.spotify.com/v1/me/player/play?device_id=${
-				this.state.deviceId
-      }`,
+    fetch(
+      `https://api.spotify.com/v1/me/player/play?device_id=${this.state.deviceId}`,
       {
-				method: "PUT",
-				body: JSON.stringify({
-          "uris": ["spotify:track:6EJiVf7U0p1BBfs0qqeb1f"]
-         }),
-      //if you want to hook to playlist: 
-			// {
-			// 	method: "PUT",
-			// 	body: JSON.stringify({
-      //     "context_uri": "spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN",
-      //     "offset": {
-      //       "position": 1
-      //     },
-      //     "position_ms": 0
-      //   } ),
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${this.state.token}`
-				}
-			}
-		);
-  };
-
+        method: 'PUT',
+        body: JSON.stringify({
+          uris: ['spotify:track:6EJiVf7U0p1BBfs0qqeb1f'],
+        }),
+        //if you want to hook to playlist:
+        // {
+        // 	method: "PUT",
+        // 	body: JSON.stringify({
+        //     "context_uri": "spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN",
+        //     "offset": {
+        //       "position": 1
+        //     },
+        //     "position_ms": 0
+        //   } ),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.state.token}`,
+        },
+      }
+    )
+  }
 
   render() {
     const {
@@ -249,22 +244,34 @@ class Player extends Component {
 
     return (
       <PlayerDiv>
-        <div>
-          <h2>Now playing</h2>
-          {/* PLACEHOLDER change to actual responsive album img */}
-          <img src="https://i.scdn.co/image/ab67616d00001e02c88548d8be6edef5730463fb" />
-        </div>
-
+        <h2>Now playing</h2>
+        <Container>
+          <Row>
+            <Col>
+              {/* PLACEHOLDER change to actual responsive album img */}
+              <PlayerImg
+                src="https://i.scdn.co/image/ab67616d00001e02c88548d8be6edef5730463fb"
+                alt="default.jpg"
+              />
+            </Col>
+            <Col>
+              <p>
+                <PlayerTitle>Artist: </PlayerTitle>
+                {artistName}
+              </p>
+              <p>
+                <PlayerTitle>Track: </PlayerTitle>
+                {trackName}
+              </p>
+              <p>
+                <PlayerTitle>Album: </PlayerTitle>
+                {albumName}
+              </p>
+            </Col>
+          </Row>
+        </Container>
         {error && <p>Error: {error}</p>}
-
         <div>
-          <h3>Artist:</h3>
-          <p>{artistName}</p>
-          <h3>Track:</h3>
-          <p>{trackName}</p>
-          <h3>Album:</h3>
-          <p>{albumName}</p>
-
           <p>
             <PlayerButton onClick={() => this.onPrevClick()}>
               Previous
@@ -280,6 +287,11 @@ class Player extends Component {
   }
 }
 
+const PlayerTitle = styled.span`
+  font-size: 1.5rem;
+  font-weight: bold;
+`
+
 const PlayerButton = styled.button`
   background-color: ${({ theme }) => theme.sky};
   color: #000000;
@@ -292,7 +304,7 @@ const PlayerButton = styled.button`
 
 const PlayerDiv = styled.div`
   margin: 20px;
-  padding: 30px;
+  padding: 10px;
   border-radius: 20px;
   width: 50vw;
   box-shadow: 8px 8px 10px black;
@@ -301,6 +313,10 @@ const PlayerDiv = styled.div`
     ${({ theme }) => theme.purple},
     ${({ theme }) => theme.darkPurple}
   );
+`
+const PlayerImg = styled.img`
+  height: 150px;
+  width: 150px;
 `
 
 export default Player

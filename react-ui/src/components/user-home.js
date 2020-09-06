@@ -6,8 +6,7 @@ import NewRoomModal from './createNewRoom/newRoomModal'
 //Right now, redux is not set up to check if a user is logged in.  This because we are going to use Apollo to query for user information.  As of now, once you log into Spotify, you'll be redirected to this page.
 
 export const PageDiv = styled.div`
-  margin-top: 0px;
-  padding-top: 10px;
+  padding-top: 150px;
   background-image: linear-gradient(
     to bottom right,
     ${({ theme }) => theme.cherry},

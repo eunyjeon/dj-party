@@ -5,8 +5,7 @@ import UserSearchBar from './userSearchBar'
 
 const UserListDiv = styled.div`
   margin: 20px;
-  list-style-type: none;
-  padding: 30px;
+  padding: 10px;
   border-radius: 20px;
   box-shadow: 8px 8px 10px black;
   background-image: linear-gradient(
@@ -20,13 +19,11 @@ const UserListDiv = styled.div`
 function UsersList(props) {
   return (
     <UserListDiv>
-      <UserSearchBar />
-      <h1>User List</h1>
-      <ul>
-        {props.users.map((user) => (
-          <li>{user.spotifyUsername} </li>
-        ))}
-      </ul>
+      {/*       <UserSearchBar /> */}
+      <h1>Listeners</h1>
+      {props.users.map((user) => (
+        <p>{user.spotifyUsername} </p>
+      ))}
     </UserListDiv>
   )
 }

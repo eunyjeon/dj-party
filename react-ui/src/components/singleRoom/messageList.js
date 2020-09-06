@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { gql, useMutation } from '@apollo/client'
 import SingleMessage from './singleMessage'
-import { Form, Button } from 'react-bootstrap'
+//import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 import styled from 'styled-components'
 
 const MessageDiv = styled.div`
@@ -19,14 +20,22 @@ const MessageDiv = styled.div`
   height: 60vh;
 `
 
-const ChatButton = styled(Button)`
+const ChatButton = styled.button`
   background-color: ${({ theme }) => theme.mint};
   color: #000000;
   font-size: 1em;
   font-weight: 800;
-  margin: 0.5em;
   border-radius: 20px;
-  padding: 0.5em 1em;
+  padding: 0.3em 0.8em;
+  margin: 10px;
+`
+const Messages = styled.div`
+  text-align: left;
+  overflow: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 60%;
+  background-color: rgba(255, 255, 255, 30%);
 `
 
 function MessageList(props) {
@@ -44,32 +53,36 @@ function MessageList(props) {
     { loading: mutationLoading, error: mutationError },
   ] = useMutation(CREATE_MESSAGE)
 
+  function updateScroll(){
+    Messages.scrollTop = Messages.scrollHeight;
+  }
+
   const handleSubmit = (evt) => {
     evt.preventDefault()
     createMessage({ variables })
     setVariables({ ...variables, message: '' })
+    updateScroll()
   }
+
 
   return (
     <MessageDiv>
-      <h1>Message List</h1>
-      {props.messages.map((message) => (
-        <SingleMessage key={message.id} {...message} />
-      ))}
+      <h1>Chat Room</h1>
+      <Messages>
+        {props.messages.map((message) => (
+          <SingleMessage key={message.id} {...message} />
+        ))}
+      </Messages>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="newMessage">
-          <Form.Control
-            type="text"
-            value={variables.message}
-            onChange={(e) =>
-              setVariables({ ...variables, message: e.target.value })
-            }
-            placeholder="New Message"
-          />
-        </Form.Group>
-        <div>
-          <ChatButton type="submit">Send</ChatButton>
-        </div>
+        <Form.Control
+          type="text"
+          value={variables.message}
+          onChange={(e) =>
+            setVariables({ ...variables, message: e.target.value })
+          }
+          placeholder="New Message"
+        />
+        <ChatButton type="submit">Send</ChatButton>
       </Form>
       {mutationLoading && <p>Loading...</p>}
       {mutationError && <p>Error :( Please try again</p>}

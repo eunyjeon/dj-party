@@ -3,7 +3,9 @@ import React from 'react'
 import MessageList from './messageList'
 import { withRouter } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
-import { Container, Row, Col } from 'react-bootstrap'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import UsersList from './usersList'
 import Player from './player'
 import TrackSearchBar from './trackSearchBar'
@@ -40,7 +42,6 @@ export const SingleRoom = (props) => {
     <PageDiv>
       <RoomHeading>{data.getSingleRoom.name}</RoomHeading>
       <h3>{data.getSingleRoom.description}</h3>
-
       <Container fluid>
         <Row>
           <Col>

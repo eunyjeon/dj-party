@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Button, Modal } from 'react-bootstrap'
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 import NewRoomForm from './newRoomForm'
 
 const StyledButton = styled(Button)`
@@ -10,14 +11,18 @@ const StyledButton = styled(Button)`
   margin: 1em;
   padding: 0.5em 1.5em;
   border: 2px solid ${({ theme }) => theme.mint};
-  border-radius: 20px;
+  border-radius: 25px;
   background-color: ${({ theme }) => theme.mint};
+  :hover {
+    background-color: ${({ theme }) => theme.sky};
+    color: black;
+  }
 `
 
 const StyledModal = styled(Modal)`
   border-radius: 20px;
-  width: 15rem;
-  height: 17rem;
+  width: 25rem;
+  height: 20rem;
   max-width: 90%;
   max-height: 90%;
   display: flex;
@@ -37,7 +42,6 @@ const ModalHeader = styled.div`
   font-family: 'Montserrat', sans-serif;
   text-align: center;
   justify-content: space-around;
-  box-shadow: 5px 5px 10px black;
 `
 
 export default function NewRoomModal(props) {

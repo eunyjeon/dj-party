@@ -1,20 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Messages = styled.div`
-  text-align: left;
-  height: 80%;
-  overflow: scroll;
-  padding-left: 10px;
-  padding-right: 10px;
+const Message = styled.p`
+  color: black;
 `
 
+const Author = styled.span`
+  font-weight: bold;
+  color: ${({ theme }) => theme.purple};
+`
 export default function SingleMessage(props) {
   return (
-    <Messages>
-      <p>
-        {props.user.spotifyUsername}: {props.message}
-      </p>
-    </Messages>
+    <Message>
+      <Author>{props.user.spotifyUsername}:</Author> {props.message}
+    </Message>
   )
 }

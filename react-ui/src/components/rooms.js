@@ -11,6 +11,7 @@ const RoomList = styled.div`
 
 const RoomCard = styled.div`
   border-radius: 10px;
+  padding: 10px;
   background-image: linear-gradient(
     to bottom right,
     ${({ theme }) => theme.purple},
