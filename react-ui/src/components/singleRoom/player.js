@@ -259,7 +259,7 @@ class Player extends Component {
 				body: JSON.stringify({
           "context_uri": "spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN",
           "offset": {
-            "position": 3
+            "position": 1
           },
           "position_ms": 0
         } ),
