@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const SpotifyButton = styled.a`
   padding: 10px 30px 10px 30px;
-  margin-top: 40%;
+  margin-top: 300px;
   background-color: rgb(36, 212, 78);
   font-family: 'Montserrat', sans-serif;
   border-radius: 30px;
@@ -13,6 +13,7 @@ const SpotifyButton = styled.a`
 const LoginPage = styled.div`
   background-image: url(https://www.freepngimg.com/thumb/headphones/1-2-headphones-png-hd.png),
     linear-gradient(black, ${({ theme }) => theme.cherry});
+  background-position: 130px 130px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

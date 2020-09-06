@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col'
 import UsersList from './usersList'
 import Player from './player'
 import TrackSearchBar from './trackSearchBar'
+import Queue from './queue'
 import { PageDiv } from '../user-home.js'
 import styled from 'styled-components'
 
@@ -47,6 +48,9 @@ export const SingleRoom = (props) => {
           <Col>
             <Player accessToken={accessToken} />
             <TrackSearchBar />
+          </Col>
+          <Col>
+            <Queue />
           </Col>
           <Col>
             <UsersList users={users} />
