@@ -4,7 +4,7 @@ import UserContext from '../../userContext'
 
 function TrackSearchBar() {
   const [inputItems, setInputItems] = useState([])
-  const [tracks, setTracks] = useState([])
+  // const [tracks, setTracks] = useState([])
   const [track, setTrack] = useState({}) // TODO: Track should be added to a playlist
   const user = useContext(UserContext)
   const [token, setToken] = useState(user.accessToken)
@@ -19,27 +19,25 @@ function TrackSearchBar() {
     items: inputItems,
     onInputValueChange: async ({ inputValue }) => {
 
-      const urlSafeInputValue = encodeURI(inputValue)
-      const response = await fetch("https://api.spotify.com/v1/search", {
+      // const urlSafeInputValue = encodeURI(inputValue)
+      const params = `q=${inputValue}&type=track&limit=10`
+      const searchParams = new URLSearchParams(params)
+
+      const response = await fetch("https://api.spotify.com/v1/search?"+searchParams, {
         method: 'GET',
-        params: {
-            q: `${urlSafeInputValue}`,
-            type: 'track'
-        },
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             authorization: `Bearer ${token}`,
         },
       })
+
       const data = await response.json()
-      console.log(data)
-      setTracks(data.tracks)
+      console.log('data.tracks.items: ', data.tracks.items)
       setInputItems(
-        tracks.filter((item) =>
-          item.items.name.toLowerCase().startsWith(inputValue.toLowerCase())
-        )
+        data.tracks.items
       )
+      // console.log("inputItems: ", inputItems)
     },
   })
   return (
@@ -56,11 +54,14 @@ function TrackSearchBar() {
         {isOpen &&
           inputItems.map((item, index) => (
             <span
-              key={item.items.id} {...getItemProps({item, index})}
-              onClick={() => setTrack(item)}
+              key={item.id} {...getItemProps({item, index})}
+              onClick={() => {
+                //TODO: where to send track data??
+                setTrack(item)
+              }}
             >
               <li style={highlightedIndex === index? {background: "#ede"} : {}}>
-                <h4>{item.items.name}</h4>
+              <h4>{item.name} by {item.artists[0].name}</h4>
               </li>
             </span>
           ))
