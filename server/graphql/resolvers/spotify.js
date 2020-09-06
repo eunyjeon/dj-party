@@ -15,10 +15,23 @@ const SpotifyResolver = {
                 const data = await response.json()
                 console.log('data:',data)
                 console.log('THIS IS THE tracks:\n',data.tracks.items)
+                const arrOfTracks = data.tracks.items.reduce((accum, track) => {
+                    const trackObj = {
+                        id: track.track.id,
+                        name: track.track.name,
+                        uri: track.track.uri,
+                        duration_ms: track.track.duration_ms,
+                        artists: track.track.artists,
+                        album: track.track.album
+                    }
+                    accum.push(trackObj)
+                    return accum
+                },[])
+                console.log(arrOfTracks, 'arrOfTRACkS')
                 return {
                     description: data.description,
                     id: data.id,
-                    tracks: data.tracks.items,
+                    tracks: arrOfTracks,
                     uri: data.uri
                 }
             } catch (error) {
