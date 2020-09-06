@@ -32,7 +32,6 @@ class Player extends Component {
   componentDidMount = () => {
     const user = this.context
     this.setState({ token: user.accessToken })
-    console.log('user in component did mount', user)
     this.getDeviceId(user.accessToken)
     this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000)
   }
@@ -58,14 +57,10 @@ class Player extends Component {
   checkForPlayer() {
     const { token } = this.state
 
-    // if the Spotify SDK has loaded
     if (window.Spotify !== null) {
-      // cancel the interval
-      console.log('token', token)
       clearInterval(this.playerCheckInterval)
-      // create a new player
       this.player = new window.Spotify.Player({
-        name: 'Spotify Player',
+        name: 'DJ Party',
         getOAuthToken: (cb) => {
           cb(token)
         },
@@ -73,7 +68,6 @@ class Player extends Component {
       console.log('player', this.player)
       this.createEventHandlers()
 
-      // finally, connect
       this.player.connect().then((success) => {
         if (success) {
           console.log('The Web Playback SDK successfully connected to Spotify!')
@@ -83,11 +77,9 @@ class Player extends Component {
   }
 
   createEventHandlers() {
-    // Ready
     this.player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id)
     })
-    console.log('state after', this.state)
     this.player.on('initialization_error', (e) => {
       console.error(e)
     })
@@ -100,10 +92,8 @@ class Player extends Component {
     this.player.on('playback_error', (e) => {
       console.error(e)
     })
-
-    // Playback status update
     this.player.on('player_state_changed', (state) => {
-      console.log(state)
+      console.log('state on stateChange', state)
     })
 
     // Playback status updates
@@ -111,24 +101,22 @@ class Player extends Component {
       this.onStateChanged(state)
     )
 
-    console.log('state before', this.state)
     this.player.on('ready', async (data) => {
       let { device_id } = data
-      console.log('Let the music play on !')
+      console.log('Let the music play on !', device_id)
       await this.setState({ deviceId: device_id })
-      console.log('is this working')
-      this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f')
+      this.play()
     })
   }
 
   onStateChanged(state) {
-    // if we're no longer listening to music, we'll get a null state.
     if (state !== null) {
       const {
         current_track: currentTrack,
         position,
         duration,
       } = state.track_window
+      console.log('trackWindow', state.track_window)
       const trackName = currentTrack.name
       const albumName = currentTrack.album.name
       const trackImage = currentTrack.album.images[0].url
@@ -152,6 +140,13 @@ class Player extends Component {
             this.setState({
               paused: false,
             })
+            console.log(
+              'what is playing',
+              this.state.playing,
+              'position',
+              this.state.position
+            )
+            console.log('trackImage:', trackImage)
           } else {
             if (!this.state.paused) {
               var temp = this.state.holder + 1
@@ -206,21 +201,21 @@ class Player extends Component {
     console.log(spotify_uri)
     fetch(
       `https://api.spotify.com/v1/me/player/play?device_id=${this.state.deviceId}`,
+      // {
+      // 	method: "PUT",
+      // 	body: JSON.stringify({
+      //     "uris": ["spotify:track:6EJiVf7U0p1BBfs0qqeb1f"]
+      //    }),
+      //if you want to hook to playlist:
       {
         method: 'PUT',
         body: JSON.stringify({
-          uris: ['spotify:track:6EJiVf7U0p1BBfs0qqeb1f'],
+          context_uri: 'spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN',
+          offset: {
+            position: 1,
+          },
+          position_ms: 0,
         }),
-        //if you want to hook to playlist:
-        // {
-        // 	method: "PUT",
-        // 	body: JSON.stringify({
-        //     "context_uri": "spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN",
-        //     "offset": {
-        //       "position": 1
-        //     },
-        //     "position_ms": 0
-        //   } ),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this.state.token}`,
@@ -249,10 +244,7 @@ class Player extends Component {
           <Row>
             <Col>
               {/* PLACEHOLDER change to actual responsive album img */}
-              <PlayerImg
-                src="https://i.scdn.co/image/ab67616d00001e02c88548d8be6edef5730463fb"
-                alt="default.jpg"
-              />
+              <PlayerImg src={this.state.trackImage} alt="default.jpg" />
             </Col>
             <Col>
               <p>
