@@ -9,7 +9,6 @@ class Player extends Component {
       token: '',
       refreshToken: '',
       deviceId: '',
-      // loggedIn: false,
       error: '',
       trackName: 'Track Name',
       artistName: 'Artist Name',
@@ -59,7 +58,7 @@ class Player extends Component {
   checkForPlayer() {
     const { token } = this.state
 
-    // if the SPotify SDK has loaded
+    // if the Spotify SDK has loaded
     if (window.Spotify !== null) {
       // cancel the interval
       console.log('token', token)
@@ -185,31 +184,6 @@ class Player extends Component {
 		}
 	}
 
-
-  // onStateChanged(state) {
-  //   if (state !== null) {
-  //     const {
-  //       current_track: currentTrack,
-  //       position,
-  //       duration,
-  //     } = state.track_window
-  //     const trackName = currentTrack.name
-  //     const albumName = currentTrack.album.name
-  //     const artistName = currentTrack.artists
-  //       .map((artist) => artist.name)
-  //       .join(', ')
-  //     const playing = !state.paused
-  //     this.setState({
-  //       position,
-  //       duration,
-  //       trackName,
-  //       albumName,
-  //       artistName,
-  //       playing,
-  //     })
-  //   }
-  // }
-
   onPrevClick() {
     this.player.previousTrack()
   }
@@ -230,21 +204,6 @@ class Player extends Component {
 			this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f');
     }
 
-  }
-
-  transferPlaybackHere() {
-    const { deviceId, token } = this.state
-    fetch('https://api.spotify.com/v1/me/player', {
-      method: 'PUT',
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        device_ids: [deviceId],
-        play: true,
-      }),
-    })
   }
 
    play = spotify_uri => {
