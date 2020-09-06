@@ -49,7 +49,6 @@ class Player extends Component {
         },
       }
     )
-    //.then((response) => response.json())
     const data = await response.json()
     await this.setState({ deviceId: data.devices[0].id })
     console.log('device id state', this.state.deviceId)
@@ -84,7 +83,6 @@ class Player extends Component {
 
   createEventHandlers() {
     // Ready
-
     this.player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id)
     })
@@ -94,7 +92,6 @@ class Player extends Component {
     })
     this.player.on('authentification_error', (e) => {
       console.error(e)
-      // this.setState({ loggedIn: false })
     })
     this.player.on('account_error', (e) => {
       console.error(e)
@@ -118,7 +115,6 @@ class Player extends Component {
       let { device_id } = data
       console.log('Let the music play on !')
       await this.setState({ deviceId: device_id })
-      // this.transferPlaybackHere()
       console.log('is this working')
       this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f')
     })
@@ -218,6 +214,7 @@ class Player extends Component {
 				body: JSON.stringify({
           "uris": ["spotify:track:6EJiVf7U0p1BBfs0qqeb1f"]
          }),
+      //if you want to hook to playlist: 
 			// {
 			// 	method: "PUT",
 			// 	body: JSON.stringify({
