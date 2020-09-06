@@ -6,9 +6,18 @@ import { gql, useQuery } from '@apollo/client'
 import { Container, Row, Col } from 'react-bootstrap'
 import UsersList from './usersList'
 import Player from './player'
-import UserSearchBar from './userSearchBar'
 import TrackSearchBar from './trackSearchBar'
-import { Heading, PageDiv } from '../user-home.js'
+import { PageDiv } from '../user-home.js'
+import styled from 'styled-components'
+
+export const RoomHeading = styled.div`
+  font-family: 'Montserrat', sans-serif;
+  color: ${({ theme }) => theme.golden};
+  font-weight: 800;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  font-size: 3rem;
+`
 
 export const SingleRoom = (props) => {
   const roomId = props.match.params.roomId
@@ -29,16 +38,16 @@ export const SingleRoom = (props) => {
 
   return (
     <PageDiv>
-      <Heading>{data.getSingleRoom.name}</Heading>
+      <RoomHeading>{data.getSingleRoom.name}</RoomHeading>
       <h3>{data.getSingleRoom.description}</h3>
 
       <Container fluid>
         <Row>
           <Col>
             <Player accessToken={accessToken} />
+            <TrackSearchBar />
           </Col>
           <Col>
-            <UserSearchBar />
             <UsersList users={users} />
             <MessageList
               roomId={roomId}
@@ -62,11 +71,6 @@ export const SingleRoom = (props) => {
                 })
               }
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <TrackSearchBar />
           </Col>
         </Row>
       </Container>

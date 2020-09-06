@@ -1,11 +1,20 @@
-import React from 'react';
+import React from 'react'
+import styled from 'styled-components'
+
+const Messages = styled.div`
+  text-align: left;
+  height: 80%;
+  overflow: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
+`
 
 export default function SingleMessage(props) {
-    return (
-    <div>
-        <p>
+  return (
+    <Messages>
+      <p>
         {props.user.spotifyUsername}: {props.message}
-        </p>
-    </div>
-    )
+      </p>
+    </Messages>
+  )
 }

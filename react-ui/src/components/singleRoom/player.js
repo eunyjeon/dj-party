@@ -178,18 +178,22 @@ class Player extends Component {
     } = this.state
 
     return (
-      <div>
+      <PlayerDiv>
         <div>
           <h2>Now playing</h2>
-          <p>Album Image</p>
+          {/* PLACEHOLDER change to actual responsive album img */}
+          <img src="https://i.scdn.co/image/ab67616d00001e02c88548d8be6edef5730463fb" />
         </div>
 
         {error && <p>Error: {error}</p>}
 
         <div>
-          <p>Artist: {artistName}</p>
-          <p>Track: {trackName}</p>
-          <p>Album: {albumName}</p>
+          <h3>Artist:</h3>
+          <p>{artistName}</p>
+          <h3>Track:</h3>
+          <p>{trackName}</p>
+          <h3>Album:</h3>
+          <p>{albumName}</p>
 
           <p>
             <PlayerButton onClick={() => this.onPrevClick()}>
@@ -201,19 +205,32 @@ class Player extends Component {
             <PlayerButton onClick={() => this.onNextClick()}>Next</PlayerButton>
           </p>
         </div>
-      </div>
+      </PlayerDiv>
     )
   }
 }
 
 const PlayerButton = styled.button`
-  background-color: ${({ theme }) => theme.mint};
+  background-color: ${({ theme }) => theme.sky};
   color: #000000;
   font-size: 1em;
   font-weight: 800;
   margin: 0.5em;
   border-radius: 20px;
   padding: 0.5em 1em;
+`
+
+const PlayerDiv = styled.div`
+  margin: 20px;
+  padding: 30px;
+  border-radius: 20px;
+  width: 50vw;
+  box-shadow: 8px 8px 10px black;
+  background-image: linear-gradient(
+    to bottom right,
+    ${({ theme }) => theme.purple},
+    ${({ theme }) => theme.darkPurple}
+  );
 `
 
 export default Player
