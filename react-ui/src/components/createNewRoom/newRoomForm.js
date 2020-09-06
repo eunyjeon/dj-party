@@ -44,7 +44,7 @@ function NewRoomForm(props) {
     public: true,
   })
   const [createNewRoom, { loading, data }] = useMutation(CREATE_ROOM, {
-    // update: (_, __) => props.history.push(`/room/${data.createRoom.roomMade.id}`),
+    update: (_, __) => props.history.push(`/room/${data.createRoom.roomMade.id}`),
     onError: (err) => console.log(err),
   })
 
