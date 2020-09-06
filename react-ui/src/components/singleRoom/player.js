@@ -9,7 +9,6 @@ class Player extends Component {
       token: '',
       refreshToken: '',
       deviceId: '',
-      // loggedIn: false,
       error: '',
       trackName: 'Track Name',
       artistName: 'Artist Name',
@@ -32,11 +31,10 @@ class Player extends Component {
     this.setState({ token: user.accessToken })
     console.log('user in component did mount', user)
     this.getDeviceId(user.accessToken)
-
     this.playerCheckInterval = setInterval(
 			() => this.checkForPlayer(),
 			1000
-		);
+    );
   }
 
   async getDeviceId(token) {
@@ -51,7 +49,6 @@ class Player extends Component {
         },
       }
     )
-    //.then((response) => response.json())
     const data = await response.json()
     await this.setState({ deviceId: data.devices[0].id })
     console.log('device id state', this.state.deviceId)
@@ -60,7 +57,7 @@ class Player extends Component {
   checkForPlayer() {
     const { token } = this.state
 
-    // if the SPotify SDK has loaded
+    // if the Spotify SDK has loaded
     if (window.Spotify !== null) {
       // cancel the interval
       console.log('token', token)
@@ -86,13 +83,6 @@ class Player extends Component {
 
   createEventHandlers() {
     // Ready
-    console.log('state before', this.state)
-    this.player.on('ready', async (data) => {
-      let { device_id } = data
-      console.log('Let the music play on !')
-      await this.setState({ deviceId: device_id })
-      this.transferPlaybackHere()
-    })
     this.player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id)
     })
@@ -102,7 +92,6 @@ class Player extends Component {
     })
     this.player.on('authentification_error', (e) => {
       console.error(e)
-      // this.setState({ loggedIn: false })
     })
     this.player.on('account_error', (e) => {
       console.error(e)
@@ -120,33 +109,76 @@ class Player extends Component {
     this.player.on('player_state_changed', (state) =>
       this.onStateChanged(state)
     )
+
+    console.log('state before', this.state)
+    this.player.on('ready', async (data) => {
+      let { device_id } = data
+      console.log('Let the music play on !')
+      await this.setState({ deviceId: device_id })
+      console.log('is this working')
+      this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f')
+    })
+
   }
-
-
 
   onStateChanged(state) {
-    if (state !== null) {
-      const {
-        current_track: currentTrack,
-        position,
-        duration,
-      } = state.track_window
-      const trackName = currentTrack.name
-      const albumName = currentTrack.album.name
-      const artistName = currentTrack.artists
-        .map((artist) => artist.name)
-        .join(', ')
-      const playing = !state.paused
-      this.setState({
-        position,
-        duration,
-        trackName,
-        albumName,
-        artistName,
-        playing,
-      })
-    }
-  }
+		// if we're no longer listening to music, we'll get a null state.
+		if (state !== null) {
+			const {
+				current_track: currentTrack,
+				position,
+				duration
+			} = state.track_window;
+			const trackName = currentTrack.name;
+			const albumName = currentTrack.album.name;
+			const trackImage = currentTrack.album.images[0].url;
+			const artistName = currentTrack.artists
+				.map(artist => artist.name)
+				.join(", ");
+			const playing = !state.paused;
+			this.setState(
+				{
+					position,
+					duration,
+					trackName,
+					albumName,
+					artistName,
+					playing,
+					trackImage
+				},
+				() => {
+					var local_this = this;
+					if (this.state.playing) {
+						this.setState({
+							paused: false
+						});
+					} else {
+						if (!this.state.paused) {
+							var temp = this.state.holder + 1;
+							this.setState(
+								{
+									holder: temp
+								},
+								() => {
+									if (this.state.holder === 3) {
+										local_this.props.loadSong();
+										this.setState({
+											holder: 0
+										});
+									} else {
+										console.log(this.state.holder);
+									}
+								}
+							);
+						}
+					}
+				}
+			);
+		}
+		if (state === null) {
+			console.log("state null");
+		}
+	}
 
   onPrevClick() {
     this.player.previousTrack()
@@ -165,34 +197,33 @@ class Player extends Component {
 			prevProps.currentlyPlaying !== this.props.currentlyPlaying &&
 			this.props.currentlyPlaying
 		) {
-			this.play(this.props.currentlyPlaying);
+			this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f');
     }
 
   }
 
-  transferPlaybackHere() {
-    const { deviceId, token } = this.state
-    fetch('https://api.spotify.com/v1/me/player', {
-      method: 'PUT',
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        device_ids: [deviceId],
-        play: true,
-      }),
-    })
-  }
-
-  play = spotify_uri => {
-		fetch(
+   play = spotify_uri => {
+    console.log('hi')
+    console.log(spotify_uri)
+		 fetch(
 			`https://api.spotify.com/v1/me/player/play?device_id=${
 				this.state.deviceId
-			}`,
-			{
+      }`,
+      {
 				method: "PUT",
-				body: JSON.stringify({ uris: [spotify_uri] }),
+				body: JSON.stringify({
+          "uris": ["spotify:track:6EJiVf7U0p1BBfs0qqeb1f"]
+         }),
+      //if you want to hook to playlist: 
+			// {
+			// 	method: "PUT",
+			// 	body: JSON.stringify({
+      //     "context_uri": "spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN",
+      //     "offset": {
+      //       "position": 1
+      //     },
+      //     "position_ms": 0
+      //   } ),
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${this.state.token}`
