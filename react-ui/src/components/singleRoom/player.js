@@ -32,11 +32,10 @@ class Player extends Component {
     this.setState({ token: user.accessToken })
     console.log('user in component did mount', user)
     this.getDeviceId(user.accessToken)
-
     this.playerCheckInterval = setInterval(
 			() => this.checkForPlayer(),
 			1000
-		);
+    );
   }
 
   async getDeviceId(token) {
@@ -86,13 +85,7 @@ class Player extends Component {
 
   createEventHandlers() {
     // Ready
-    console.log('state before', this.state)
-    this.player.on('ready', async (data) => {
-      let { device_id } = data
-      console.log('Let the music play on !')
-      await this.setState({ deviceId: device_id })
-      this.transferPlaybackHere()
-    })
+
     this.player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id)
     })
@@ -120,8 +113,15 @@ class Player extends Component {
     this.player.on('player_state_changed', (state) =>
       this.onStateChanged(state)
     )
-  }
 
+    console.log('state before', this.state)
+    this.player.on('ready', async (data) => {
+      let { device_id } = data
+      console.log('Let the music play on !')
+      await this.setState({ deviceId: device_id })
+      this.transferPlaybackHere()
+    })
+  }
 
 
   onStateChanged(state) {
@@ -165,7 +165,7 @@ class Player extends Component {
 			prevProps.currentlyPlaying !== this.props.currentlyPlaying &&
 			this.props.currentlyPlaying
 		) {
-			this.play(this.props.currentlyPlaying);
+			this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f');
     }
 
   }
@@ -192,7 +192,9 @@ class Player extends Component {
 			}`,
 			{
 				method: "PUT",
-				body: JSON.stringify({ uris: [spotify_uri] }),
+				body: JSON.stringify({ context_uri: [spotify_uri], offset: { position: 0 },
+           position_ms: 0
+        }),
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${this.state.token}`
