@@ -23,7 +23,7 @@ const Spotify = gql`
         uri: String
         duration_ms: Int
         artists: [Artist!]
-        album: [Album!]
+        album: Album
     }
     
 
