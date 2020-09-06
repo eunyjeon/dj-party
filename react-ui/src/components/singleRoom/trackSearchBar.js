@@ -18,6 +18,7 @@ function TrackSearchBar() {
   } = useCombobox({
     items: inputItems,
     onInputValueChange: async ({ inputValue }) => {
+
       const urlSafeInputValue = encodeURI(inputValue)
       const response = await fetch("https://api.spotify.com/v1/search", {
         method: 'GET',
