@@ -120,33 +120,95 @@ class Player extends Component {
       console.log('Let the music play on !')
       await this.setState({ deviceId: device_id })
       this.transferPlaybackHere()
+      console.log('is this working')
+      this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f')
     })
-  }
 
+  }
 
   onStateChanged(state) {
-    if (state !== null) {
-      const {
-        current_track: currentTrack,
-        position,
-        duration,
-      } = state.track_window
-      const trackName = currentTrack.name
-      const albumName = currentTrack.album.name
-      const artistName = currentTrack.artists
-        .map((artist) => artist.name)
-        .join(', ')
-      const playing = !state.paused
-      this.setState({
-        position,
-        duration,
-        trackName,
-        albumName,
-        artistName,
-        playing,
-      })
-    }
-  }
+		// if we're no longer listening to music, we'll get a null state.
+		if (state !== null) {
+			const {
+				current_track: currentTrack,
+				position,
+				duration
+			} = state.track_window;
+			const trackName = currentTrack.name;
+			const albumName = currentTrack.album.name;
+			const trackImage = currentTrack.album.images[0].url;
+			const artistName = currentTrack.artists
+				.map(artist => artist.name)
+				.join(", ");
+			const playing = !state.paused;
+			this.setState(
+				{
+					position,
+					duration,
+					trackName,
+					albumName,
+					artistName,
+					playing,
+					trackImage
+				},
+				() => {
+					var local_this = this;
+					if (this.state.playing) {
+						this.setState({
+							paused: false
+						});
+					} else {
+						if (!this.state.paused) {
+							var temp = this.state.holder + 1;
+							this.setState(
+								{
+									holder: temp
+								},
+								() => {
+									if (this.state.holder === 3) {
+										local_this.props.loadSong();
+										this.setState({
+											holder: 0
+										});
+									} else {
+										console.log(this.state.holder);
+									}
+								}
+							);
+						}
+					}
+				}
+			);
+		}
+		if (state === null) {
+			console.log("state null");
+		}
+	}
+
+
+  // onStateChanged(state) {
+  //   if (state !== null) {
+  //     const {
+  //       current_track: currentTrack,
+  //       position,
+  //       duration,
+  //     } = state.track_window
+  //     const trackName = currentTrack.name
+  //     const albumName = currentTrack.album.name
+  //     const artistName = currentTrack.artists
+  //       .map((artist) => artist.name)
+  //       .join(', ')
+  //     const playing = !state.paused
+  //     this.setState({
+  //       position,
+  //       duration,
+  //       trackName,
+  //       albumName,
+  //       artistName,
+  //       playing,
+  //     })
+  //   }
+  // }
 
   onPrevClick() {
     this.player.previousTrack()
@@ -185,16 +247,22 @@ class Player extends Component {
     })
   }
 
-  play = spotify_uri => {
-		fetch(
+   play = spotify_uri => {
+    console.log('hi')
+    console.log(spotify_uri)
+		 fetch(
 			`https://api.spotify.com/v1/me/player/play?device_id=${
 				this.state.deviceId
 			}`,
 			{
 				method: "PUT",
-				body: JSON.stringify({ context_uri: [spotify_uri], offset: { position: 0 },
-           position_ms: 0
-        }),
+				body: JSON.stringify({
+          "context_uri": "spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN",
+          "offset": {
+            "position": 3
+          },
+          "position_ms": 0
+        } ),
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${this.state.token}`
