@@ -6,10 +6,8 @@ function TrackSearchBar() {
   const [inputItems, setInputItems] = useState([])
   const [tracks, setTracks] = useState([])
   const [track, setTrack] = useState({}) // TODO: Track should be added to a playlist
-
   const user = useContext(UserContext)
   const [token, setToken] = useState(user.accessToken)
-
   const {
     isOpen,
     getMenuProps,
@@ -20,9 +18,7 @@ function TrackSearchBar() {
   } = useCombobox({
     items: inputItems,
     onInputValueChange: async ({ inputValue }) => {
-
       const urlSafeInputValue = encodeURI(inputValue)
-
       const response = await fetch("https://api.spotify.com/v1/search", {
         method: 'GET',
         params: {
@@ -35,11 +31,9 @@ function TrackSearchBar() {
             authorization: `Bearer ${token}`,
         },
       })
-
       const data = await response.json()
       console.log(data)
       setTracks(data.tracks)
-
       setInputItems(
         tracks.filter((item) =>
           item.items.name.toLowerCase().startsWith(inputValue.toLowerCase())
@@ -47,7 +41,6 @@ function TrackSearchBar() {
       )
     },
   })
-
   return (
     <div className="searchTrack">
       <h2>Find Song</h2>
@@ -75,6 +68,4 @@ function TrackSearchBar() {
     </div>
   )
 }
-
 export default TrackSearchBar
-

@@ -8,6 +8,10 @@ const message = gql`
   room: Room
 }
 
+type Query {
+  getMessages(roomId: Int!): [Message!]
+}
+
 type Mutation {
     createMessage(roomId: ID, message: String!  ): Message!
 }
