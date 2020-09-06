@@ -119,7 +119,7 @@ class Player extends Component {
       let { device_id } = data
       console.log('Let the music play on !')
       await this.setState({ deviceId: device_id })
-      this.transferPlaybackHere()
+      // this.transferPlaybackHere()
       console.log('is this working')
       this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f')
     })
@@ -253,16 +253,21 @@ class Player extends Component {
 		 fetch(
 			`https://api.spotify.com/v1/me/player/play?device_id=${
 				this.state.deviceId
-			}`,
-			{
+      }`,
+      {
 				method: "PUT",
 				body: JSON.stringify({
-          "context_uri": "spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN",
-          "offset": {
-            "position": 1
-          },
-          "position_ms": 0
-        } ),
+          "uris": ["spotify:track:6EJiVf7U0p1BBfs0qqeb1f"]
+         }),
+			// {
+			// 	method: "PUT",
+			// 	body: JSON.stringify({
+      //     "context_uri": "spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN",
+      //     "offset": {
+      //       "position": 1
+      //     },
+      //     "position_ms": 0
+      //   } ),
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${this.state.token}`
