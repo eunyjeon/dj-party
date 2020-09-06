@@ -70,20 +70,23 @@ const SpotifyResolver = {
                 console.log(error)
                 return false
             }
-        }, 
-        addSongToPlaylist: async (parent, {playlistId, trackUri}) => {
+        },
+        addSongToPlaylist: async (parent, {playlistId, trackUri}, {models, getUser}) => {
             try {
+                const currUser = await models.User.findOne({where: {id: getUser()}})
+                const accessToken = currUser.accessToken
                 const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
                     method: 'POST',
                     headers: {
                         authorization: `Bearer ${accessToken}`,
                         'Content-Type': 'application/json',
                     },
-                    body: {
+                    body: JSON.stringify({
                         uris: [trackUri]
-                    }
+                    })
                 })
                 const data = await response.json()
+                console.log("data: ", data)
                 if (data){
                     return true
                 }
