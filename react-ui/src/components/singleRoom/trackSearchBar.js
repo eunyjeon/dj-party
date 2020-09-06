@@ -1,17 +1,14 @@
 import React, { useState, useContext } from 'react'
 import { useCombobox } from 'downshift'
 import UserContext from '../../userContext'
-import axios from 'axios'
-
-
 
 function TrackSearchBar() {
   const [inputItems, setInputItems] = useState([])
   const [tracks, setTracks] = useState([])
-  const [track, setTrack] = useState({}) //TODO: for user click && will be added to playlist
+  const [track, setTrack] = useState({}) // TODO: Track should be added to a playlist
 
   const user = useContext(UserContext)
-  console.log("user: ", user)
+  const [token, setToken] = useState(user.accessToken)
 
   const {
     isOpen,
@@ -22,27 +19,26 @@ function TrackSearchBar() {
     getItemProps,
   } = useCombobox({
     items: inputItems,
-    onInputValueChange: ({ inputValue }) => {
+    onInputValueChange: async ({ inputValue }) => {
 
+      const urlSafeInputValue = encodeURI(inputValue)
 
-
-      fetch("https://api.spotify.com/v1/search?", {
+      const response = await fetch("https://api.spotify.com/v1/search", {
         method: 'GET',
         params: {
-            q: `${inputItems}`,
+            q: `${urlSafeInputValue}`,
             type: 'track'
         },
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.accssToken}`,
+            authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => res.json())
-      .then(data =>{
-        console.log("data ",data)
-        setTracks(data.tracks)
-      })
+
+      const data = await response.json()
+      console.log(data)
+      setTracks(data.tracks)
 
       setInputItems(
         tracks.filter((item) =>
