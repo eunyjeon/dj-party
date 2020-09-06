@@ -295,10 +295,10 @@ const PlayerButton = styled.button`
 `
 
 const PlayerDiv = styled.div`
-  margin: 20px;
+  margin: 10px;
   padding: 10px;
   border-radius: 20px;
-  width: 50vw;
+  width: 35vw;
   box-shadow: 8px 8px 10px black;
   background-image: linear-gradient(
     to bottom right,
@@ -307,8 +307,8 @@ const PlayerDiv = styled.div`
   );
 `
 const PlayerImg = styled.img`
-  height: 150px;
-  width: 150px;
+  height: 175px;
+  width: 175px;
 `
 
 export default Player
