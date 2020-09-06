@@ -1,8 +1,9 @@
 export default {
-  primary: '#8e9aaf',
-  secondary: '#cbc0d3',
-  accent: '#dee2ff',
-  peach: '#efd3d7',
-  blush: '#feeafa',
-  offWhite: '#f7f7f7'
+  darkCherry: '#A62e4e',
+  cherry: '#D91872',
+  sky: '#05f2Db',
+  mint: '#05f2af',
+  golden: '#F2b035',
+  purple: '#b00Dff',
+  darkPurple: '#43264D',
 }
