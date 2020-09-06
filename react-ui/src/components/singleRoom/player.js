@@ -17,8 +17,13 @@ class Player extends Component {
       playing: false,
       position: 0,
       duration: 0,
+
+      //TODO: added from 12inch
+      hasNextTrack: false,
+      queue: [],
+      albumImage: '',
     }
-    this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000)
+    this.playerCheckInterval = null;
   }
 
   static contextType = UserContext
@@ -27,6 +32,11 @@ class Player extends Component {
     this.setState({ token: user.accessToken })
     console.log('user in component did mount', user)
     this.getDeviceId(user.accessToken)
+
+    this.playerCheckInterval = setInterval(
+			() => this.checkForPlayer(),
+			1000
+		);
   }
 
   async getDeviceId(token) {
@@ -62,7 +72,7 @@ class Player extends Component {
           cb(token)
         },
       })
-      console.log(this.player, 'player')
+      console.log('player', this.player)
       this.createEventHandlers()
 
       // finally, connect
@@ -77,12 +87,12 @@ class Player extends Component {
   createEventHandlers() {
     // Ready
     console.log('state before', this.state)
-    // this.player.on('ready', async (data) => {
-    //   let { device_id } = data
-    //   console.log('Let the music play on !')
-    //   await this.setState({ deviceId: device_id })
-    //   this.transferPlaybackHere()
-    // })
+    this.player.on('ready', async (data) => {
+      let { device_id } = data
+      console.log('Let the music play on !')
+      await this.setState({ deviceId: device_id })
+      this.transferPlaybackHere()
+    })
     this.player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id)
     })
@@ -92,7 +102,7 @@ class Player extends Component {
     })
     this.player.on('authentification_error', (e) => {
       console.error(e)
-      this.setState({ loggedIn: false })
+      // this.setState({ loggedIn: false })
     })
     this.player.on('account_error', (e) => {
       console.error(e)
@@ -112,20 +122,7 @@ class Player extends Component {
     )
   }
 
-  transferPlaybackHere() {
-    const { deviceId, token } = this.state
-    fetch('https://api.spotify.com/v1/me/player', {
-      method: 'PUT',
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        device_ids: [deviceId],
-        play: true,
-      }),
-    })
-  }
+
 
   onStateChanged(state) {
     if (state !== null) {
@@ -162,6 +159,48 @@ class Player extends Component {
   onNextClick() {
     this.player.nextTrack()
   }
+
+  componentDidUpdate(prevProps, prevState) {
+		if (
+			prevProps.currentlyPlaying !== this.props.currentlyPlaying &&
+			this.props.currentlyPlaying
+		) {
+			this.play(this.props.currentlyPlaying);
+    }
+
+  }
+
+  transferPlaybackHere() {
+    const { deviceId, token } = this.state
+    fetch('https://api.spotify.com/v1/me/player', {
+      method: 'PUT',
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        device_ids: [deviceId],
+        play: true,
+      }),
+    })
+  }
+
+  play = spotify_uri => {
+		fetch(
+			`https://api.spotify.com/v1/me/player/play?device_id=${
+				this.state.deviceId
+			}`,
+			{
+				method: "PUT",
+				body: JSON.stringify({ uris: [spotify_uri] }),
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${this.state.token}`
+				}
+			}
+		);
+  };
+
 
   render() {
     const {
