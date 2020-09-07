@@ -43,9 +43,7 @@ const GET_All_ROOMS = gql`
 
 const JOIN_ROOM = gql`
   mutation joinRoom($roomId: ID!) {
-    joinRoom(roomId: $roomId) {
-      ok
-    }
+    joinRoom(roomId: $roomId) 
   }
 `
 

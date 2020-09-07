@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { gql, useMutation } from '@apollo/client'
 
 const Heading = styled.div`
   font-size: 4rem;

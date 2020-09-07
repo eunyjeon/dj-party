@@ -171,7 +171,7 @@ if (!isDev && cluster.isMaster) {
     )
   })
 
-  const syncDb = () => db.sync({force:true})
+  const syncDb = () => db.sync()
 
   server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)

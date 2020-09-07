@@ -18,16 +18,16 @@ async function seed() {
         return Room.create(room)
       })
     )
-    // await Promise.all(
-    //   roomUserSeed.map(roomUser => {
-    //     return RoomUser.create(roomUser)
-    //   })
-    // )
-    // await Promise.all(
-    //   messageSeed.map(message => {
-    //     return Message.create(message)
-    //   })
-    // )
+    await Promise.all(
+      roomUserSeed.map(roomUser => {
+        return RoomUser.create(roomUser)
+      })
+    )
+    await Promise.all(
+      messageSeed.map(message => {
+        return Message.create(message)
+      })
+    )
 
     // await Promise.all(sessions.map(session => { return Session.create(session) }));
 
