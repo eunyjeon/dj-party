@@ -134,8 +134,9 @@ const roomResolver = {
         })
         // if (roomToJoin.public) {
           await currentUser.update({ currentRoom: roomId })
-          await pubSub.publish(USER_JOIN, {userJoin: true})
-          return { ok: true }
+          const newUsers = await models.User.findAll({where: {currentRoom: roomId}})
+          await pubSub.publish(USER_JOIN, {userJoin: newUsers})
+          return true
         // } else {
         //   const accessToPrivate = await models.RoomUser.findOne({
         //     where: { roomId, userId: getUser() },
@@ -148,17 +149,19 @@ const roomResolver = {
         // return { ok: false }
       } catch (error) {
         console.log(error)
-        return { ok: false }
+        return false
       }
     },
     leaveRoom: async (parent, args, {models, getUser, pubSub}) => {
       try {
         const currUser = await models.User.findOne({where: {id: getUser()}})
         currUser.update({currentRoom: null})
-        await pubSub.publish(USER_LEFT, {userLeft: true})
-        return {ok: true}
+        const newUsers = await models.User.findAll({where: {currentRoom: roomId}})
+        await pubSub.publish(USER_LEFT, {userLeft: newUsers})
+        return true
       } catch (error) {
         console.log(error)
+        return false
       }
     }
   }, 

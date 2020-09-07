@@ -35,13 +35,13 @@ const room = gql`
     type Mutation {
         createRoom(name: String!, description: String, public: Boolean): CreateRoomResponse!
         addUserToRoom(spotifyUsername: String!, roomId: ID!): VoidResponse!
-        joinRoom(roomId: ID!): VoidResponse!
-        leaveRoom: VoidResponse!
+        joinRoom(roomId: ID!): Boolean
+        leaveRoom: Boolean
     }
 
     type Subscription {
-        userLeft: Boolean
-        userJoin: Boolean
+        userLeft: [User]
+        userJoin: [User]
     }
 `
 

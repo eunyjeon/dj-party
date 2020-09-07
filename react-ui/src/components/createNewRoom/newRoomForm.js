@@ -22,7 +22,7 @@ const CREATE_ROOM = gql`
 `
 
 const CREATE_PLAYLIST = gql`
-  mutation createPlaylist($name: String, $description: String, $roomId: ID){
+  mutation createPlaylist($name: String, $description: String, $roomId: ID!){
     createPlaylist(name: $name, description: $description, roomId: $roomId)
   }
 `
@@ -64,10 +64,9 @@ function NewRoomForm(props) {
     console.log(res.data.createRoom.roomMade.id, 'id')
     console.log(res, 'var')
     console.log(variables.name, 'name')
-    const res2 = await createNewPlaylist({name: variables.name, description: variables.description, roomId: res.data.createRoom.roomMade.id})
+    const res2 = await createNewPlaylist({variables: {name: variables.name, description: variables.description, roomId: res.data.createRoom.roomMade.id}})
     console.log(res2, 'var2')
     props.history.push(`/room/${res.data.createRoom.roomMade.id}`)
-
   }
 
   return (

@@ -29,6 +29,16 @@ export const SingleRoom = (props) => {
     variables: { roomId },
   })
 
+  // const subscribeToMoreUsers = () => {
+  //   subscribeToMore({
+  //     document: USER_JOIN,
+  //     updateQuery: (prev, {subscriptionData}) => {
+  //       if (!subscriptionData.data) return prev
+  //       const newUser = subscriptionData
+  //     }
+  //   })
+  // }
+
   //if (error) return <h1>Something went wrong in the rooms!</h1>
   if (loading) return <h1>Loading...</h1>
 
@@ -115,3 +125,16 @@ const MESSAGE_CREATED = gql`
     }
   }
 `
+
+const USER_JOIN = gql`
+  subscription userJoin{
+    userJoin
+  }
+`
+
+const USER_LEFT = gql `
+  subscription userLeft{
+    userLeft
+  }
+`
+
