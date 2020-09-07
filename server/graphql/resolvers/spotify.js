@@ -71,7 +71,7 @@ const SpotifyResolver = {
                 return false
             }
         },
-        addSongToPlaylist: async (parent, {playlistId, trackUri}, {models, getUser}) => {
+        addSongToPlaylist: async (parent, {roomId, playlistId, trackUri}, {models, getUser}) => {
             try {
                 const currUser = await models.User.findOne({where: {id: getUser()}})
                 const accessToken = currUser.accessToken
