@@ -81,7 +81,8 @@ const roomResolver = {
           isCreator: true,
           activeRoom: true,
         })
-        await models.User.update({ currentRoom: room.id })
+        const currUser = await models.User.findOne({where: {id: getUser()}})
+        await currUser.update({ currentRoom: room.id })
         return { ok: true, roomMade: room }
       } catch (err) {
         console.log(err)

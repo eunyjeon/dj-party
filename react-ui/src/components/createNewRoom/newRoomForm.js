@@ -11,15 +11,17 @@ const CREATE_ROOM = gql`
       roomMade {
         id
         name
-        # messages
-        # users
-        # isCreator
-        # public
-        # description
       }
     }
   }
 `
+
+const CREATE_PLAYLIST = gql`
+  mutation createPlaylist($name: String, $decription: String, $roomId: ID){
+    createPlaylist(name: $name, description: $description, roomId: $roomId)
+  }
+`
+
 
 const StyledForm = styled(Form)`
   font-family: 'Montserrat', sans-serif;
@@ -38,21 +40,23 @@ const FormButton = styled.button`
 `
 
 function NewRoomForm(props) {
-  const [variables, setVariables] = useState({
-    name: '',
-    description: '',
-    public: true,
-  })
+  
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+
+
   const [createNewRoom, { loading, data }] = useMutation(CREATE_ROOM, {
-    update: (_, __) => props.history.push(`/room/${data.createRoom.roomMade.id}`),
     onError: (err) => console.log(err),
+  })
+
+  const [createNewPlaylist] = useMutation(CREATE_PLAYLIST, {
+    onError: (err) => console.log(err)
   })
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-    createNewRoom({ variables }).then((res) =>
-      props.history.push(`/room/${res.data.createRoom.roomMade.id}`)
-    )
+    createNewRoom(name, description, true).then((res)=> console.log(res))
+    // setVariables({isSubmitted: true})
   }
 
   return (
@@ -61,8 +65,8 @@ function NewRoomForm(props) {
         <Form.Label>Room Name</Form.Label>
         <Form.Control
           type="text"
-          value={variables.name}
-          onChange={(e) => setVariables({ ...variables, name: e.target.value })}
+          value={name}
+          onChange={(e) => setName(e.target.value )}
           placeholder="Enter Room Name"
         />
       </Form.Group>
@@ -71,9 +75,9 @@ function NewRoomForm(props) {
         <Form.Label>Room Description</Form.Label>
         <Form.Control
           type="text"
-          value={variables.description}
+          value={description}
           onChange={(e) =>
-            setVariables({ ...variables, description: e.target.value })
+            setDescription(e.target.value)
           }
           placeholder="Enter Room Description"
         />
