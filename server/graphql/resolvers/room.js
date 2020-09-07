@@ -1,7 +1,9 @@
+const { withFilter }= require('apollo-server')
 const { PubSub } = require('apollo-server');
 const pubsub = new PubSub();
 const USER_LEFT = 'USER_LEFT'
 const USER_JOIN = 'USER_JOIN'
+
 
 const roomResolver = {
   Room: {
@@ -135,7 +137,7 @@ const roomResolver = {
         // if (roomToJoin.public) {
           await currentUser.update({ currentRoom: roomId })
           const newUsers = await models.User.findAll({where: {currentRoom: roomId}})
-          await pubSub.publish(USER_JOIN, {userJoin: newUsers})
+          await pubSub.publish(USER_JOIN, {roomId, userJoin: newUsers})
           return true
         // } else {
         //   const accessToPrivate = await models.RoomUser.findOne({
@@ -152,12 +154,12 @@ const roomResolver = {
         return false
       }
     },
-    leaveRoom: async (parent, args, {models, getUser, pubSub}) => {
+    leaveRoom: async (parent, {roomId}, {models, getUser, pubSub}) => {
       try {
         const currUser = await models.User.findOne({where: {id: getUser()}})
         currUser.update({currentRoom: null})
         const newUsers = await models.User.findAll({where: {currentRoom: roomId}})
-        await pubSub.publish(USER_LEFT, {userLeft: newUsers})
+        await pubSub.publish(USER_LEFT, {roomId, userLeft: newUsers})
         return true
       } catch (error) {
         console.log(error)
@@ -167,12 +169,21 @@ const roomResolver = {
   }, 
   Subscription: {
     userLeft: {
-      subscribe: (parent, args, {pubSub}) => pubSub.asyncIterator([USER_LEFT]),
-    },
+      subscribe: withFilter(
+          (parent, args, {pubSub}) => pubSub.asyncIterator([USER_LEFT]),
+          (payload, variables) => {
+              return payload.roomId === variables.roomId
+          }
+      )
+  },
     userJoin: {
-      subscribe: (parent, args, {pubSub}) => pubSub.asyncIterator([USER_JOIN])
+      subscribe: withFilter(
+          (parent, args, {pubSub}) => pubSub.asyncIterator([USER_JOIN]),
+          (payload, variables) => {
+              return payload.roomId === variables.roomId
+          }
+      )},
     }
-  }
 }
 
 module.exports = roomResolver
