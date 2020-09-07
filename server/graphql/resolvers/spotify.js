@@ -111,13 +111,15 @@ const SpotifyResolver = {
                 console.log(error)
             }
         },
-        deQueue: async(parent, {roomId, trackUri}, {models}) => {
+        deQueue: async(parent, {roomId, trackUri}, {models, pubSub}) => {
             try {
-                const findRoom = await models.Room.findOne({where: {id: roomId}})
-                findRoom.queue = findRoom.queue.filter((track) => track !== trackUri)
-                await findRoom.save()
-                await pubSub.publish(DEQUEUED, {roomId, deQueued: findRoom.queue})
-                return {trackToPlaylist: trackUri, newQueue: findRoom.queue}
+                // const findRoom = await models.Room.findOne({where: {id: roomId}})
+                // findRoom.queue = findRoom.queue.filter((track) => track !== trackUri)
+                // await findRoom.save()
+                await models.Room.update({'queue':sequelize.fn('array_remove', sequelize.col('queue'), trackUri)}, {'where': {'id': roomId}})
+                const room = await models.Room.findOne({where: {id: roomId}})
+                await pubSub.publish(DEQUEUED, {roomId, deQueued: room.queue})
+                return {trackToPlaylist: trackUri, newQueue: room.queue}
                 //trackToPlaylist will be passed down to addSongToPlaylist mutation
             } catch (error) {
                 console.log(error)

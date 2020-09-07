@@ -21,6 +21,13 @@ const CREATE_ROOM = gql`
   }
 `
 
+const CREATE_PLAYLIST = gql`
+  mutation createPlaylist($name: String, $description: String, $roomId: ID!){
+    createPlaylist(name: $name, description: $description, roomId: $roomId)
+  }
+`
+
+
 const StyledForm = styled(Form)`
   font-family: 'Montserrat', sans-serif;
   text-align: center;
@@ -41,18 +48,25 @@ function NewRoomForm(props) {
   const [variables, setVariables] = useState({
     name: '',
     description: '',
-    public: true,
   })
+  
   const [createNewRoom, { loading, data }] = useMutation(CREATE_ROOM, {
-    update: (_, __) => props.history.push(`/room/${data.createRoom.roomMade.id}`),
     onError: (err) => console.log(err),
   })
 
-  const handleSubmit = (evt) => {
+  const [createNewPlaylist] = useMutation(CREATE_PLAYLIST, {
+    onError: (err) => console.log(err)
+  })
+
+  const handleSubmit = async (evt) => {
     evt.preventDefault()
-    createNewRoom({ variables }).then((res) =>
-      props.history.push(`/room/${res.data.createRoom.roomMade.id}`)
-    )
+    const res = await createNewRoom({variables})
+    console.log(res.data.createRoom.roomMade.id, 'id')
+    console.log(res, 'var')
+    console.log(variables.name, 'name')
+    const res2 = await createNewPlaylist({variables: {name: variables.name, description: variables.description, roomId: res.data.createRoom.roomMade.id}})
+    console.log(res2, 'var2')
+    props.history.push(`/room/${res.data.createRoom.roomMade.id}`)
   }
 
   return (
@@ -79,7 +93,7 @@ function NewRoomForm(props) {
         />
       </Form.Group>
       <br />
-      <FormButton type="submit">Submit</FormButton>
+    <FormButton type="submit">Submit</FormButton>
     </StyledForm>
   )
 }
