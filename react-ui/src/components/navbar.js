@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import UserContext from '../userContext'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { gql, useMutation } from '@apollo/client'
 
 const Heading = styled.div`
   font-size: 4rem;
@@ -29,11 +29,13 @@ const StyledLink = styled(Link)`
 `
 
 const Navbar = () => {
+  const isLoggedIn = useContext(UserContext)
+
   return (
     <StyledNav>
       <div>
         <Heading>DJ PARTY</Heading>
-        <StyledLink to="/home">View All Rooms</StyledLink>
+        {isLoggedIn && (<StyledLink to="/home">View All Rooms</StyledLink>)}
       </div>
     </StyledNav>
   )
