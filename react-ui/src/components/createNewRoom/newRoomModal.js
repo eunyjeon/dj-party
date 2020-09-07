@@ -21,14 +21,13 @@ const StyledButton = styled(Button)`
 
 const StyledModal = styled(Modal)`
   border-radius: 20px;
-  width: 25rem;
-  height: 20rem;
+  width: 23rem;
+  height: 23rem;
   max-width: 90%;
   max-height: 90%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.mint};
   position: fixed;
   top: 20%;
   left: 20%;

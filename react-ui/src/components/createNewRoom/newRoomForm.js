@@ -24,7 +24,7 @@ const CREATE_ROOM = gql`
 const StyledForm = styled(Form)`
   font-family: 'Montserrat', sans-serif;
   text-align: center;
-  width: 22rem;
+  width: 18rem;
 `
 
 const FormButton = styled.button`

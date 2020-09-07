@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form'
 import styled from 'styled-components'
 
 const MessageDiv = styled.div`
-  margin: 20px;
+  margin: 10px;
   padding: 10px;
   border-radius: 20px;
   box-shadow: 8px 8px 10px black;
@@ -17,7 +17,7 @@ const MessageDiv = styled.div`
     ${({ theme }) => theme.sky}
   );
   width: 20vw;
-  height: 60vh;
+  height: 50vh;
 `
 
 const ChatButton = styled.button`
@@ -53,8 +53,8 @@ function MessageList(props) {
     { loading: mutationLoading, error: mutationError },
   ] = useMutation(CREATE_MESSAGE)
 
-  function updateScroll(){
-    Messages.scrollTop = Messages.scrollHeight;
+  function updateScroll() {
+    Messages.scrollTop = Messages.scrollHeight
   }
 
   const handleSubmit = (evt) => {
@@ -64,10 +64,9 @@ function MessageList(props) {
     updateScroll()
   }
 
-
   return (
     <MessageDiv>
-      <h1>Chat Room</h1>
+      <h3>Chat Room</h3>
       <Messages>
         {props.messages.map((message) => (
           <SingleMessage key={message.id} {...message} />

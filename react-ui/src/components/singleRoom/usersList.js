@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import UserSearchBar from './userSearchBar'
 
 const UserListDiv = styled.div`
-  margin: 20px;
+  margin: 10px;
   padding: 10px;
   border-radius: 20px;
   box-shadow: 8px 8px 10px black;
@@ -20,7 +20,7 @@ function UsersList(props) {
   return (
     <UserListDiv>
       {/*       <UserSearchBar /> */}
-      <h1>Listeners</h1>
+      <h3>Listeners</h3>
       {props.users.map((user) => (
         <p>{user.spotifyUsername} </p>
       ))}

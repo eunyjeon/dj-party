@@ -7,7 +7,7 @@ const SongSearchDiv = styled.div`
   margin: 20px;
   padding: 10px;
   border-radius: 20px;
-  width: 50vw;
+  width: 35vw;
   box-shadow: 8px 8px 10px black;
   background-image: linear-gradient(
     to bottom right,
@@ -18,7 +18,7 @@ const SongSearchDiv = styled.div`
 
 function TrackSearchBar() {
   const [inputItems, setInputItems] = useState([])
-  const [tracks, setTracks] = useState([])
+  // const [tracks, setTracks] = useState([])
   const [track, setTrack] = useState({}) // TODO: Track should be added to a playlist
   const user = useContext(UserContext)
   const [token, setToken] = useState(user.accessToken)
@@ -32,27 +32,26 @@ function TrackSearchBar() {
   } = useCombobox({
     items: inputItems,
     onInputValueChange: async ({ inputValue }) => {
-      const urlSafeInputValue = encodeURI(inputValue)
-      const response = await fetch('https://api.spotify.com/v1/search', {
-        method: 'GET',
-        params: {
-          q: `${urlSafeInputValue}`,
-          type: 'track',
-        },
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`,
-        },
-      })
-      const data = await response.json()
-      console.log(data)
-      setTracks(data.tracks)
-      setInputItems(
-        tracks.filter((item) =>
-          item.items.name.toLowerCase().startsWith(inputValue.toLowerCase())
-        )
+      // const urlSafeInputValue = encodeURI(inputValue)
+      const params = `q=${inputValue}&type=track&limit=10`
+      const searchParams = new URLSearchParams(params)
+
+      const response = await fetch(
+        'https://api.spotify.com/v1/search?' + searchParams,
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`,
+          },
+        }
       )
+
+      const data = await response.json()
+      console.log('data.tracks.items: ', data.tracks.items)
+      setInputItems(data.tracks.items)
+      // console.log("inputItems: ", inputItems)
     },
   })
   return (
@@ -66,23 +65,31 @@ function TrackSearchBar() {
           size="large"
         />
       </div>
-      <ul {...getMenuProps}>
+      <TrackList {...getMenuProps}>
         {isOpen &&
           inputItems.map((item, index) => (
             <span
-              key={item.items.id}
+              key={item.id}
               {...getItemProps({ item, index })}
-              onClick={() => setTrack(item)}>
-              <li
+              onClick={() => {
+                //TODO: where to send track data??
+                setTrack(item)
+              }}>
+              <h4
                 style={
                   highlightedIndex === index ? { background: '#ede' } : {}
                 }>
-                <h4>{item.items.name}</h4>
-              </li>
+                {item.name}
+              </h4>
+              <p>{item.artists[0].name}</p>
             </span>
           ))}
-      </ul>
+      </TrackList>
     </SongSearchDiv>
   )
 }
 export default TrackSearchBar
+
+const TrackList = styled.div`
+  background-color: rgba(0, 0, 0, 30%);
+`
