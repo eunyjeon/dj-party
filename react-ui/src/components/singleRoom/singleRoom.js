@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 // import styled from 'styled-components'
 import MessageList from './messageList'
 import { withRouter } from 'react-router-dom'
@@ -29,15 +29,44 @@ export const SingleRoom = (props) => {
     variables: { roomId },
   })
 
-  // const subscribeToMoreUsers = () => {
-  //   subscribeToMore({
-  //     document: USER_JOIN,
-  //     updateQuery: (prev, {subscriptionData}) => {
-  //       if (!subscriptionData.data) return prev
-  //       const newUser = subscriptionData
-  //     }
-  //   })
-  // }
+  const subscribeToMoreUsers = () => {
+    subscribeToMore({
+      document: USER_JOIN,
+      variables: {roomId},
+      updateQuery: (prev, {subscriptionData}) => {
+        if (!subscriptionData.data) return prev
+        const updatedUserList = subscriptionData.data.userJoin
+        console.log(updatedUserList, 'userList')
+        return Object.assign({}, {
+          getSingleRoom:{
+            users: updatedUserList
+          }
+        })
+      }
+    })
+  }
+
+  const subscribeToLessUsers = () => {
+    subscribeToMore({
+      document: USER_LEFT,
+      variables: {roomId},
+      updateQuery: (prev, {subscriptionData}) => {
+        if(!subscriptionData.data) return prev
+        const updatedUserList = subscriptionData.data.userLeft
+        return Object.assign({}, {
+          getSingleRoom: {
+            users: updatedUserList
+          }
+        })
+      }
+    })
+  }
+
+  useEffect(() => {
+    subscribeToMoreUsers()
+    subscribeToLessUsers()
+  })
+
 
   //if (error) return <h1>Something went wrong in the rooms!</h1>
   if (loading) return <h1>Loading...</h1>
@@ -127,14 +156,18 @@ const MESSAGE_CREATED = gql`
 `
 
 const USER_JOIN = gql`
-  subscription userJoin{
-    userJoin
+  subscription userJoin($roomId: ID!){
+    userJoin(roomId: $roomId){
+      spotifyUsername
+    }
   }
 `
 
 const USER_LEFT = gql `
-  subscription userLeft{
-    userLeft
+  subscription userLeft($roomId: ID!){
+    userLeft(roomId: $roomId){
+      spotifyUsername
+    }
   }
 `
 
