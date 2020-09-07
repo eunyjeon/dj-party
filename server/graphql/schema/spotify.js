@@ -41,10 +41,25 @@ const Spotify = gql`
         getPlaylist(playlistId: String!): Playlist
     }
 
+    type deQueueResponse {
+        trackToPlaylist: String
+        newQueue: [String]
+    }
+
     type Mutation {
         createPlaylist(name: String, description: String, roomId: ID!): Boolean!
         addSongToPlaylist(roomId: ID, playlistId: String, trackUri: String): Boolean!
+        suggestToQueue(roomId: ID, trackUri: String): [String]
+        deQueue(roomId: ID, trackUri: String): deQueueResponse!
     }
+
+    type Subscription {
+        suggestedToQueue(roomId: ID!): [String]
+        deQueued(roomId: ID): [String]
+
+    }
+
+
 `
 
 module.exports = Spotify

@@ -1,4 +1,10 @@
+const { withFilter }= require('apollo-server')
+const SUGGESTED_TO_QUEUE = 'SUGGESTED_TO_QUEUE'
+const DEQUEUED = 'DEQUEUED'
+const { PubSub } = require('apollo-server');
 const fetch = require("node-fetch")
+const sequelize = require('sequelize')
+
 const SpotifyResolver = {
     Query: {
         getPlaylist: async (parent, {playlistId}, {models, getUser}) => {
@@ -94,6 +100,45 @@ const SpotifyResolver = {
                 console.log(error)
                 return false
             }
+        },
+        suggestToQueue: async(parent, {roomId, trackUri}, {models, pubSub}) => {
+            try {
+                await models.Room.update({'queue': sequelize.fn('array_append', sequelize.col('queue'), trackUri)}, {'where': {'id': roomId}})  
+                const room = await models.Room.findOne({where: {id: roomId}})
+                await pubSub.publish(SUGGESTED_TO_QUEUE, {roomId, suggestedToQueue: room.queue})
+                return room.queue
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        deQueue: async(parent, {roomId, trackUri}, {models}) => {
+            try {
+                const findRoom = await models.Room.findOne({where: {id: roomId}})
+                findRoom.queue = findRoom.queue.filter((track) => track !== trackUri)
+                await findRoom.save()
+                await pubSub.publish(DEQUEUED, {roomId, deQueued: findRoom.queue})
+                return {trackToPlaylist: trackUri, newQueue: findRoom.queue}
+                //trackToPlaylist will be passed down to addSongToPlaylist mutation
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }, 
+    Subscription: {
+        suggestedToQueue: {
+            subscribe: withFilter(
+                (parent, args, {pubSub}) => pubSub.asyncIterator([SUGGESTED_TO_QUEUE]),
+                (payload, variables) => {
+                    return payload.roomId === variables.roomId
+                }
+            )
+        },
+        deQueued: {
+            subscribe: withFilter(
+                (parent,args, {pubSub}) => pubSub.asyncIterator([DEQUEUED]), (payload, variables) => {
+                    return payload.roomId === variables.roomId
+                }
+            )
         }
     }
 }
