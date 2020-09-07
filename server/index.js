@@ -123,7 +123,7 @@ if (!isDev && cluster.isMaster) {
         'user-modify-playback-state',
         'streaming',
         'user-read-private',
-        'app-remote-control'
+        'app-remote-control',
       ],
       showDialog: true,
     })
@@ -173,7 +173,7 @@ if (!isDev && cluster.isMaster) {
 
   const syncDb = () => db.sync()
 
-  server.listen().then(({ url }) => {
+  server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
   })
 
