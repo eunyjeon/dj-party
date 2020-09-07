@@ -1,13 +1,7 @@
 const { withFilter }= require('apollo-server')
-
 const MESSAGE_CREATED = 'MESSAGE_CREATED'
-
-
 const { PubSub } = require('apollo-server');
-
-const pubsub = new PubSub();
-
-const MESSAGE_ADDED = 'MESSAGE_ADDEDs';
+// const pubsub = new PubSub();
 
 const messageResolver = {
   Message: {

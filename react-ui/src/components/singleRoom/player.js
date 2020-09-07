@@ -4,6 +4,8 @@ import React, { Component, Fragment } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 
 class Player extends Component {
   constructor(props) {
@@ -192,7 +194,7 @@ class Player extends Component {
       prevProps.currentlyPlaying !== this.props.currentlyPlaying &&
       this.props.currentlyPlaying
     ) {
-      this.play('spotify:track:6EJiVf7U0p1BBfs0qqeb1f')
+      this.play()
     }
   }
 
@@ -224,10 +226,16 @@ class Player extends Component {
     )
   }
 
+  exitRoom(){
+    if(this.state.playing){
+      this.player.togglePlay()
+    }
+    this.props.history.push('/home')
+  }
+
   render() {
     const {
       token,
-      //   loggedIn,
       artistName,
       trackName,
       albumName,
@@ -244,7 +252,7 @@ class Player extends Component {
           <Row>
             <Col>
               {/* PLACEHOLDER change to actual responsive album img */}
-              <PlayerImg src={this.state.trackImage} alt="default.jpg" />
+              <PlayerImg src={this.state.trackImage}  />
             </Col>
             <Col>
               <p>
@@ -273,6 +281,12 @@ class Player extends Component {
             </PlayerButton>
             <PlayerButton onClick={() => this.onNextClick()}>Next</PlayerButton>
           </p>
+          <Link to="/home">
+            <ExitButton onClick={()=> this.exitRoom()}>Leave Room</ExitButton>
+          </Link>
+         
+
+      
         </div>
       </PlayerDiv>
     )
@@ -286,6 +300,15 @@ const PlayerTitle = styled.span`
 
 const PlayerButton = styled.button`
   background-color: ${({ theme }) => theme.sky};
+  color: #000000;
+  font-size: 1em;
+  font-weight: 800;
+  margin: 0.5em;
+  border-radius: 20px;
+  padding: 0.5em 1em;
+`
+const ExitButton = styled.button`
+  background-color: ${({ theme }) => theme.cherry};
   color: #000000;
   font-size: 1em;
   font-weight: 800;
@@ -311,4 +334,4 @@ const PlayerImg = styled.img`
   width: 175px;
 `
 
-export default Player
+export default withRouter(Player)

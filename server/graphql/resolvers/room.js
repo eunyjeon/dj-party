@@ -1,4 +1,8 @@
-//still trying to decide if we need activeRoom in roomUsers, since there a currentRoom in Users
+const { PubSub } = require('apollo-server');
+const pubsub = new PubSub();
+const USER_LEFT = 'USER_LEFT'
+const USER_JOIN = 'USER_JOIN'
+
 const roomResolver = {
   Room: {
     users: async ({ id }, args, { models }) => {
@@ -65,7 +69,6 @@ const roomResolver = {
       }
     },
   },
-
   Mutation: {
     createRoom: async (parent, args, { models, getUser }) => {
       //have to edit to restrict for unique names
@@ -129,14 +132,8 @@ const roomResolver = {
         }
       }
     },
-    joinRoom: async (parent, { roomId }, { models, getUser }) => {
+    joinRoom: async (parent, { roomId }, { models, getUser, pubSub }) => {
       try {
-        //need to figure out public/private
-        //thinking we check if it is public or not
-        //if public, then they can join and automatically current room updates
-        //if private, it'll be linked to their friend
-        //when a user's friend makes a room, a roomUser instance is made for the user
-
         const roomToJoin = await models.Room.findOne({ where: { id: roomId } })
         const currentUser = await models.User.findOne({
           where: { id: getUser() },
@@ -159,7 +156,25 @@ const roomResolver = {
         return { ok: false }
       }
     },
-  },
+    leaveRoom: async (parent, args, {models, getUser, pubSub}) => {
+      try {
+        const currUser = await models.User.findOne({where: {id: getUser()}})
+        currUser.update({currentRoom: null})
+        await pubSub.publish(USER_LEFT, {ok:true})
+        return {ok: true}
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, 
+  Subscription: {
+    userLeft: {
+      subscribe: (parent, args, {pubSub}) => pubSub.asyncIterator([USER_LEFT]),
+    },
+    userJoin: {
+      subscribe: (parent, args, {pubSub}) => pubSub.asyncIterator([USER_JOIN])
+    }
+  }
 }
 
 module.exports = roomResolver

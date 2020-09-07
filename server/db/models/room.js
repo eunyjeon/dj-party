@@ -14,6 +14,10 @@ const Room = db.define("room", {
     },
     playlistId: {
         type: Sequelize.TEXT
+    },
+    queue: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        defaultValue: ['spotify:track:6EJiVf7U0p1BBfs0qqeb1f']
     }
 })
 

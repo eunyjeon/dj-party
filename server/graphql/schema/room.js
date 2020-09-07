@@ -36,6 +36,12 @@ const room = gql`
         createRoom(name: String!, description: String, public: Boolean): CreateRoomResponse!
         addUserToRoom(spotifyUsername: String!, roomId: ID!): VoidResponse!
         joinRoom(roomId: ID!): VoidResponse!
+        leaveRoom: VoidResponse!
+    }
+
+    type Subscription {
+        userLeft: VoidResponse!
+        userJoin: VoidResponse!
     }
 `
 
