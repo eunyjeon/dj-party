@@ -11,13 +11,18 @@ const CREATE_ROOM = gql`
       roomMade {
         id
         name
+        # messages
+        # users
+        # isCreator
+        # public
+        # description
       }
     }
   }
 `
 
 const CREATE_PLAYLIST = gql`
-  mutation createPlaylist($name: String, $decription: String, $roomId: ID){
+  mutation createPlaylist($name: String, $description: String, $roomId: ID!){
     createPlaylist(name: $name, description: $description, roomId: $roomId)
   }
 `
@@ -40,11 +45,11 @@ const FormButton = styled.button`
 `
 
 function NewRoomForm(props) {
+  const [variables, setVariables] = useState({
+    name: '',
+    description: '',
+  })
   
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-
-
   const [createNewRoom, { loading, data }] = useMutation(CREATE_ROOM, {
     onError: (err) => console.log(err),
   })
@@ -53,10 +58,16 @@ function NewRoomForm(props) {
     onError: (err) => console.log(err)
   })
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault()
-    createNewRoom(name, description, true).then((res)=> console.log(res))
-    // setVariables({isSubmitted: true})
+    const res = await createNewRoom({variables})
+    console.log(res.data.createRoom.roomMade.id, 'id')
+    console.log(variables, 'var')
+    await createNewPlaylist({...variables, roomId: res.data.createRoom.roomMade.id})
+    props.history.push(`/room/${res.data.createRoom.roomMade.id}`)
+
+
+    // createNewRoom({variables})
   }
 
   return (
@@ -65,8 +76,8 @@ function NewRoomForm(props) {
         <Form.Label>Room Name</Form.Label>
         <Form.Control
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value )}
+          value={variables.name}
+          onChange={(e) => setVariables({ ...variables, name: e.target.value })}
           placeholder="Enter Room Name"
         />
       </Form.Group>
@@ -75,15 +86,15 @@ function NewRoomForm(props) {
         <Form.Label>Room Description</Form.Label>
         <Form.Control
           type="text"
-          value={description}
+          value={variables.description}
           onChange={(e) =>
-            setDescription(e.target.value)
+            setVariables({ ...variables, description: e.target.value })
           }
           placeholder="Enter Room Description"
         />
       </Form.Group>
       <br />
-      <FormButton type="submit">Submit</FormButton>
+    <FormButton type="submit">Submit</FormButton>
     </StyledForm>
   )
 }
