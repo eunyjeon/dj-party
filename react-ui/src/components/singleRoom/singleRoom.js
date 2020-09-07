@@ -37,7 +37,7 @@ export const SingleRoom = (props) => {
         if (!subscriptionData.data) return prev
         const updatedUserList = subscriptionData.data.userJoin
         console.log(updatedUserList, 'userList')
-        return Object.assign({}, {
+        return Object.assign({}, prev, {
           getSingleRoom:{
             users: updatedUserList
           }
@@ -53,7 +53,7 @@ export const SingleRoom = (props) => {
       updateQuery: (prev, {subscriptionData}) => {
         if(!subscriptionData.data) return prev
         const updatedUserList = subscriptionData.data.userLeft
-        return Object.assign({}, {
+        return Object.assign({}, prev, {
           getSingleRoom: {
             users: updatedUserList
           }
