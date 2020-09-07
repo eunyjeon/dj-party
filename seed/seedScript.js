@@ -23,11 +23,11 @@ async function seed() {
         return RoomUser.create(roomUser)
       })
     )
-    // await Promise.all(
-    //   messageSeed.map(message => {
-    //     return Message.create(message)
-    //   })
-    // )
+    await Promise.all(
+      messageSeed.map(message => {
+        return Message.create(message)
+      })
+    )
 
     // await Promise.all(sessions.map(session => { return Session.create(session) }));
 
