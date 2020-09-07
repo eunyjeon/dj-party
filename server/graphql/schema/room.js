@@ -40,8 +40,8 @@ const room = gql`
     }
 
     type Subscription {
-        userLeft: VoidResponse!
-        userJoin: VoidResponse!
+        userLeft: Boolean
+        userJoin: Boolean
     }
 `
 

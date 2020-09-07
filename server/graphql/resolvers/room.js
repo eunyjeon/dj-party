@@ -48,10 +48,6 @@ const roomResolver = {
     //haven't set private/public up in the frontend yet
     getPrivateRooms: async (parent, args, { models }) => {
       try {
-        //RoomUser now only used for when users invite other users to their private rooms
-        //when a user is invited to a room, instance in RoomUser for the user is added
-        //when a user creates a room, an instance is also created in RoomUser
-        //so this will return any private rooms the user creates and any ones they are invited to
         const privateRooms = await models.RoomUser.findAll({
           where: { userId: getUser() },
         })
@@ -71,8 +67,6 @@ const roomResolver = {
   },
   Mutation: {
     createRoom: async (parent, args, { models, getUser }) => {
-      //have to edit to restrict for unique names
-      //when user creates a room, must make sure that everytime they create a room, they logout of their current room
       try {
         const room = await models.Room.create({ ...args, userId: getUser() })
         await models.RoomUser.create({
@@ -94,7 +88,6 @@ const roomResolver = {
       { spotifyUsername, roomId },
       { models, getUser }
     ) => {
-      //only creators can add users to their active room
       try {
         const creatorUserPromise = models.RoomUser.findOne({
           where: { roomId, userId: getUser() },
@@ -135,23 +128,24 @@ const roomResolver = {
     },
     joinRoom: async (parent, { roomId }, { models, getUser, pubSub }) => {
       try {
-        const roomToJoin = await models.Room.findOne({ where: { id: roomId } })
+        // const roomToJoin = await models.Room.findOne({ where: { id: roomId } })
         const currentUser = await models.User.findOne({
           where: { id: getUser() },
         })
-        if (roomToJoin.public) {
+        // if (roomToJoin.public) {
           await currentUser.update({ currentRoom: roomId })
+          await pubSub.publish(USER_JOIN, {userJoin: true})
           return { ok: true }
-        } else {
-          const accessToPrivate = await models.RoomUser.findOne({
-            where: { roomId, userId: getUser() },
-          })
-          if (accessToPrivate) {
-            await currentUser.update({ currentRoom: roomId })
-            return { ok: true }
-          }
-        }
-        return { ok: false }
+        // } else {
+        //   const accessToPrivate = await models.RoomUser.findOne({
+        //     where: { roomId, userId: getUser() },
+        //   })
+        //   if (accessToPrivate) {
+        //     await currentUser.update({ currentRoom: roomId })
+        //     return { ok: true }
+        //   }
+        // }
+        // return { ok: false }
       } catch (error) {
         console.log(error)
         return { ok: false }
@@ -161,7 +155,7 @@ const roomResolver = {
       try {
         const currUser = await models.User.findOne({where: {id: getUser()}})
         currUser.update({currentRoom: null})
-        await pubSub.publish(USER_LEFT, {ok:true})
+        await pubSub.publish(USER_LEFT, {userLeft: true})
         return {ok: true}
       } catch (error) {
         console.log(error)
