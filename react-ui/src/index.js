@@ -14,16 +14,14 @@ import { HttpLink } from 'apollo-link-http'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import './index.css'
 
-let PORT = process.env.PORT || 4000
-
 // for queries & mutations
 const httpLink = new HttpLink({
   // uri: 'http://localhost:4000',
-  uri: `http://localhost:${PORT}/graphql`,
+  uri: 'http://localhost:4000/graphql',
 })
 
 // for subscription & push notifications
-const GRAPHQL_ENDPOINT = `ws://localhost:${PORT}/graphql`
+const GRAPHQL_ENDPOINT = `ws://localhost:4000/graphql`
 const clientWS = new SubscriptionClient(GRAPHQL_ENDPOINT, {
   reconnect: true,
 })
