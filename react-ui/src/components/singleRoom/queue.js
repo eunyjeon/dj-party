@@ -54,6 +54,22 @@ export default function Queue(props) {
 
   let playlist = props.playlist
 
+  const roomId = props.roomId
+
+  const subscribeToMoreSongs = () => {
+    subscribeToMore({
+      document: SONG_ADDED_TO_PLAYLIST,
+      variables: { roomId },
+      updateQuery: (prev, { subscriptionData }) => {
+         return prev
+      },
+    })
+  }
+
+    useEffect(() => {
+    subscribeToMoreSongs()
+  })
+
   // useEffect(() => {
   //   getSongs(playlist, token).then((songs) => setSongs(songs))
   // }, [])
@@ -73,7 +89,7 @@ export default function Queue(props) {
     <QueueDiv>
       <h2>Up Next:</h2>
       <Tracks>
-        {songs.length ? (
+        {
           songs.map((item) => (
             <Song
               // key={item.track.id}
@@ -88,9 +104,7 @@ export default function Queue(props) {
               album={item.album.name}
             />
           ))
-        ) : (
-          <p>Loading tracks...</p>
-        )}
+        }
       </Tracks>
     </QueueDiv>
   )
@@ -115,4 +129,10 @@ const GET_PLAYLIST = gql`
     }
   }
 
+`
+
+const SONG_ADDED_TO_PLAYLIST = gql`
+  subscription songAddedToPlaylist($roomId: ID) {
+    songAddedToPlaylist(roomId: $roomId) 
+  }
 `
