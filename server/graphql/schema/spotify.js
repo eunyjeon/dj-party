@@ -48,11 +48,11 @@ const Spotify = gql`
 
     type Mutation {
         createPlaylist(name: String, description: String, roomId: ID!): Boolean!
-        addSongToPlaylist(roomId: ID, playlistId: String, trackUri: String): Boolean!
+        addSongToPlaylist(roomId: ID, playlistId: String, trackUri: String): Playlist
     }
 
     type Subscription {
-        songAddedToPlaylist(roomId: ID): Boolean
+        songAddedToPlaylist(playlistId: String ): Playlist
     }
 
 

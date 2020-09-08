@@ -92,10 +92,34 @@ const SpotifyResolver = {
                 })
                 const data = await response.json()
                 console.log("data: ", data)
-                await pubSub.publish(SONG_ADDED_TO_PLAYLIST, {roomId, songAddedToPlaylist: true})
-                if (data){
-                    return true
+                const responseUpdated = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+                    method: 'GET',
+                    headers: {
+                        authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                const dataUpdated = await responseUpdated.json()
+                const arrOfTracks = dataUpdated.tracks.items.reduce((accum, track) => {
+                    const trackObj = {
+                        id: track.track.id,
+                        name: track.track.name,
+                        uri: track.track.uri,
+                        duration_ms: track.track.duration_ms,
+                        artists: track.track.artists,
+                        album: track.track.album
+                    }
+                    accum.push(trackObj)
+                    return accum
+                },[])
+                const updatedPlaylist =  {
+                    description: data.description,
+                    id: data.id,
+                    tracks: arrOfTracks,
+                    uri: data.uri
                 }
+                await pubSub.publish(SONG_ADDED_TO_PLAYLIST, {playlistId, songAddedToPlaylist: updatedPlaylist})
+                return updatedPlaylist
             } catch (error) {
                 console.log(error)
                 return false
@@ -107,7 +131,7 @@ const SpotifyResolver = {
             subscribe: withFilter(
                 (parent, args, {pubSub}) => pubSub.asyncIterator([SONG_ADDED_TO_PLAYLIST]),
                 (payload, variables) => {
-                    return payload.roomId === variables.roomId
+                    return payload.playlistId === variables.playlistId
                 }
             )
         },

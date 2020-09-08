@@ -61,7 +61,11 @@ export default function Queue(props) {
       document: SONG_ADDED_TO_PLAYLIST,
       variables: { roomId },
       updateQuery: (prev, { subscriptionData }) => {
-         return prev
+        if (!subscriptionData.data) return prev
+        const updatedPlaylist = subscriptionData.data.songAddedToPlaylist
+        return Object.assign({}, prev, {
+          getPlaylist: updatedPlaylist
+        })
       },
     })
   }
@@ -132,7 +136,21 @@ const GET_PLAYLIST = gql`
 `
 
 const SONG_ADDED_TO_PLAYLIST = gql`
-  subscription songAddedToPlaylist($roomId: ID) {
-    songAddedToPlaylist(roomId: $roomId) 
+  subscription songAddedToPlaylist($playlistId: String) {
+    songAddedToPlaylist(playlistId: $playlistId) {
+      tracks{
+        id
+        name
+        artists {
+          name
+        }
+        album {
+          name
+          images {
+            url
+          }
+        }
+      }
+    }
   }
 `
