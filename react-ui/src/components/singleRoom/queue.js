@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import UserContext from '../../userContext'
 import styled from 'styled-components'
 import Song from './singleSong'
+import { gql, useQuery } from '@apollo/client'
 
 const QueueDiv = styled.div`
   margin-top: 10px;
