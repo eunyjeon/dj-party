@@ -14,6 +14,8 @@ const UserListDiv = styled.div`
     ${({ theme }) => theme.mint}
   );
   width: 20vw;
+  overflow: scroll;
+  max-height: 20vw;
 `
 
 function UsersList(props) {
