@@ -213,7 +213,7 @@ class Player extends Component {
         body: JSON.stringify({
           context_uri: `spotify:playlist:${this.props.playlistId}`,
           offset: {
-            position: 1,
+            position: 0,
           },
           position_ms: 0,
         }),
