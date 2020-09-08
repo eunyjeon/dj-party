@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import UsersList from './usersList'
 import Player from './player'
-import TrackSearchBar from './trackSearchBar'
+import TrackSearchBar from './trackSearch/trackSearchBar'
 import Queue from './queue'
 import { PageDiv } from '../user-home.js'
 import styled from 'styled-components'
@@ -87,7 +87,7 @@ export const SingleRoom = (props) => {
         <Row>
           <Col>
             <Player accessToken={accessToken} />
-            <TrackSearchBar />
+            <TrackSearchBar roomId={roomId} playlist={playlist} />
           </Col>
           <Col>
             <Queue playlist={playlist} />
