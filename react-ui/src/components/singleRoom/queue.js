@@ -44,15 +44,30 @@ async function getSongs(playlistId, token) {
 }
 
 export default function Queue(props) {
-  const user = useContext(UserContext)
-  const [token, setToken] = useState(user.accessToken)
-  const [songs, setSongs] = useState([])
+  // const user = useContext(UserContext)
+  // const [token, setToken] = useState(user.accessToken)
+  // const [songs, setSongs] = useState([])
+  const playlistId = props.playlist
+  const { loading, error, data, subscribeToMore } = useQuery(GET_PLAYLIST, {
+    variables: { playlistId },
+  })
 
   let playlist = props.playlist
 
-  useEffect(() => {
-    getSongs(playlist, token).then((songs) => setSongs(songs))
-  }, [])
+  // useEffect(() => {
+  //   getSongs(playlist, token).then((songs) => setSongs(songs))
+  // }, [])
+
+  //  useEffect(() => {
+
+
+  // })
+
+  if (loading) return <h1>Loading...</h1>
+
+  const songs = data.getPlaylist.tracks
+  console.log(songs, 'songs')
+  console.log(data.getPlaylist, 'getPlaylist')
 
   return (
     <QueueDiv>
@@ -61,11 +76,16 @@ export default function Queue(props) {
         {songs.length ? (
           songs.map((item) => (
             <Song
-              key={item.track.id}
-              artists={item.track.artists}
-              albumImg={item.track.album.images[2]}
-              name={item.track.name}
-              album={item.track.album.name}
+              // key={item.track.id}
+              // artists={item.track.artists}
+              // albumImg={item.track.album.images[2]}
+              // name={item.track.name}
+              // album={item.track.album.name}
+              key={item.id}
+              artists={item.artists}
+              albumImg={item.album.images[0]}
+              name={item.name}
+              album={item.album.name}
             />
           ))
         ) : (
@@ -75,3 +95,24 @@ export default function Queue(props) {
     </QueueDiv>
   )
 }
+
+const GET_PLAYLIST = gql`
+  query getPlaylist($playlistId: String!) {
+    getPlaylist(playlistId: $playlistId) {
+      tracks{
+        id
+        name
+        artists {
+          name
+        }
+        album {
+          name
+          images {
+            url
+          }
+        }
+      }
+    }
+  }
+
+`
