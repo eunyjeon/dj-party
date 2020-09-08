@@ -77,6 +77,7 @@ export const SingleRoom = (props) => {
   const users = data.getSingleRoom.users
   const accessToken = data.getSingleRoom.accessToken
   const playlist = data.getSingleRoom.playlistId
+  console.log('playlist', playlist)
 
   return (
     <PageDiv>
