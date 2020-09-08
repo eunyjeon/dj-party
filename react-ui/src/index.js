@@ -14,14 +14,16 @@ import { HttpLink } from 'apollo-link-http'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import './index.css'
 
+let PORT = process.env.PORT || 4000
+
 // for queries & mutations
 const httpLink = new HttpLink({
   // uri: 'http://localhost:4000',
-  uri: 'http://localhost:4000/graphql',
+  uri: `http://localhost:${PORT}/graphql`,
 })
 
 // for subscription & push notifications
-const GRAPHQL_ENDPOINT = `ws://localhost:4000/graphql`
+const GRAPHQL_ENDPOINT = `ws://localhost:${PORT}/graphql`
 const clientWS = new SubscriptionClient(GRAPHQL_ENDPOINT, {
   reconnect: true,
 })
@@ -40,7 +42,6 @@ const terminatingLink = split(
 const link = ApolloLink.from([terminatingLink])
 
 //can we do redux with apollo? if not what do we do with needed react hooks?
-
 
 const cache = new InMemoryCache()
 
@@ -75,5 +76,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister()
-
-
