@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useCombobox } from 'downshift'
 import UserContext from '../../userContext'
 import styled from 'styled-components'
@@ -16,7 +16,8 @@ const SongSearchDiv = styled.div`
   );
 `
 
-function TrackSearchBar() {
+function TrackSearchBar(props) {
+  const playlistId = props.playlist
   const [inputItems, setInputItems] = useState([])
   // const [tracks, setTracks] = useState([])
   const [track, setTrack] = useState({}) // TODO: Track should be added to a playlist
@@ -54,6 +55,7 @@ function TrackSearchBar() {
       // console.log("inputItems: ", inputItems)
     },
   })
+
   return (
     <SongSearchDiv className="searchTrack">
       <h2>Find Song</h2>

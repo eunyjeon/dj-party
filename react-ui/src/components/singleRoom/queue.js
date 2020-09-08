@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
-//import { useCombobox } from 'downshift'
 import UserContext from '../../userContext'
 import styled from 'styled-components'
+import Song from './singleSong'
 
 const QueueDiv = styled.div`
   margin-top: 10px;
@@ -58,18 +58,15 @@ export default function Queue(props) {
       <h2>Up Next:</h2>
       <Tracks>
         {songs.length ? (
-          songs.map((item) => {
-            let albumImg = item.track.album.images[2]
-            let artists = item.track.artists.map((artist) => artist.name)
-            return (
-              <>
-                <img key={item.track.id} src={albumImg.url} alt="" />
-                <h5>{item.track.name}</h5>
-                <p>{artists}</p>
-                <p>{item.track.album.name}</p>
-              </>
-            )
-          })
+          songs.map((item) => (
+            <Song
+              key={item.track.id}
+              artists={item.track.artists}
+              albumImg={item.track.album.images[2]}
+              name={item.track.name}
+              album={item.track.album.name}
+            />
+          ))
         ) : (
           <p>Loading tracks...</p>
         )}
