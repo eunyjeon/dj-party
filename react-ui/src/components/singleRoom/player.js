@@ -24,11 +24,7 @@ class Player extends Component {
       playing: false,
       position: 0,
       duration: 0,
-
-      //TODO: added from 12inch
-      hasNextTrack: false,
-      queue: [],
-      albumImage: '',
+      playlistId: props.playlistId
     }
     this.playerCheckInterval = null
   }
@@ -215,7 +211,7 @@ class Player extends Component {
       {
         method: 'PUT',
         body: JSON.stringify({
-          context_uri: 'spotify:playlist:6qgZRnoXgcV1fSTfWbA3IN',
+          context_uri: `spotify:playlist:${this.props.playlistId}`,
           offset: {
             position: 1,
           },

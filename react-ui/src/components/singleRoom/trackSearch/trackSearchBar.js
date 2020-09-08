@@ -68,7 +68,7 @@ function TrackSearchBar(props) {
       {
         tracks &&
         <TrackList>
-          <SearchResult list={tracks} roomId={props.roomId} playlist={props.playlist} />
+          <SearchResult list={tracks} roomId={props.roomId} playlistId={props.playlistId} />
         </TrackList>
       }
     </SongSearchDiv>

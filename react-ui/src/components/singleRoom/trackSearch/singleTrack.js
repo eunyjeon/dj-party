@@ -21,6 +21,7 @@ function SingleTrack(props) {
 
   const handleClick = evt => {
     evt.preventDefault()
+    console.log(props.playlistId)
     addSongToPlaylist({ variables })
   }
 
