@@ -1,6 +1,5 @@
 const { withFilter }= require('apollo-server')
-const SUGGESTED_TO_QUEUE = 'SUGGESTED_TO_QUEUE'
-const DEQUEUED = 'DEQUEUED'
+const SONG_ADDED_TO_PLAYLIST = 'SONG_ADDED_TO_PLAYLIST'
 const { PubSub } = require('apollo-server');
 const fetch = require("node-fetch")
 const sequelize = require('sequelize')
@@ -77,7 +76,7 @@ const SpotifyResolver = {
                 return false
             }
         },
-        addSongToPlaylist: async (parent, {roomId, playlistId, trackUri}, {models, getUser}) => {
+        addSongToPlaylist: async (parent, {roomId, playlistId, trackUri}, {models, pubSub, getUser}) => {
             try {
                 const currUser = await models.User.findOne({where: {id: getUser()}})
                 const accessToken = currUser.accessToken
@@ -93,55 +92,49 @@ const SpotifyResolver = {
                 })
                 const data = await response.json()
                 console.log("data: ", data)
-                if (data){
-                    return true
+                const responseUpdated = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+                    method: 'GET',
+                    headers: {
+                        authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                const dataUpdated = await responseUpdated.json()
+                const arrOfTracks = dataUpdated.tracks.items.reduce((accum, track) => {
+                    const trackObj = {
+                        id: track.track.id,
+                        name: track.track.name,
+                        uri: track.track.uri,
+                        duration_ms: track.track.duration_ms,
+                        artists: track.track.artists,
+                        album: track.track.album
+                    }
+                    accum.push(trackObj)
+                    return accum
+                },[])
+                const updatedPlaylist =  {
+                    description: data.description,
+                    id: data.id,
+                    tracks: arrOfTracks,
+                    uri: data.uri
                 }
+                await pubSub.publish(SONG_ADDED_TO_PLAYLIST, {playlistId, songAddedToPlaylist: updatedPlaylist})
+                return updatedPlaylist
             } catch (error) {
                 console.log(error)
                 return false
             }
         },
-        suggestToQueue: async(parent, {roomId, trackUri}, {models, pubSub}) => {
-            try {
-                await models.Room.update({'queue': sequelize.fn('array_append', sequelize.col('queue'), trackUri)}, {'where': {'id': roomId}})  
-                const room = await models.Room.findOne({where: {id: roomId}})
-                await pubSub.publish(SUGGESTED_TO_QUEUE, {roomId, suggestedToQueue: room.queue})
-                return room.queue
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        deQueue: async(parent, {roomId, trackUri}, {models, pubSub}) => {
-            try {
-                // const findRoom = await models.Room.findOne({where: {id: roomId}})
-                // findRoom.queue = findRoom.queue.filter((track) => track !== trackUri)
-                // await findRoom.save()
-                await models.Room.update({'queue':sequelize.fn('array_remove', sequelize.col('queue'), trackUri)}, {'where': {'id': roomId}})
-                const room = await models.Room.findOne({where: {id: roomId}})
-                await pubSub.publish(DEQUEUED, {roomId, deQueued: room.queue})
-                return {trackToPlaylist: trackUri, newQueue: room.queue}
-                //trackToPlaylist will be passed down to addSongToPlaylist mutation
-            } catch (error) {
-                console.log(error)
-            }
-        }
     }, 
     Subscription: {
-        suggestedToQueue: {
+        songAddedToPlaylist: {
             subscribe: withFilter(
-                (parent, args, {pubSub}) => pubSub.asyncIterator([SUGGESTED_TO_QUEUE]),
+                (parent, args, {pubSub}) => pubSub.asyncIterator([SONG_ADDED_TO_PLAYLIST]),
                 (payload, variables) => {
-                    return payload.roomId === variables.roomId
+                    return payload.playlistId === variables.playlistId
                 }
             )
         },
-        deQueued: {
-            subscribe: withFilter(
-                (parent,args, {pubSub}) => pubSub.asyncIterator([DEQUEUED]), (payload, variables) => {
-                    return payload.roomId === variables.roomId
-                }
-            )
-        }
     }
 }
 

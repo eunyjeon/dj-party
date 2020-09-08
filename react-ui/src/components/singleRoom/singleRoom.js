@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import UsersList from './usersList'
 import Player from './player'
-import TrackSearchBar from './trackSearchBar'
+import TrackSearchBar from './trackSearch/trackSearchBar'
 import Queue from './queue'
 import { PageDiv } from '../user-home.js'
 import styled from 'styled-components'
@@ -86,11 +86,11 @@ export const SingleRoom = (props) => {
       <Container fluid>
         <Row>
           <Col>
-            <Player accessToken={accessToken} />
-            <TrackSearchBar />
+            <Player accessToken={accessToken} playlistId={playlist} />
+            <TrackSearchBar roomId={roomId} playlistId={playlist} />
           </Col>
           <Col>
-            <Queue playlist={playlist} />
+            <Queue playlist={playlist} roomId={roomId} />
           </Col>
           <Col>
             <UsersList users={users} />

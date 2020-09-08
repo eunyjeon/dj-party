@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import UserContext from '../../userContext'
 import styled from 'styled-components'
 import Song from './singleSong'
+import { gql, useQuery } from '@apollo/client'
 
 const QueueDiv = styled.div`
   margin-top: 10px;
@@ -43,34 +44,113 @@ async function getSongs(playlistId, token) {
 }
 
 export default function Queue(props) {
-  const user = useContext(UserContext)
-  const [token, setToken] = useState(user.accessToken)
-  const [songs, setSongs] = useState([])
+  // const user = useContext(UserContext)
+  // const [token, setToken] = useState(user.accessToken)
+  // const [songs, setSongs] = useState([])
+  const playlistId = props.playlist
+  const { loading, error, data, subscribeToMore } = useQuery(GET_PLAYLIST, {
+    variables: { playlistId },
+  })
 
-  let playlist = props.playlist
+  // let playlist = props.playlist
 
-  useEffect(() => {
-    getSongs(playlist, token).then((songs) => setSongs(songs))
-  }, [])
+  // const roomId = props.roomId
+
+  const subscribeToMoreSongs = () => {
+    subscribeToMore({
+      document: SONG_ADDED_TO_PLAYLIST,
+      variables: { playlistId },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        const updatedPlaylist = subscriptionData.data.songAddedToPlaylist
+
+        console.log("updatedPlaylist : ", updatedPlaylist)
+        return Object.assign({}, prev, {
+          // getPlaylist: updatedPlaylist
+          getPlaylist: {tracks : updatedPlaylist}
+
+        })
+      },
+    })
+  }
+
+    useEffect(() => {
+    subscribeToMoreSongs()
+  })
+
+  // useEffect(() => {
+  //   getSongs(playlist, token).then((songs) => setSongs(songs))
+  // }, [])
+
+
+  if (loading) return <h1>Loading...</h1>
+
+  const songs = data.getPlaylist.tracks
+  console.log(songs, 'songs')
+  console.log(data.getPlaylist, 'getPlaylist')
 
   return (
     <QueueDiv>
       <h2>Up Next:</h2>
       <Tracks>
-        {songs.length ? (
+        {
           songs.map((item) => (
             <Song
-              key={item.track.id}
-              artists={item.track.artists}
-              albumImg={item.track.album.images[2]}
-              name={item.track.name}
-              album={item.track.album.name}
+              // key={item.track.id}
+              // artists={item.track.artists}
+              // albumImg={item.track.album.images[2]}
+              // name={item.track.name}
+              // album={item.track.album.name}
+              key={item.id}
+              artists={item.artists}
+              albumImg={item.album.images[0]}
+              name={item.name}
+              album={item.album.name}
             />
           ))
-        ) : (
-          <p>Loading tracks...</p>
-        )}
+        }
       </Tracks>
     </QueueDiv>
   )
 }
+
+const GET_PLAYLIST = gql`
+  query getPlaylist($playlistId: String!) {
+    getPlaylist(playlistId: $playlistId) {
+      tracks{
+        id
+        name
+        artists {
+          name
+        }
+        album {
+          name
+          images {
+            url
+          }
+        }
+      }
+    }
+  }
+
+`
+
+const SONG_ADDED_TO_PLAYLIST = gql`
+  subscription songAddedToPlaylist($playlistId: String) {
+    songAddedToPlaylist(playlistId: $playlistId) {
+      tracks{
+        id
+        name
+        artists {
+          name
+        }
+        album {
+          name
+          images {
+            url
+          }
+        }
+      }
+    }
+  }
+`
