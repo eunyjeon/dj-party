@@ -4,7 +4,21 @@ import styled from 'styled-components'
 
 const ADD_SONG_TO_PLAYLIST = gql`
   mutation addSongToPlaylist($roomId: ID, $playlistId: String, $trackUri: String) {
-    addSongToPlaylist(roomId: $roomId, playlistId: $playlistId, trackUri: $trackUri)
+    addSongToPlaylist(roomId: $roomId, playlistId: $playlistId, trackUri: $trackUri) {
+      tracks{
+        id
+        name
+        artists {
+          name
+        }
+        album {
+          name
+          images {
+            url
+          }
+        }
+      }
+    }
   }
 `
 

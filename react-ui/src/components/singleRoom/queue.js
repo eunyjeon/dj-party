@@ -52,19 +52,23 @@ export default function Queue(props) {
     variables: { playlistId },
   })
 
-  let playlist = props.playlist
+  // let playlist = props.playlist
 
-  const roomId = props.roomId
+  // const roomId = props.roomId
 
   const subscribeToMoreSongs = () => {
     subscribeToMore({
       document: SONG_ADDED_TO_PLAYLIST,
-      variables: { roomId },
+      variables: { playlistId },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
         const updatedPlaylist = subscriptionData.data.songAddedToPlaylist
+
+        console.log("updatedPlaylist : ", updatedPlaylist)
         return Object.assign({}, prev, {
-          getPlaylist: updatedPlaylist
+          // getPlaylist: updatedPlaylist
+          getPlaylist: {tracks : updatedPlaylist}
+
         })
       },
     })
@@ -78,10 +82,6 @@ export default function Queue(props) {
   //   getSongs(playlist, token).then((songs) => setSongs(songs))
   // }, [])
 
-  //  useEffect(() => {
-
-
-  // })
 
   if (loading) return <h1>Loading...</h1>
 
