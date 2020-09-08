@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 // import styled from 'styled-components'
 import MessageList from './messageList'
 import { withRouter } from 'react-router-dom'
@@ -32,33 +32,33 @@ export const SingleRoom = (props) => {
   const subscribeToMoreUsers = () => {
     subscribeToMore({
       document: USER_JOIN,
-      variables: {roomId},
-      updateQuery: (prev, {subscriptionData}) => {
+      variables: { roomId },
+      updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
         const updatedUserList = subscriptionData.data.userJoin
         console.log(updatedUserList, 'userList')
         return Object.assign({}, prev, {
-          getSingleRoom:{
-            users: updatedUserList
-          }
+          getSingleRoom: {
+            users: updatedUserList,
+          },
         })
-      }
+      },
     })
   }
 
   const subscribeToLessUsers = () => {
     subscribeToMore({
       document: USER_LEFT,
-      variables: {roomId},
-      updateQuery: (prev, {subscriptionData}) => {
-        if(!subscriptionData.data) return prev
+      variables: { roomId },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
         const updatedUserList = subscriptionData.data.userLeft
         return Object.assign({}, prev, {
           getSingleRoom: {
-            users: updatedUserList
-          }
+            users: updatedUserList,
+          },
         })
-      }
+      },
     })
   }
 
@@ -66,7 +66,6 @@ export const SingleRoom = (props) => {
     subscribeToMoreUsers()
     subscribeToLessUsers()
   })
-
 
   //if (error) return <h1>Something went wrong in the rooms!</h1>
   if (loading) return <h1>Loading...</h1>
@@ -77,6 +76,8 @@ export const SingleRoom = (props) => {
   console.log(data.getSingleRoom.users, 'users')
   const users = data.getSingleRoom.users
   const accessToken = data.getSingleRoom.accessToken
+  const playlist = data.getSingleRoom.playlistId
+  console.log('playlist', playlist)
 
   return (
     <PageDiv>
@@ -89,7 +90,7 @@ export const SingleRoom = (props) => {
             <TrackSearchBar />
           </Col>
           <Col>
-            <Queue />
+            <Queue playlist={playlist} />
           </Col>
           <Col>
             <UsersList users={users} />
@@ -130,6 +131,7 @@ const GET_ROOM_INFO = gql`
       id
       name
       description
+      playlistId
       messages {
         message
         user {
@@ -156,18 +158,17 @@ const MESSAGE_CREATED = gql`
 `
 
 const USER_JOIN = gql`
-  subscription userJoin($roomId: ID!){
-    userJoin(roomId: $roomId){
+  subscription userJoin($roomId: ID!) {
+    userJoin(roomId: $roomId) {
       spotifyUsername
     }
   }
 `
 
-const USER_LEFT = gql `
-  subscription userLeft($roomId: ID!){
-    userLeft(roomId: $roomId){
+const USER_LEFT = gql`
+  subscription userLeft($roomId: ID!) {
+    userLeft(roomId: $roomId) {
       spotifyUsername
     }
   }
 `
-
