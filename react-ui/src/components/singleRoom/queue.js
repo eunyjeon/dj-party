@@ -52,10 +52,6 @@ export default function Queue(props) {
     variables: { playlistId },
   })
 
-  // let playlist = props.playlist
-
-  // const roomId = props.roomId
-
   const subscribeToMoreSongs = () => {
     subscribeToMore({
       document: SONG_ADDED_TO_PLAYLIST,
@@ -64,24 +60,18 @@ export default function Queue(props) {
         if (!subscriptionData.data) return prev
         const updatedPlaylist = subscriptionData.data.songAddedToPlaylist
 
-        console.log("updatedPlaylist : ", updatedPlaylist)
+        console.log('updatedPlaylist : ', updatedPlaylist)
         return Object.assign({}, prev, {
           // getPlaylist: updatedPlaylist
-          getPlaylist: {tracks : updatedPlaylist}
-
+          getPlaylist: { tracks: updatedPlaylist },
         })
       },
     })
   }
 
-    useEffect(() => {
+  useEffect(() => {
     subscribeToMoreSongs()
   })
-
-  // useEffect(() => {
-  //   getSongs(playlist, token).then((songs) => setSongs(songs))
-  // }, [])
-
 
   if (loading) return <h1>Loading...</h1>
 
@@ -91,24 +81,17 @@ export default function Queue(props) {
 
   return (
     <QueueDiv>
-      <h2>Up Next:</h2>
+      <h2>Room Playlist:</h2>
       <Tracks>
-        {
-          songs.map((item) => (
-            <Song
-              // key={item.track.id}
-              // artists={item.track.artists}
-              // albumImg={item.track.album.images[2]}
-              // name={item.track.name}
-              // album={item.track.album.name}
-              key={item.id}
-              artists={item.artists}
-              albumImg={item.album.images[0]}
-              name={item.name}
-              album={item.album.name}
-            />
-          ))
-        }
+        {songs.map((item) => (
+          <Song
+            key={item.id}
+            artists={item.artists}
+            albumImg={item.album.images[2]}
+            name={item.name}
+            album={item.album.name}
+          />
+        ))}
       </Tracks>
     </QueueDiv>
   )
@@ -117,7 +100,7 @@ export default function Queue(props) {
 const GET_PLAYLIST = gql`
   query getPlaylist($playlistId: String!) {
     getPlaylist(playlistId: $playlistId) {
-      tracks{
+      tracks {
         id
         name
         artists {
@@ -132,13 +115,12 @@ const GET_PLAYLIST = gql`
       }
     }
   }
-
 `
 
 const SONG_ADDED_TO_PLAYLIST = gql`
   subscription songAddedToPlaylist($playlistId: String) {
     songAddedToPlaylist(playlistId: $playlistId) {
-      tracks{
+      tracks {
         id
         name
         artists {

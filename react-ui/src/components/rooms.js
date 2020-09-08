@@ -43,7 +43,7 @@ const GET_All_ROOMS = gql`
 
 const JOIN_ROOM = gql`
   mutation joinRoom($roomId: ID!) {
-    joinRoom(roomId: $roomId) 
+    joinRoom(roomId: $roomId)
   }
 `
 
@@ -79,8 +79,7 @@ function Rooms(props) {
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id} id={room.id} onClick={handleCardClick}>
             <h1>{room.name}</h1>
-            <h4>{room.description}</h4>
-            <div>{room.public ? <h2>Public</h2> : <h3>Private</h3>}</div>
+            <h5>{room.description}</h5>
           </RoomCard>
         ))}
       </RoomList>
