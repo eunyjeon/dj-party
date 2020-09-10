@@ -146,6 +146,10 @@ if (!isDev && cluster.isMaster) {
     debug: true,
     typeDefs,
     resolvers,
+    engine: {
+      reportSchema: true,
+      variant: 'current',
+    },
     context: () => {
       return {
         models,

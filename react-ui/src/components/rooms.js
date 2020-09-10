@@ -31,8 +31,6 @@ const RoomCard = styled.div`
   }
 `
 
-
-
 function Rooms(props) {
   const { loading, error, data } = useQuery(GET_All_ROOMS)
   const [joinExistingRoom] = useMutation(JOIN_ROOM, {
@@ -65,8 +63,7 @@ function Rooms(props) {
         {data.getAllRooms.map((room) => (
           <RoomCard key={room.id} id={room.id} onClick={handleCardClick}>
             <h1>{room.name}</h1>
-            <h4>{room.description}</h4>
-            <div>{room.public ? <h2>Public</h2> : <h3>Private</h3>}</div>
+            <h5>{room.description}</h5>
           </RoomCard>
         ))}
       </RoomList>
