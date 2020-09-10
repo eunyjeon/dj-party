@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
-// import styled from 'styled-components'
-import MessageList from './messageList'
+import MessageList from './messages/messageList'
 import { withRouter } from 'react-router-dom'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import UsersList from './usersList'
-import Player from './player'
+import UsersList from '../user/usersList'
+import Player from './player/player'
 import TrackSearchBar from './trackSearch/trackSearchBar'
-import Queue from './queue'
-import { PageDiv } from '../user-home.js'
+import Queue from './player/queue'
+import { PageDiv } from '../user/user-home.js'
 import styled from 'styled-components'
+import {GET_ROOM_INFO, MESSAGE_CREATED, USER_JOIN, USER_LEFT} from '../../graphql'
 
 export const RoomHeading = styled.div`
   font-family: 'Montserrat', sans-serif;
@@ -67,17 +67,12 @@ export const SingleRoom = (props) => {
     subscribeToLessUsers()
   })
 
-  //if (error) return <h1>Something went wrong in the rooms!</h1>
   if (loading) return <h1>Loading...</h1>
 
   const messages = data.getSingleRoom.messages
-  //const songs = data.getSingleRoom.songs
-  console.log(data.getSingleRoom, 'singleRoom data')
-  console.log(data.getSingleRoom.users, 'users')
   const users = data.getSingleRoom.users
   const accessToken = data.getSingleRoom.accessToken
   const playlist = data.getSingleRoom.playlistId
-  console.log('playlist', playlist)
 
   return (
     <PageDiv>
@@ -124,51 +119,3 @@ export const SingleRoom = (props) => {
 }
 
 export default withRouter(SingleRoom)
-
-const GET_ROOM_INFO = gql`
-  query getSingleRoom($roomId: ID!) {
-    getSingleRoom(roomId: $roomId) {
-      id
-      name
-      description
-      playlistId
-      messages {
-        message
-        user {
-          spotifyUsername
-        }
-      }
-      users {
-        spotifyUsername
-        accessToken
-      }
-    }
-  }
-`
-
-const MESSAGE_CREATED = gql`
-  subscription messageCreated($roomId: ID!) {
-    messageCreated(roomId: $roomId) {
-      message
-      user {
-        spotifyUsername
-      }
-    }
-  }
-`
-
-const USER_JOIN = gql`
-  subscription userJoin($roomId: ID!) {
-    userJoin(roomId: $roomId) {
-      spotifyUsername
-    }
-  }
-`
-
-const USER_LEFT = gql`
-  subscription userLeft($roomId: ID!) {
-    userLeft(roomId: $roomId) {
-      spotifyUsername
-    }
-  }
-`

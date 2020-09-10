@@ -10,7 +10,6 @@ const User = db.define('user', {
     defaultValue:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTBj5Xh-ofbLiwmbybzplT-WMsm7aqttESolQ&usqp=CAU',
   },
-  //maybe need this
   accessToken: Sequelize.TEXT,
   proPic: Sequelize.TEXT,
   refreshToken: Sequelize.TEXT,

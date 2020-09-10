@@ -1,7 +1,5 @@
 const { withFilter }= require('apollo-server')
 const MESSAGE_CREATED = 'MESSAGE_CREATED'
-const { PubSub } = require('apollo-server');
-// const pubsub = new PubSub();
 
 const messageResolver = {
   Message: {
@@ -18,8 +16,6 @@ const messageResolver = {
   Mutation: {
     createMessage: async (parent, args, { models, pubSub, getUser }) => {
       try {
-        // const currentRoom = await models.RoomUser.findOne({where: {activeRoom: true, userId: getUser()}})
-        // const message = await models.Message.create({...args, userId: getUser(), roomId: currentRoom.roomId})
         const message = await models.Message.create({...args, userId: getUser()})
         await pubSub.publish(MESSAGE_CREATED, {roomId: args.roomId, messageCreated: message})
         return message;

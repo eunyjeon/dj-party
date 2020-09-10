@@ -1,6 +1,4 @@
 const { withFilter }= require('apollo-server')
-const { PubSub } = require('apollo-server');
-const pubsub = new PubSub();
 const USER_LEFT = 'USER_LEFT'
 const USER_JOIN = 'USER_JOIN'
 
@@ -34,30 +32,6 @@ const roomResolver = {
         console.log('cannot get all the rooms!', error)
       }
     },
-    //below is distinguishing between public and private, not sure if we need, but it might be helpful to have it split...
-    //can get rid of this later
-    getPublicRooms: async (parent, args, { models }) => {
-      try {
-        //We need to consider that we cannot just render all the rooms, but only the public ones and the private ones a user either created or is invited to
-        const publicRooms = await models.Room.findAll({
-          where: { public: true },
-        })
-        return publicRooms
-      } catch (error) {
-        console.log('cannot get all the rooms!', error)
-      }
-    },
-    //haven't set private/public up in the frontend yet
-    getPrivateRooms: async (parent, args, { models }) => {
-      try {
-        const privateRooms = await models.RoomUser.findAll({
-          where: { userId: getUser() },
-        })
-        return privateRooms
-      } catch (error) {
-        console.log('cannot get all the rooms!', error)
-      }
-    },
     getSingleRoom: async (parent, { roomId }, { models }) => {
       try {
         const room = await models.Room.findOne({ where: { id: roomId } })
@@ -85,70 +59,15 @@ const roomResolver = {
         return { ok: false, error: 'Something went wrong!' }
       }
     },
-    addUserToRoom: async (
-      parent,
-      { spotifyUsername, roomId },
-      { models, getUser }
-    ) => {
-      try {
-        const creatorUserPromise = models.RoomUser.findOne({
-          where: { roomId, userId: getUser() },
-        })
-        const addToRoomUserPromise = models.User.findOne({
-          where: { spotifyUsername },
-        })
-        const [creatorUser, addToRoomUser] = await Promise.all([
-          creatorUserPromise,
-          addToRoomUserPromise,
-        ])
-
-        if (!creatorUser.isCreator) {
-          return {
-            ok: false,
-            error: 'Nope! You cannot add users to the room!',
-          }
-        }
-
-        if (!addToRoomUser) {
-          return {
-            ok: false,
-            error: 'Cannot find user with this spotifyUsername!',
-          }
-        }
-
-        await models.RoomUser.create({ userId: addToRoomUser.id, roomId })
-        return {
-          ok: true,
-        }
-      } catch (error) {
-        console.log(error)
-        return {
-          ok: false,
-          error: 'Something went wrong!',
-        }
-      }
-    },
     joinRoom: async (parent, { roomId }, { models, getUser, pubSub }) => {
       try {
-        // const roomToJoin = await models.Room.findOne({ where: { id: roomId } })
         const currentUser = await models.User.findOne({
           where: { id: getUser() },
         })
-        // if (roomToJoin.public) {
           await currentUser.update({ currentRoom: roomId })
           const newUsers = await models.User.findAll({where: {currentRoom: roomId}})
           await pubSub.publish(USER_JOIN, {roomId, userJoin: newUsers})
           return true
-        // } else {
-        //   const accessToPrivate = await models.RoomUser.findOne({
-        //     where: { roomId, userId: getUser() },
-        //   })
-        //   if (accessToPrivate) {
-        //     await currentUser.update({ currentRoom: roomId })
-        //     return { ok: true }
-        //   }
-        // }
-        // return { ok: false }
       } catch (error) {
         console.log(error)
         return false

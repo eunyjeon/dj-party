@@ -129,15 +129,6 @@ if (!isDev && cluster.isMaster) {
     })
   )
 
-  /*   app.get("/", (req, res) => {
-    try {
-      console.log("CURRENT SESSION: is", req.user);
-      userId = req.user;
-      // res.json(req.user)
-    } catch (error) {
-      console.log(error);
-    }
-  }); */
 
   app.get(
     '/callback',
