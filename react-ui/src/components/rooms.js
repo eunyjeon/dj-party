@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { withRouter } from 'react-router'
+import {JOIN_ROOM, GET_All_ROOMS} from '../graphql'
 
 const RoomList = styled.div`
   display: flex;
@@ -30,22 +31,7 @@ const RoomCard = styled.div`
   }
 `
 
-const GET_All_ROOMS = gql`
-  {
-    getAllRooms {
-      id
-      name
-      description
-      # public
-    }
-  }
-`
 
-const JOIN_ROOM = gql`
-  mutation joinRoom($roomId: ID!) {
-    joinRoom(roomId: $roomId) 
-  }
-`
 
 function Rooms(props) {
   const { loading, error, data } = useQuery(GET_All_ROOMS)

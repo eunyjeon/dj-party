@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import SingleMessage from './singleMessage'
-//import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import styled from 'styled-components'
+import {CREATE_MESSAGE} from '../../../graphql'
+
 
 const MessageDiv = styled.div`
   margin: 10px;
@@ -89,14 +90,5 @@ function MessageList(props) {
   )
 }
 
-const CREATE_MESSAGE = gql`
-  mutation createMessage($roomId: ID, $message: String!) {
-    createMessage(roomId: $roomId, message: $message) {
-      message
-      user {
-        spotifyUsername
-      }
-    }
-  }
-`
+
 export default withRouter(MessageList)

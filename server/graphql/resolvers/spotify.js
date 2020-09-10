@@ -1,8 +1,6 @@
 const { withFilter }= require('apollo-server')
 const SONG_ADDED_TO_PLAYLIST = 'SONG_ADDED_TO_PLAYLIST'
-const { PubSub } = require('apollo-server');
 const fetch = require("node-fetch")
-const sequelize = require('sequelize')
 
 const SpotifyResolver = {
     Query: {
@@ -18,8 +16,6 @@ const SpotifyResolver = {
                     }
                 })
                 const data = await response.json()
-                console.log('data:',data)
-                console.log('THIS IS THE tracks:\n',data.tracks.items)
                 const arrOfTracks = data.tracks.items.reduce((accum, track) => {
                     const trackObj = {
                         id: track.track.id,
@@ -32,7 +28,6 @@ const SpotifyResolver = {
                     accum.push(trackObj)
                     return accum
                 },[])
-                console.log(arrOfTracks, 'arrOfTRACkS')
                 return {
                     description: data.description,
                     id: data.id,
@@ -91,7 +86,6 @@ const SpotifyResolver = {
                     })
                 })
                 const data = await response.json()
-                console.log("data: ", data)
                 const responseUpdated = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
                     method: 'GET',
                     headers: {

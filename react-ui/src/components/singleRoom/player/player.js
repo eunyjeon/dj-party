@@ -1,4 +1,4 @@
-import UserContext from '../../userContext'
+import UserContext from '../../../userContext'
 import styled from 'styled-components'
 import React, { Component } from 'react'
 import Container from 'react-bootstrap/Container'
@@ -7,8 +7,6 @@ import Col from 'react-bootstrap/Col'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
-
-//Playlist ID for room: '37kr2XDE1PuuoGirJKHKYu'
 
 class Player extends Component {
   constructor(props) {
@@ -202,12 +200,6 @@ class Player extends Component {
     console.log(spotify_uri)
     fetch(
       `https://api.spotify.com/v1/me/player/play?device_id=${this.state.deviceId}`,
-      // {
-      // 	method: "PUT",
-      // 	body: JSON.stringify({
-      //     "uris": ["spotify:track:6EJiVf7U0p1BBfs0qqeb1f"]
-      //    }),
-      //if you want to hook to playlist:
       {
         method: 'PUT',
         body: JSON.stringify({
@@ -250,7 +242,6 @@ class Player extends Component {
         <Container>
           <Row>
             <Col>
-              {/* PLACEHOLDER change to actual responsive album img */}
               <PlayerImg src={this.state.trackImage}  />
             </Col>
             <Col>

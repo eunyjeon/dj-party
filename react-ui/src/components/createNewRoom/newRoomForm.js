@@ -1,31 +1,11 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router'
-import { Form, Button } from 'react-bootstrap'
-import { gql, useMutation } from '@apollo/client'
+import { Form } from 'react-bootstrap'
+import { useMutation } from '@apollo/client'
 import styled from 'styled-components'
+import {CREATE_PLAYLIST, CREATE_ROOM} from '../../graphql'
 
-const CREATE_ROOM = gql`
-  mutation createRoom($name: String!, $description: String, $public: Boolean) {
-    createRoom(name: $name, description: $description, public: $public) {
-      ok
-      roomMade {
-        id
-        name
-        # messages
-        # users
-        # isCreator
-        # public
-        # description
-      }
-    }
-  }
-`
 
-const CREATE_PLAYLIST = gql`
-  mutation createPlaylist($name: String, $description: String, $roomId: ID!){
-    createPlaylist(name: $name, description: $description, roomId: $roomId)
-  }
-`
 
 
 const StyledForm = styled(Form)`
@@ -50,7 +30,7 @@ function NewRoomForm(props) {
     description: '',
   })
   
-  const [createNewRoom, { loading, data }] = useMutation(CREATE_ROOM, {
+  const [createNewRoom] = useMutation(CREATE_ROOM, {
     onError: (err) => console.log(err),
   })
 
@@ -61,8 +41,7 @@ function NewRoomForm(props) {
   const handleSubmit = async (evt) => {
     evt.preventDefault()
     const res = await createNewRoom({variables})
-    console.log(res.data.createRoom.roomMade.id, 'id')
-    const res2 = await createNewPlaylist({variables: {name: variables.name, description: variables.description, roomId: res.data.createRoom.roomMade.id}})
+   await createNewPlaylist({variables: {name: variables.name, description: variables.description, roomId: res.data.createRoom.roomMade.id}})
     props.history.push(`/room/${res.data.createRoom.roomMade.id}`)
   }
 

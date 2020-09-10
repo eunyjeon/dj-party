@@ -1,6 +1,5 @@
 const { gql } = require('apollo-server')
 
-// TODO: query getAllRooms
 
 const room = gql`
     type Room {
@@ -17,8 +16,6 @@ const room = gql`
     type Query {
         getAllRooms: [Room!]!
         getSingleRoom(roomId: ID!): Room!
-        getPublicRooms: [Room!]!
-        getPrivateRooms: [Room!]!
     }
 
     type CreateRoomResponse {
@@ -34,7 +31,6 @@ const room = gql`
 
     type Mutation {
         createRoom(name: String!, description: String, public: Boolean): CreateRoomResponse!
-        addUserToRoom(spotifyUsername: String!, roomId: ID!): VoidResponse!
         joinRoom(roomId: ID!): Boolean
         leaveRoom(roomId: ID!): Boolean
     }
