@@ -1,5 +1,5 @@
 {
-  "name": "capstone goats",
+  "name": "DJ Party",
   "description": "web app made of create-react-app UI + Node API",
   "scripts": {
     "start": "node server"
