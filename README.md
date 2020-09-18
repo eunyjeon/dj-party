@@ -22,14 +22,8 @@ The main feature of the room is our Spotify Connect Web SDK Player that is used 
 Our chatroom allow users to send and receive quick messages so users can share their opinions on music and share friendly banter with other listeners.
 
 ## Technologies
-* PoestgreSQL, Sequelize
-* Sequelize - ORM
-* Express, Apollo, GraphQL
+* PoestgreSQL
+* Sequelize
 * OAuth and Passport.js
+* Apollo, GraphQL, and Express
 * React, Styled-component
-
-## ⭐️Created by
-  **Deanna Dunne** [GitHub](https://github.com/deannadunne1)|[LinkedIn](https://www.linkedin.com/in/deanna-dunne/)
-  **Eunyoung Jeon** [GitHub](https://github.com/eunyjeon)|[LinkedIn](https://www.linkedin.com/in/eunyoung-jeon/)
-  **Kristine Lee** [GitHub](https://github.com/kristine-lee)|[LinkedIn](https://www.linkedin.com/in/kristine-d-lee/)
-  **Natalie Ng** [GitHub](https://github.com/ngnat)|[LinkedIn](https://www.linkedin.com/in/natalie-ng-a812a811b/)
